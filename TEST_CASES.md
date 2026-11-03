@@ -1,0 +1,391 @@
+# Test Cases — Toolshop (sprint5-with-bugs @ ae7caecb)
+
+Scope, risks (R1–R12) and priorities: [TEST_PLAN.md](TEST_PLAN.md). Defects: [BUGS.md](BUGS.md).
+
+**Status values:** `Pass` · `Fail` · `Blocked (reason)` · `Not run (reason)`.
+**Autotest:** `tests/<file> › <title>` or `Not automated`. Cases marked *(proposed)* are candidates for automation,
+pending confirmation. **Defect:** `BUG-00X` or `—`.
+
+**AC references:** PO = Product Overview, PD = Product Detail, CART = Checkout – Cart Review, SI = Checkout – Sign In,
+BA = Checkout – Billing Address, PAY = Checkout – Payment (Advanced), INV = Invoices, CD = Combination Discount,
+REG = User Registration (all in `docs/user-stories/v5.md`).
+
+## Common test data (seed after `migrate:fresh --seed`)
+| Item | Value |
+|---|---|
+| Products | 26 regular (ids 1–26), 9 per page, 3 pages; rentals 27 Excavator $136.50, 28 Bulldozer $147.50, 29 Crane $153.50 |
+| Products used | 1 Combination Pliers $14.15 · 2 Pliers $12.01 · 3 Bolt Cutters $48.41 (Brand name 2) · 4 Long Nose Pliers $14.24 (**stock 0**) · 5 Slip Joint Pliers $9.17 (Brand name 2) · 7 Hammer $12.58 |
+| Categories | Hand Tools (1) → Hammer 3, Hand Saw 4, Wrench 5, Screwdriver 6, Pliers 7; Power Tools (2) → Grinder 8, Sander 9, Saw 10, Drill 11; Other 12 |
+| Pliers category (7) | ids 1, 2, 3, 4, 5 |
+| Search "pliers" | ids 1, 2, 4, 5 (4 results) |
+| Customer | Fresh user per run, registered via `POST /users/register` with a unique e-mail; demo accounts are not used |
+| Billing address | Street `Main Street 1`, City `Amsterdam`, State `Noord-Holland`, Country `Netherlands`, Postcode `1011AA` |
+
+## Summary
+| ID | Title | P | Risk | Status | Autotest | Defect |
+|---|---|---|---|---|---|---|
+| TC-001 | Sorting orders the entire result set across pages | P1 | R7 | Not run | Not automated *(proposed)* | — |
+| TC-002 | Search returns only matching products and resets filters | P1 | R8 | Not run | Not automated | — |
+| TC-003 | Search input boundaries and special input | P2 | R8 | Not run | Not automated | — |
+| TC-004 | Category filter incl. parent → children selection | P1 | R8 | Not run | Not automated | — |
+| TC-005 | Brand filter and combined category + brand | P1 | R8 | Not run | Not automated | — |
+| TC-006 | Price range slider: defaults and filtering | P2 | R8 | Not run | Not automated | — |
+| TC-007 | Pagination shows every product exactly once | P2 | R8 | Not run | Not automated | — |
+| TC-008 | Quantity selector +/− and minimum 1 | P1 | R9 | Not run | Not automated | — |
+| TC-009 | Manual quantity entry boundaries | P1 | R9 | Not run | Not automated | — |
+| TC-010 | Out-of-stock product cannot be added to cart | P2 | R11 | Not run | Not automated | — |
+| TC-011 | Product card and product detail content | P2 | — | Not run | Not automated | — |
+| TC-012 | Add to cart shows correct line and total | P0 | R3 | Not run | Not automated | — |
+| TC-013 | Several products and the same product twice | P0 | R3 | Not run | Not automated | — |
+| TC-014 | Update quantity in cart recalculates totals | P0 | R3 | Not run | Not automated *(proposed)* | — |
+| TC-015 | Delete item and empty cart | P0 | R3 | Not run | Not automated *(proposed)* | — |
+| TC-016 | Combination discount (rental + non-rental) | P2 | R12 | Not run | Not automated | — |
+| TC-017 | Guest signs in at the checkout sign-in step | P1 | R10 | Not run | Not automated | — |
+| TC-018 | Wrong password at checkout sign-in | P1 | R10 | Not run | Not automated | — |
+| TC-019 | Already signed-in user at the sign-in step | P2 | R10 | Not run | Not automated | — |
+| TC-020 | Billing address validation and pre-fill | P1 | R6 | Not run | Not automated | — |
+| TC-021 | Payment methods and per-method fields | P0 | R5 | Not run | Not automated | — |
+| TC-022 | Payment step required fields | P1 | R5 | Not run | Not automated | — |
+| TC-023 | End-to-end order in the UI | P0 | R1 R2 R10 | Not run | Not automated *(proposed)* | — |
+| TC-024 | API order with each payment method creates a correct invoice | P0 | R1 R2 | Not run | Not automated *(proposed)* | — |
+| TC-025 | API order with tampered price | P0 | R4 | Not run | Not automated *(proposed)* | — |
+| TC-026 | API rejects invalid orders | P1 | R1 R11 | Not run | Not automated *(proposed)* | — |
+| TC-027 | Double click on Confirm creates one invoice | P1 | R1 | Not run | Not automated | — |
+| TC-028 | Another user's invoice is not accessible | P2 | R1 | Not run | Not automated | — |
+| TC-029 | Customer registration from checkout | P1 | R10 | Not run | Not automated | — |
+
+---
+
+## Catalog
+
+### TC-001 — Sorting orders the entire result set across pages
+- **Priority:** P1 · **Risk:** R7 · **AC:** PO AC9
+- **Preconditions:** Home page open, no filters.
+- **Test data:** Sort options: Name (A - Z), Name (Z - A), Price (Low - High), Price (High - Low).
+- **Steps:**
+  1. Select a sort option.
+  2. Collect product names and prices on page 1, then pages 2 and 3.
+  3. Repeat for each option.
+- **Expected result:** The concatenated list of all 26 products (3 pages) is ordered by the selected key and direction
+  (names case-insensitive; prices numeric). No product is missing or duplicated.
+- **Status:** Not run · **Actual result:** — · **Autotest:** Not automated *(proposed)* · **Defect:** —
+
+### TC-002 — Search returns only matching products and resets filters
+- **Priority:** P1 · **Risk:** R8 · **AC:** PO AC4
+- **Preconditions:** Home page open.
+- **Test data:** Category filter "Hammer" checked before search; query `pliers`.
+- **Steps:**
+  1. Check category "Hammer".
+  2. Type `pliers` into the search field and click the search button.
+- **Expected result:** Grid shows exactly ids 1, 2, 4, 5 (all names contain "pliers", case-insensitive); the "Hammer"
+  checkbox is unchecked (filters reset).
+- **Status:** Not run · **Actual result:** — · **Autotest:** Not automated · **Defect:** —
+
+### TC-003 — Search input boundaries and special input
+- **Priority:** P2 · **Risk:** R8 · **AC:** PO AC4 (valid query 3–40 chars)
+- **Preconditions:** Home page open.
+- **Test data:** `pl` (2), `pli` (3), 40 × `a`, 41 × `a`, `<script>`, `'%`, Unicode `üß` (üß), `zzzzz` (no match).
+- **Steps:** Enter each value and submit.
+- **Expected result:** 2 and 41 chars are rejected (search not executed or validation message); 3 and 40 chars are executed;
+  special characters do not break the page and are treated as text; no-match query shows an empty-result message, not an error.
+- **Status:** Not run · **Actual result:** — · **Autotest:** Not automated · **Defect:** —
+
+### TC-004 — Category filter incl. parent → children selection
+- **Priority:** P1 · **Risk:** R8 · **AC:** PO AC5, AC6
+- **Preconditions:** Home page open.
+- **Test data:** Child "Pliers" (7); parent "Hand Tools" (1).
+- **Steps:**
+  1. Check "Pliers". Collect all results on all pages.
+  2. Uncheck it. Check parent "Hand Tools".
+  3. Uncheck all children of "Hand Tools".
+- **Expected result:** Step 1: exactly ids 1–5. Step 2: all 5 children are checked; results are ids 1–18 (Hand Tools only).
+  Step 3: parent becomes unchecked.
+- **Status:** Not run · **Actual result:** — · **Autotest:** Not automated · **Defect:** —
+
+### TC-005 — Brand filter and combined category + brand
+- **Priority:** P1 · **Risk:** R8 · **AC:** PO AC7, AC8
+- **Preconditions:** Home page open.
+- **Test data:** Brand "Brand name 2" (products 3, 5); category "Hammer" (3).
+- **Steps:**
+  1. Check "Brand name 2"; collect results.
+  2. Additionally check category "Pliers"; collect results.
+  3. Replace "Pliers" with "Hammer"; collect results.
+- **Expected result:** Step 1: ids 3, 5. Step 2: ids 3, 5 (Pliers ∩ Brand 2). Step 3: empty result with a no-products message.
+- **Status:** Not run · **Actual result:** — · **Autotest:** Not automated · **Defect:** —
+
+### TC-006 — Price range slider: defaults and filtering
+- **Priority:** P2 · **Risk:** R8 · **AC:** PO AC10, AC11
+- **Preconditions:** Home page open.
+- **Test data:** Range 12–14. Expected: ids 2 $12.01, 13 $12.18, 7 $12.58, 6 $13.41, 18 $13.96. Just outside: 15 $14.14, 1 $14.15, 9 $11.14.
+- **Steps:**
+  1. Read slider defaults.
+  2. Move handles to 12 and 14 (keyboard arrows on the focused handle).
+  3. Collect all results.
+- **Expected result:** Defaults min 1, max 100, scale maximum 200. Every result has 12 ≤ price ≤ 14; no product in range is missing.
+- **Status:** Not run · **Actual result:** — · **Autotest:** Not automated · **Defect:** —
+
+### TC-007 — Pagination shows every product exactly once
+- **Priority:** P2 · **Risk:** R8 · **AC:** PO AC3
+- **Preconditions:** Home page open, default sort.
+- **Steps:** Visit pages 1, 2, 3 via the pagination control; collect product ids.
+- **Expected result:** 9 + 9 + 8 products, 26 unique ids, ids 1–26 all present (rentals excluded).
+- **Status:** Not run · **Actual result:** — · **Autotest:** Not automated · **Defect:** —
+
+## Product detail
+
+### TC-008 — Quantity selector +/− and minimum 1
+- **Priority:** P1 · **Risk:** R9 · **AC:** PD AC3–AC6
+- **Preconditions:** Product 1 detail page.
+- **Steps:**
+  1. Read the quantity value.
+  2. Click + twice.
+  3. Click − three times.
+- **Expected result:** Default 1; after + + → 3; after − − − → 1 (does not go below 1).
+- **Status:** Not run · **Actual result:** — · **Autotest:** Not automated · **Defect:** —
+
+### TC-009 — Manual quantity entry boundaries
+- **Priority:** P1 · **Risk:** R9 · **AC:** PD AC7
+- **Preconditions:** Product 1 detail page, empty cart.
+- **Test data:** `0`, `-1`, `1`, `999999999`, `1000000000`, `abc`.
+- **Steps:** For each value: type it into the quantity field, click Add to cart, read cart quantity (header counter / `sessionStorage['cart']`), clear the cart.
+- **Expected result:** Value is clamped to 1..999,999,999: `0` and `-1` → 1; `1` → 1; `999999999` → 999,999,999;
+  `1000000000` → 999,999,999; `abc` is not accepted (quantity stays valid). A cart line never has quantity ≤ 0.
+- **Status:** Not run · **Actual result:** — · **Autotest:** Not automated · **Defect:** —
+
+### TC-010 — Out-of-stock product cannot be added to cart
+- **Priority:** P2 · **Risk:** R11 · **AC:** PO AC13, PD AC9
+- **Test data:** Product 4 Long Nose Pliers (stock 0).
+- **Steps:**
+  1. Find product 4 on the home page.
+  2. Open its detail page; try Add to cart.
+- **Expected result:** Card shows "Out of stock"; on the detail page "Out of stock" is shown in red and Add to cart is disabled; cart stays empty.
+- **Status:** Not run · **Actual result:** — · **Autotest:** Not automated · **Defect:** —
+
+### TC-011 — Product card and product detail content
+- **Priority:** P2 · **Risk:** — · **AC:** PO AC1, AC2, PD AC1, AC14
+- **Test data:** Product 1 Combination Pliers $14.15, category Pliers, brand Brand name 1.
+- **Steps:**
+  1. Check the product card on the home page.
+  2. Click it.
+  3. Check the detail page.
+- **Expected result:** Card shows image, name, price $14.15. Click opens `#/product/1`. Detail shows image, name, description,
+  price $14.15, category badge "Pliers", brand badge "Brand name 1", and a related products section.
+- **Status:** Not run · **Actual result:** — · **Autotest:** Not automated · **Defect:** —
+
+## Cart
+
+### TC-012 — Add to cart shows correct line and total
+- **Priority:** P0 · **Risk:** R3 · **AC:** PD AC8, CART AC1
+- **Preconditions:** Empty cart.
+- **Test data:** Product 1 $14.15, quantity 2.
+- **Steps:**
+  1. Open product 1, set quantity 2, click Add to cart.
+  2. Open the cart (`#/checkout`).
+- **Expected result:** Message "Product added to shopping cart."; header counter 2; table columns Item, Quantity, Price, Total, Actions;
+  line: Combination Pliers, qty 2, price $14.15, line total $28.30; cart total $28.30.
+- **Status:** Not run · **Actual result:** — · **Autotest:** Not automated · **Defect:** —
+
+### TC-013 — Several products and the same product twice
+- **Priority:** P0 · **Risk:** R3 · **AC:** CART AC1
+- **Preconditions:** Empty cart.
+- **Test data:** Product 1 qty 1, product 2 qty 1, product 1 qty 1 again.
+- **Steps:** Add the three items in order; open the cart.
+- **Expected result:** Two lines: Combination Pliers qty 2 / $28.30; Pliers qty 1 / $12.01; cart total $40.31; counter 3.
+- **Status:** Not run · **Actual result:** — · **Autotest:** Not automated · **Defect:** —
+
+### TC-014 — Update quantity in cart recalculates totals
+- **Priority:** P0 · **Risk:** R3 · **AC:** CART AC2
+- **Preconditions:** Cart contains product 1 qty 1 and product 2 qty 1.
+- **Test data:** Change product 1 quantity to 3.
+- **Steps:** In the cart, set the quantity of Combination Pliers to 3 and leave the field.
+- **Expected result:** Message "Product quantity updated."; line total $42.45 (exactly, two decimals); Pliers line unchanged $12.01;
+  cart total $54.46.
+- **Status:** Not run · **Actual result:** — · **Autotest:** Not automated *(proposed)* · **Defect:** —
+
+### TC-015 — Delete item and empty cart
+- **Priority:** P0 · **Risk:** R3 · **AC:** CART AC3, AC4, AC5
+- **Preconditions:** Cart contains product 1 qty 1 and product 2 qty 1 (total $26.16).
+- **Steps:**
+  1. Delete Combination Pliers.
+  2. Delete Pliers.
+- **Expected result:** After step 1: one line (Pliers), total $12.01. After step 2: message "Your shopping cart is empty",
+  no Proceed button, header counter gone or 0.
+- **Status:** Not run · **Actual result:** — · **Autotest:** Not automated *(proposed)* · **Defect:** —
+
+### TC-016 — Combination discount (rental + non-rental)
+- **Priority:** P2 · **Risk:** R12 · **AC:** CART AC7, AC8, CD AC1–AC3
+- **Preconditions:** Empty cart.
+- **Test data:** Product 1 $14.15 qty 1; rental 27 Excavator $136.50, 1 hour.
+- **Steps:**
+  1. Add both; open the cart.
+  2. Delete the rental.
+- **Expected result:** Step 1: subtotal $150.65, discount 15% = $22.60, total $128.05 (Q5 rounding). Step 2: no discount, total $14.15.
+- **Status:** Not run · **Actual result:** — · **Autotest:** Not automated · **Defect:** —
+
+## Checkout
+
+### TC-017 — Guest signs in at the checkout sign-in step
+- **Priority:** P1 · **Risk:** R10 · **AC:** SI AC1, AC2, AC4
+- **Preconditions:** Not signed in; cart contains product 1 qty 1; fresh user registered via API.
+- **Steps:**
+  1. In the cart click Proceed.
+  2. Enter the fresh user's e-mail and password; submit.
+  3. Proceed.
+- **Expected result:** Step 1 shows a login form (e-mail, password, submit). After login the user is signed in and reaches
+  the billing address step; the cart still contains product 1 qty 1.
+- **Status:** Not run · **Actual result:** — · **Autotest:** Not automated · **Defect:** —
+
+### TC-018 — Wrong password at checkout sign-in
+- **Priority:** P1 · **Risk:** R10 · **AC:** SI AC4 (negative)
+- **Preconditions:** As TC-017.
+- **Test data:** Correct e-mail, password `WrongPass1!`.
+- **Steps:** At the sign-in step submit the wrong password once.
+- **Expected result:** An error message is shown; user stays on the sign-in step, not signed in; cart unchanged.
+- **Status:** Not run · **Actual result:** — · **Autotest:** Not automated · **Defect:** —
+
+### TC-019 — Already signed-in user at the sign-in step
+- **Priority:** P2 · **Risk:** R10 · **AC:** SI AC5
+- **Preconditions:** Signed in as the fresh user (first name/last name known); cart contains product 1.
+- **Steps:** In the cart click Proceed.
+- **Expected result:** Message "You are already signed in as <First Name> <Last Name>"; Proceed leads to the billing address step.
+- **Status:** Not run · **Actual result:** — · **Autotest:** Not automated · **Defect:** —
+
+### TC-020 — Billing address validation and pre-fill
+- **Priority:** P1 · **Risk:** R6 · **AC:** BA AC1–AC4
+- **Preconditions:** Signed-in fresh user registered with the common billing address; cart with product 1; at the address step.
+- **Test data:** Lengths: street 70/71, city 40/41, state 40/41, country 40/41, postcode 10/11 characters.
+- **Steps:**
+  1. Check pre-filled values.
+  2. Clear each field in turn.
+  3. Enter max and max+1 lengths.
+- **Expected result:** Fields pre-filled from the account. An empty field is highlighted as invalid and Proceed is disabled.
+  Max length is accepted; max+1 is not possible to enter or is reported as invalid.
+- **Status:** Not run · **Actual result:** — · **Autotest:** Not automated · **Defect:** —
+
+### TC-021 — Payment methods and per-method fields
+- **Priority:** P0 · **Risk:** R5 · **AC:** PAY AC1–AC8
+- **Preconditions:** Signed-in fresh user, cart with product 1, at the payment step.
+- **Steps:** Open the method dropdown; select each method in turn and record the visible fields; switch methods after typing a value.
+- **Expected result:** Options exactly: Bank Transfer, Cash on Delivery, Credit Card, Buy Now Pay Later, Gift Card.
+  Bank Transfer → bank name, account name, account number. Credit Card → card number (XXXX-XXXX-XXXX-XXXX), expiration date (MM/YYYY),
+  CVV, card holder name. Buy Now Pay Later → "Monthly installments" dropdown 3/6/9/12. Gift Card → gift card number, validation code.
+  Cash on Delivery → no additional fields. Switching method resets the form.
+- **Status:** Not run · **Actual result:** — · **Autotest:** Not automated · **Defect:** —
+
+### TC-022 — Payment step required fields
+- **Priority:** P1 · **Risk:** R5 · **AC:** PAY AC1, AC9 (negative)
+- **Preconditions:** As TC-021.
+- **Steps:**
+  1. Without selecting a method, try Confirm.
+  2. Select Bank Transfer, leave fields empty, try Confirm.
+  3. Select the extra option "Errror 304 - Missing Payment Gateway" if present, try Confirm.
+- **Expected result:** Steps 1–2: Confirm disabled or validation errors, no order created (no new invoice for the user via API).
+  Step 3: the option should not exist; if it does, no order is created and a meaningful error is shown.
+- **Status:** Not run · **Actual result:** — · **Autotest:** Not automated · **Defect:** —
+
+### TC-023 — End-to-end order in the UI
+- **Priority:** P0 · **Risk:** R1 R2 R10 · **AC:** PAY AC9, INV AC1, AC2
+- **Preconditions:** Fresh user registered via API, not signed in, empty cart.
+- **Test data:** Search `pliers`; product 2 Pliers $12.01 qty 2; product 5 Slip Joint Pliers $9.17 qty 1; common billing address; Cash on Delivery.
+- **Steps:**
+  1. Search `pliers`, open Pliers from the result, set qty 2, Add to cart.
+  2. Go back, open Slip Joint Pliers, Add to cart.
+  3. Cart → Proceed → sign in → Proceed → address → Proceed → payment Cash on Delivery → Confirm.
+  4. Open My invoices and the new invoice detail.
+- **Expected result:** Confirmation shows an invoice number; cart is cleared. `GET /invoices` for the user returns exactly one invoice with
+  lines Pliers ×2 @ 12.01 and Slip Joint Pliers ×1 @ 9.17, total 33.19, payment method Cash on Delivery, billing address as entered.
+  My invoices list shows the invoice number, street, date, total $33.19; detail shows address, payment method and the two lines.
+- **Status:** Not run · **Actual result:** — · **Autotest:** Not automated *(proposed)* · **Defect:** —
+
+### TC-024 — API order with each payment method creates a correct invoice
+- **Priority:** P0 · **Risk:** R1 R2 · **AC:** PAY AC9
+- **Preconditions:** Fresh user registered and logged in via API (bearer token).
+- **Test data:** Items: product 1 qty 2 @ 14.15, product 7 qty 1 @ 12.58, total 40.88; methods: Bank Transfer, Cash on Delivery,
+  Credit Card, Buy Now Pay Later, Gift Card; account name `Test User`, account number `1234567890`.
+- **Steps:** For each method `POST /invoices`, then `GET /invoices/{id}`.
+- **Expected result:** 2xx with invoice id and number; the stored invoice has payment method = sent method, two lines with
+  the quantities and catalog unit prices, total 40.88, billing address as sent.
+- **Status:** Not run · **Actual result:** — · **Autotest:** Not automated *(proposed)* · **Defect:** —
+
+### TC-025 — API order with tampered price
+- **Priority:** P0 · **Risk:** R4 · **AC:** — (Q6)
+- **Preconditions:** As TC-024.
+- **Test data:** Product 3 Bolt Cutters (catalog $48.41) qty 1 sent with `unit_price` 0.01 and `total` 0.01.
+- **Steps:** `POST /invoices`; if created, `GET /invoices/{id}`.
+- **Expected result:** Either rejected (4xx) or the stored invoice uses the catalog price: line unit price 48.41, total 48.41.
+  An invoice with 0.01 is a defect.
+- **Status:** Not run · **Actual result:** — · **Autotest:** Not automated *(proposed)* · **Defect:** —
+
+### TC-026 — API rejects invalid orders
+- **Priority:** P1 · **Risk:** R1 R11 · **AC:** —
+- **Preconditions:** As TC-024; count the user's invoices before each request.
+- **Test data (one request each):** empty `invoice_items`; quantity 0; quantity −1; product id 999999; product 4 (stock 0);
+  missing `billing_city`; no `Authorization` header.
+- **Steps:** Send each request; then `GET /invoices` for the user.
+- **Expected result:** 422 for invalid payloads (401 without auth); the user's invoice count is unchanged after each request.
+- **Status:** Not run · **Actual result:** — · **Autotest:** Not automated *(proposed)* · **Defect:** —
+
+### TC-027 — Double click on Confirm creates one invoice
+- **Priority:** P1 · **Risk:** R1 · **AC:** —
+- **Preconditions:** Signed-in fresh user at the payment step with product 1, Cash on Delivery selected.
+- **Steps:** Double-click Confirm; then `GET /invoices` for the user.
+- **Expected result:** Exactly one invoice is created.
+- **Status:** Not run · **Actual result:** — · **Autotest:** Not automated · **Defect:** —
+
+### TC-028 — Another user's invoice is not accessible
+- **Priority:** P2 · **Risk:** R1 · **AC:** INV AC3
+- **Preconditions:** User A has an invoice (id X); user B is a separate fresh user.
+- **Steps:**
+  1. As B, `GET /invoices/X`.
+  2. As B in the UI open `#/account/invoices/X`.
+- **Expected result:** API 403/404 without A's data; UI shows a "not found" message.
+- **Status:** Not run · **Actual result:** — · **Autotest:** Not automated · **Defect:** —
+
+### TC-029 — Customer registration from checkout
+- **Priority:** P1 · **Risk:** R10 · **AC:** REG AC1, AC5, AC6
+- **Preconditions:** Not signed in, cart with product 1.
+- **Test data:** Unique e-mail, password `Str0ng!Passw0rd`, common billing address, date of birth 1990-01-01; then the same e-mail again.
+- **Steps:**
+  1. Cart → Proceed → Register link; fill the form; submit.
+  2. Sign in with the new account.
+  3. Register again with the same e-mail.
+- **Expected result:** Step 1: account created, user redirected to login. Step 2: sign-in succeeds.
+  Step 3: registration rejected with a duplicate e-mail message.
+- **Status:** Not run · **Actual result:** — · **Autotest:** Not automated · **Defect:** —
+
+---
+
+## AC traceability
+| Story | AC | Test case(s) |
+|---|---|---|
+| Product Overview | AC1 grid, AC2 navigate | TC-011 |
+| | AC3 pagination | TC-007 |
+| | AC4 search | TC-002, TC-003 |
+| | AC5 category, AC6 hierarchy | TC-004 |
+| | AC7 brand, AC8 combined | TC-005 |
+| | AC9 sorting | TC-001 |
+| | AC10 slider, AC11 range | TC-006 |
+| | AC13 out of stock | TC-010 |
+| Product Detail | AC1 info, AC14 related | TC-011 |
+| | AC3–AC6 quantity selector | TC-008 |
+| | AC7 manual quantity | TC-009 |
+| | AC8 add to cart | TC-012 |
+| | AC9 out of stock | TC-010 |
+| Checkout – Cart Review | AC1 contents | TC-012, TC-013 |
+| | AC2 update | TC-014 |
+| | AC3 delete, AC4 empty, AC5 proceed | TC-015 |
+| | AC7, AC8 combined discount | TC-016 |
+| Checkout – Sign In | AC1, AC2, AC4 | TC-017, TC-018 |
+| | AC5 already signed in | TC-019 |
+| Checkout – Billing Address | AC1–AC4 | TC-020 |
+| Checkout – Payment | AC1–AC8 | TC-021, TC-022 |
+| | AC9 successful order | TC-023, TC-024 |
+| Invoices | AC1 list, AC2 detail | TC-023 |
+| | AC3 not found | TC-028 |
+| Combination Discount | AC1–AC3 | TC-016 |
+| User Registration | AC1, AC5, AC6 | TC-029 |
+
+**Excluded ACs (reason):** SI AC3 TOTP — not in this build (`features.md`); PD AC10–AC13 rental slider and favorites — out of scope;
+discount display PO AC12, PD AC2, CART AC6 and the Geo-Location Discount story — only location-based discounts exist, geolocation
+spoofing is out of scope (TEST_PLAN); CD AC4 discount on invoice — follows TC-016, not run separately; PAY AC9 confirmation e-mail — Q4;
+REG AC2–AC4 password strength UI — not needed for the purchase flow.

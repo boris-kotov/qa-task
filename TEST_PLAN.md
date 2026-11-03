@@ -25,7 +25,7 @@ Build under test: `SPRINT=sprint5-with-bugs`, commit `ae7caecb`, local stand (se
 | Cart | Contents table, line totals and cart total; update quantity; delete item; empty cart message; proceed; combination discount 15% (rental + non-rental) |
 | Checkout | Guest → sign-in step; already signed in message; billing address (required fields, max lengths, proceed disabled when invalid); payment methods (Bank Transfer, Cash on Delivery, Credit Card, Buy Now Pay Later, Gift Card) and their field validation; credit card expiry must be in the future; successful order → confirmation with invoice number, cart cleared |
 | Order record | Invoice via API (`GET /invoices`, `GET /invoices/{id}`): lines, quantities, unit prices, total, payment method, billing address |
-| Auth (supporting) | Registration and login only as needed by the flows above |
+| Auth (supporting) | Registration (happy path, duplicate e-mail) and login as needed by the flows above; password strength UI is out |
 
 ### Out of scope
 | Area | Reason |
@@ -43,20 +43,20 @@ Likelihood (L) and impact (I) on a 1–3 scale; score = L × I. Priority: score 
 
 | # | Area | Risk | L | I | Score | Priority | Mitigation |
 |---|---|---|---|---|---|---|---|
-| R1 | Order | Order total or invoice lines differ from the cart (price, quantity, missing line) | 2 | 3 | 6 | P0 | API + UI order tests asserting the invoice |
-| R2 | Order | Order cannot be placed with one of the payment methods | 2 | 3 | 6 | P0 | Order per payment method via API; UI for one method |
-| R3 | Cart | Line total / cart total wrong after add, update or delete (cart is computed client-side) | 3 | 3 | 9 | P0 | UI cart tests asserting every line and the total |
-| R4 | Order | Server trusts client-supplied `unit_price` / `total` in `POST /invoices` | 2 | 3 | 6 | P0 | API negative test: tampered price |
-| R5 | Payment | Invalid payment data accepted (card format, past expiry, gift card format, empty required fields) | 3 | 2 | 6 | P0 | UI + API validation cases (boundaries) |
-| R6 | Checkout | Billing address validation missing or proceed allowed with invalid data | 2 | 2 | 4 | P1 | UI validation cases |
-| R7 | Catalog | Sorting returns wrong order (any position, not only the first item) | 2 | 2 | 4 | P1 | API + UI: compare the whole result set |
-| R8 | Catalog | Filters / search return products outside the selection or miss products | 2 | 2 | 4 | P1 | API: membership check of all results |
-| R9 | Product | Quantity boundaries (0, negative, > max) accepted or mishandled | 2 | 2 | 4 | P1 | UI boundary cases |
-| R10 | Cart | Cart lost between checkout steps or after login (sessionStorage) | 2 | 2 | 4 | P1 | Covered by the E2E checkout flow |
-| R11 | Catalog | Out-of-stock product can be added to cart | 1 | 2 | 2 | P2 | UI case |
-| R12 | Cart | Combination discount (15%) not applied / not removed | 2 | 1 | 2 | P2 | Manual case if time remains |
+| R1 | Order | Order total or invoice lines differ from the cart (price, quantity, missing line) | 2 | 3 | 6 | P0 | TC-023, TC-024, TC-026, TC-027, TC-028 |
+| R2 | Order | Order cannot be placed with one of the payment methods | 2 | 3 | 6 | P0 | TC-023, TC-024 |
+| R3 | Cart | Line total / cart total wrong after add, update or delete (cart is computed client-side) | 3 | 3 | 9 | P0 | TC-012, TC-013, TC-014, TC-015 |
+| R4 | Order | Server trusts client-supplied `unit_price` / `total` in `POST /invoices` | 2 | 3 | 6 | P0 | TC-025 |
+| R5 | Payment | Payment step does not match the advanced payment requirements (per-method fields and validation) or accepts empty / invalid data | 3 | 2 | 6 | P0 | TC-021, TC-022 |
+| R6 | Checkout | Billing address validation missing or proceed allowed with invalid data | 2 | 2 | 4 | P1 | TC-020 |
+| R7 | Catalog | Sorting returns wrong order (any position, not only the first item) | 2 | 2 | 4 | P1 | TC-001 |
+| R8 | Catalog | Filters / search return products outside the selection or miss products | 2 | 2 | 4 | P1 | TC-002 – TC-007 |
+| R9 | Product | Quantity boundaries (0, negative, > max) accepted or mishandled | 2 | 2 | 4 | P1 | TC-008, TC-009 |
+| R10 | Checkout | Customer cannot get through sign-in / registration, or the cart is lost between steps (sessionStorage) | 2 | 2 | 4 | P1 | TC-017, TC-018, TC-019, TC-023, TC-029 |
+| R11 | Order | Out-of-stock product can be added to cart or ordered via API | 2 | 2 | 4 | P1 | TC-010 (UI), TC-026 (API) |
+| R12 | Cart | Combination discount (15%) not applied / not removed | 2 | 1 | 2 | P2 | TC-016 |
 
-TC IDs are linked to risks in [TEST_CASES.md](TEST_CASES.md).
+Test case details and AC traceability: [TEST_CASES.md](TEST_CASES.md).
 
 ## 5. Priorities
 - **P0** — an order can be placed and is recorded correctly; the cart shows correct amounts; invalid payment data is rejected.
@@ -104,7 +104,7 @@ release recommendation written.
 | # | Question | Assumption we proceed with |
 |---|---|---|
 | Q1 | v5 says the cart has server-side persistence; this build has no `/carts` API and keeps the cart in `sessionStorage`. Which is expected? | The with-bugs build intentionally uses the client-side cart. Not reported as a defect; cart persistence across browser sessions is not tested |
-| Q2 | `gift-card-validation.md` describes `app/Payments/GiftCard.php` and structured `payment_details`; neither exists in this build (Swagger uses `payment_account_name` / `payment_account_number`). Do the 16/4 format rules apply? | v5 AC6 applies (required, alphanumeric). The 16/4 length rule is treated as expected behaviour; a divergence is reported with this caveat |
+| Q2 | v5 Payment (Advanced) AC2–AC8 require per-method fields (bank, card, BNPL installments, gift card). This build's API takes only `payment_method`, `payment_account_name`, `payment_account_number` (Swagger), and `gift-card-validation.md` refers to code (`app/Payments/GiftCard.php`) that is absent. Is advanced payment required for this release? | v5 applies to the with-bugs build (`features.md` lists "Payment options (advanced)" for with-bugs). Missing per-method fields are reported as a defect after confirmation on the stand (TC-021). Card / gift card format validation is not tested if the fields do not exist |
 | Q3 | Combination discount needs a rental item, but rentals are out of scope | A rental product is used only as test data for the discount; rental pages are not tested |
 | Q4 | Should the confirmation e-mail (AC9) be verified? Mailcatcher runs locally | Not verified by default; P2, checked manually via mailcatcher only if time remains |
 | Q5 | Currency and rounding of totals are not specified | USD, two decimals, line total = unit price × quantity, cart total = sum of line totals (before discounts) |
@@ -123,6 +123,8 @@ These are **observations to verify** in test cases, not confirmed defects:
 - Product page: `data-test` attributes available (`quantity`, `increase-quantity`, `decrease-quantity`, `add-to-cart`, …);
   the +/− buttons have no accessible name.
 - Not verified: the "Product added to shopping cart." message (not found when queried after the click).
+- To learn checkout field names, the UI checkout template of the app was read (not the bug lists). Behaviour is
+  confirmed only on the stand; the source is never used as evidence of a defect.
 
 ## 11. Environment
 See [README](README.md#environment): macOS, Docker Compose source build, Node 24, Playwright Chromium.
