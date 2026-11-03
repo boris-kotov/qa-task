@@ -1,11 +1,11 @@
-import { test, expect } from '../../src/fixtures';
+import { test, expect, knownDefect } from '../../src/fixtures';
 import { toCents } from '../../src/data/factories';
 
 test('TC-001 sorting by price low to high orders the whole catalog across all pages', {
   tag: ['@ui', '@TC-001', '@bug-BUG-020'],
 }, async ({ api, catalog }) => {
-  // Known defect: the assertion stays strict; test.fail turns this test red as soon as the defect is fixed.
-  test.fail(true, 'BUG-020: "Price (Low - High)" sorts from high to low (sort option values are swapped)');
+  // Known defect: the assertion stays strict; the test turns red as soon as the defect is fixed.
+  knownDefect('BUG-020: "Price (Low - High)" sorts from high to low (sort option values are swapped)', /prices in display order/);
 
   // Independent oracle: the catalog is loaded unsorted and sorted by the test. Comparing with the API's own
   // `sort=` result would hide a defect that sits in the API.

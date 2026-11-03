@@ -38,7 +38,7 @@ REG = User Registration (all in `docs/user-stories/v5.md`).
 | TC-011 | Product card and product detail content | P2 | — | Pass | Not automated | — (observations: BUG-025, BUG-026) |
 | TC-012 | Add to cart shows correct line and total | P0 | R3 | Fail | Not automated | BUG-006, BUG-007, BUG-016 |
 | TC-013 | Several products and the same product twice | P0 | R3 | Fail | `tests/ui/cart.spec.ts › Cart › TC-013 adding a product that is already in the cart increases its quantity` | BUG-005 |
-| TC-014 | Update quantity in cart recalculates totals | P0 | R3 | Fail | `tests/ui/cart.spec.ts › Cart › TC-014 changing a quantity in the cart recalculates the cart total` | BUG-022 (BUG-021 found with random data) |
+| TC-014 | Update quantity in cart recalculates totals | P0 | R3 | Fail | `tests/ui/cart.spec.ts › Cart › TC-014 changing a quantity in the cart recalculates the stored cart and the cart total` (pass) + `… TC-014 changing a quantity in the cart shows "Product quantity updated."` (BUG-022) | BUG-022 (BUG-021 found with random data) |
 | TC-015 | Delete item and empty cart | P0 | R3 | Fail | Not automated (moved to the manual run when the autotest set was trimmed) | BUG-023 |
 | TC-016 | Combination discount (rental + non-rental) | P2 | R12 | Fail | Not automated | BUG-011 |
 | TC-017 | Guest signs in at the checkout sign-in step | P1 | R10 | Pass | Not automated | — |
@@ -201,7 +201,7 @@ REG = User Registration (all in `docs/user-stories/v5.md`).
 - **Steps:** In the cart, set the quantity of Combination Pliers to 3 and leave the field.
 - **Expected result:** Message "Product quantity updated."; line total $42.45 (exactly, two decimals); Pliers line unchanged $12.01;
   cart total $54.46.
-- **Status:** Fail · **Actual result:** Autotest: stored quantities and the cart total are recalculated correctly (3 × 14.15 + 12.01 = $54.46), but the message "Product quantity updated." is never shown (CART AC2). Separately the autotest with random data found a rounding defect: 3 × $119.24 + $12.01 shown as $369.72 instead of $369.73 (BUG-021). Evidence: autotest report, `reports/evidence/BUG-021-cart-total-truncated.txt` · **Autotest:** `tests/ui/cart.spec.ts › Cart › TC-014 changing a quantity in the cart recalculates the cart total` · **Defect:** BUG-022, BUG-021
+- **Status:** Fail · **Actual result:** Autotest: stored quantities and the cart total are recalculated correctly (3 × 14.15 + 12.01 = $54.46), but the message "Product quantity updated." is never shown (CART AC2). Separately the autotest with random data found a rounding defect: 3 × $119.24 + $12.01 shown as $369.72 instead of $369.73 (BUG-021). Evidence: autotest report, `reports/evidence/BUG-021-cart-total-truncated.txt` · **Autotest:** `tests/ui/cart.spec.ts › Cart › TC-014 changing a quantity in the cart recalculates the stored cart and the cart total` (pass) + `… TC-014 changing a quantity in the cart shows "Product quantity updated."` (BUG-022) · **Defect:** BUG-022, BUG-021
 
 ### TC-015 — Delete item and empty cart
 - **Priority:** P0 · **Risk:** R3 · **AC:** CART AC3, AC4, AC5

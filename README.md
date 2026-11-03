@@ -52,7 +52,7 @@ One configuration override is required to start the UI:
 npm ci
 npx playwright install chromium
 cp .env.example .env          # defaults point to localhost
-npm test                      # all tests, HTML report: reports/html
+npm test                      # all tests, HTML report: reports/html; then checks expected failures (posttest)
 npm run test:api | npm run test:ui
 npm run report                # open the report
 ```
@@ -77,8 +77,14 @@ npm run report                # open the report
   BUG-027 search 500, BUG-029 silent rejection). They are reported; the end-to-end test stays deterministic.
 
 ### Expected failures (defects)
-Tests that reproduce a defect keep strict assertions and are marked `test.fail(true, 'BUG-0XX: …')` + tag `@bug-BUG-0XX`.
-In the report they appear as passed ("expected to fail"); if a defect is fixed, the test turns red and the marker must be removed.
+Tests that reproduce a defect keep strict assertions and call `knownDefect('BUG-0XX: …', /expected error/)` (`src/fixtures.ts`):
+`test.fail` + tag `@bug-BUG-0XX` + the error the test must fail with. In the report they appear as passed ("expected to fail");
+if a defect is fixed, the test turns red and the marker must be removed.
+
+`test.fail` alone accepts **any** failure as expected — a setup error or a new regression would be hidden. Therefore
+`npm test` runs `scripts/check-expected-failures.mjs` afterwards (`posttest`, also `npm run test:check-failures`): it reads
+`reports/results.json` and fails if an expected failure failed with a different error or has no expected-error annotation.
+(`npx playwright test` skips this step — use `npm test`.) The script was self-tested with a tampered report: both cases are caught.
 
 | Test | Defect | Fails on |
 |---|---|---|
@@ -88,10 +94,11 @@ In the report they appear as passed ("expected to fail"); if a defect is fixed, 
 | `tests/api/orders.spec.ts › TC-026 … out of stock` | BUG-019 | 201 instead of 422 |
 | `tests/api/orders.spec.ts › TC-026 … unknown payment method` | BUG-004 | 201 instead of 422 |
 | `tests/ui/cart.spec.ts › TC-013` | BUG-005 | quantity stays 1 after adding the product again |
-| `tests/ui/cart.spec.ts › TC-014` | BUG-022 | no "Product quantity updated." message (totals are asserted before and pass) |
+| `tests/ui/cart.spec.ts › TC-014 … shows "Product quantity updated."` | BUG-022 | no "Product quantity updated." message |
 | `tests/ui/catalog.spec.ts › TC-001` | BUG-020 | "Price (Low - High)" shows prices high → low |
 
-Passing tests: TC-002/TC-005 (API catalog filters), TC-023 (UI end-to-end order), TC-024 (API order → invoice).
+Passing tests: TC-002/TC-005 (API catalog filters), TC-014 cart recalculation (UI), TC-023 (UI end-to-end order), TC-024 (API order → invoice).
+Total: 12 tests — 4 pass, 8 expected failures.
 
 ## Borrowed code
 None. All test code was written in the Claude Code sessions in `ai_sessions/`; no public Toolshop suites or tests from the app repository were used. The app's user stories, `features.md` and Swagger were used only as requirements.
@@ -114,6 +121,7 @@ None. All test code was written in the Claude Code sessions in `ai_sessions/`; n
 | Block 4 — bugs | 2026-11-03 22:46 | 23:36 | 0:50 | BUG-023 manual confirmation and workaround check, session export, BUGS.md (25 defects, requirement issues), re-check of single-seen defects after DB reset |
 | Block 5 — test code review, release | 2026-11-03 23:36 | 23:58 | 0:22 | readable names/comments in tests, flaky TC-023 analysed via traces (BUG-021 raised, BUG-027..029, Q13), fixed data, RELEASE.md (No-Go) |
 | Block 6 — final checks, AI notes | 2026-11-03 23:58 | 2026-11-04 00:12 | 0:14 | `user_id` check (BUG-030), name sort (BUG-020 extended), AI_NOTES, final run, export |
-| **Total (without deployment)** | | | **3:42** | |
+| Block 7 — false positives | 2026-11-04 00:12 | 00:17 | 0:05 | TC-014 split, `knownDefect` + expected-failure check script (self-tested), count fix in RELEASE, final run |
+| **Total (without deployment)** | | | **3:47** | |
 
 Times after the deployment start are taken from git commit timestamps and the session log (start of block 1 = first command of the Claude Code session) and confirmed by the author.

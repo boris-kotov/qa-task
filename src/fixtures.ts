@@ -69,3 +69,16 @@ export const test = base.extend<Fixtures>({
 });
 
 export { expect };
+
+/** Annotation type read by scripts/check-expected-failures.mjs. */
+export const EXPECTED_ERROR_ANNOTATION = 'expected-error';
+
+/**
+ * Marks the current test as reproducing a known defect: `test.fail` + the error the test must fail with.
+ * `test.fail` alone accepts ANY failure (setup error, timeout, a different regression) as "expected";
+ * scripts/check-expected-failures.mjs compares the real error with `expectedError` after the run.
+ */
+export function knownDefect(bug: string, expectedError: RegExp): void {
+  test.fail(true, bug);
+  test.info().annotations.push({ type: EXPECTED_ERROR_ANNOTATION, description: expectedError.source });
+}

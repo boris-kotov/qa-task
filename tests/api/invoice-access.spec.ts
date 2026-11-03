@@ -1,11 +1,11 @@
-import { test, expect } from '../../src/fixtures';
+import { test, expect, knownDefect } from '../../src/fixtures';
 import { invoicePayload, newCustomer } from '../../src/data/factories';
 
 test('TC-028 a customer cannot see invoices of another customer', {
   tag: ['@api', '@critical', '@TC-028', '@bug-BUG-001'],
 }, async ({ api, customer }) => {
-  // Known defect: the assertions stay strict; test.fail turns this test red as soon as the defect is fixed.
-  test.fail(true, "BUG-001: GET /invoices and GET /invoices/{id} return other customers' invoices");
+  // Known defect: the assertions stay strict; the test turns red as soon as the defect is fixed.
+  knownDefect("BUG-001: GET /invoices and GET /invoices/{id} return other customers' invoices", /user ids of foreign invoices returned to the customer/);
 
   const otherCustomerOrder = await test.step('Another customer places an order', async () => {
     const otherCustomerData = newCustomer();

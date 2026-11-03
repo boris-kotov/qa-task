@@ -53,6 +53,7 @@ copied unabridged by `npm run sessions:export`. The export is repeated at the en
   re-checked after a DB reset; one was withdrawn (BUG-009 → requirement issue Q12) because the re-check showed an explicit message.
 - **Autotests:**
   - `tsc` and `eslint` are clean;
+  - every expected failure is checked after each `npm test` run by `scripts/check-expected-failures.mjs` (error must match the annotation);
   - every spec was run alone and under `--repeat-each=3..8 --workers=4`;
   - the final run used `RESET_DB=true`, which was verified via a stock value.
 - **Expected failures:** for each `test.fail` test, the JSON reporter was used to confirm that it fails on the defect
@@ -98,6 +99,7 @@ copied unabridged by `npm run sessions:export`. The export is repeated at the en
 | Mental arithmetic "3 × 14.15 + 12.01 = 54.45 in JS" | Checked with `node`: 54.46 exactly; the rounding defect needed other prices |
 | False positives during manual exploration: pagination click via JS, product image "broken", phone "loses a leading zero" | Each re-checked and withdrawn before reporting (BUGS → "Not reproduced / closed") |
 | MCP turned an element ref into `.btn` + `first()` near the "Bug Hunting Guide" button | Checked that no modal/guide opened (the first `.btn` was the cart delete button) |
+| `test.fail` accepted any failure: a setup error or a new regression in a test marked as a known defect would be reported as "expected"; TC-014 combined a passing check (totals) with a known defect (message) | Found when the author asked about false positives: TC-014 split into two tests; `knownDefect(bug, expectedError)` + `scripts/check-expected-failures.mjs` (posttest) verifies the reason of every expected failure; script self-tested with a tampered report. RELEASE also had a wrong count ("4 pass, 7 expected failures" for 11 tests — really 3 + 8), corrected |
 | Variable names in specs (`l`, `p`, `first`, `row`, …) | Renamed and commented at the author's request; behaviour unchanged, suite re-run |
 | Project docs were written in Russian | Rewritten in English at the user's request; `CLAUDE.md` now requires English for all project files (enforced by `guard-repo`). |
 

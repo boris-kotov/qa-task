@@ -1,4 +1,8 @@
-import { test, expect } from '../../src/fixtures';
+import { test, expect, knownDefect } from '../../src/fixtures';
+import type { Product } from '../../src/api/schemas';
+import type { ToolshopApi } from '../../src/api/toolshop.api';
+import type { CheckoutPage } from '../../src/pages/checkout.page';
+import type { ProductPage } from '../../src/pages/product.page';
 import { cartQuantities } from '../../src/pages/checkout.page';
 import { toCents } from '../../src/data/factories';
 
@@ -6,8 +10,8 @@ test.describe('Cart', () => {
   test('TC-013 adding a product that is already in the cart increases its quantity', {
     tag: ['@ui', '@critical', '@TC-013', '@bug-BUG-005'],
   }, async ({ page, api, productPage, checkout }) => {
-    // Known defect: the assertions stay strict; test.fail turns this test red as soon as the defect is fixed.
-    test.fail(true, 'BUG-005: adding the same product again replaces the quantity instead of adding to it');
+    // Known defect: the assertions stay strict; the test turns red as soon as the defect is fixed.
+    knownDefect('BUG-005: adding the same product again replaces the quantity instead of adding to it', /cart lines/);
     const [product] = await api.pickInStockProducts(1, 2);
 
     await test.step(`Add "${product!.name}" to the cart twice (quantity 1 each time)`, async () => {
@@ -27,28 +31,10 @@ test.describe('Cart', () => {
     });
   });
 
-  test('TC-014 changing a quantity in the cart recalculates the cart total', {
-    tag: ['@ui', '@critical', '@TC-014', '@bug-BUG-022'],
+  test('TC-014 changing a quantity in the cart recalculates the stored cart and the cart total', {
+    tag: ['@ui', '@critical', '@TC-014'],
   }, async ({ page, api, productPage, checkout }) => {
-    // Known defect (message only). The totals are asserted first, so a wrong total would still be visible in the report.
-    test.fail(true, 'BUG-022: no "Product quantity updated." message after changing a quantity in the cart (totals are checked first)');
-
-    // Test data from TEST_CASES.md (seed): Combination Pliers $14.15 and Pliers $12.01. Adding to the cart does not consume stock.
-    const combinationPliers = await api.product(1);
-    const pliers = await api.product(2);
-    expect((combinationPliers.stock ?? 0) > 0 && (pliers.stock ?? 0) > 0, 'both products are in stock (reset the DB otherwise)').toBe(true);
-
-    await test.step(`Add "${combinationPliers.name}" and "${pliers.name}" (quantity 1 each)`, async () => {
-      await productPage.open(combinationPliers);
-      await productPage.addToCart(1);
-      await productPage.open(pliers);
-      await productPage.addToCart(1);
-    });
-
-    await test.step(`Change the quantity of "${combinationPliers.name}" to 3 in the cart`, async () => {
-      await checkout.open();
-      await checkout.setQuantity(combinationPliers.name, 3);
-    });
+    const { combinationPliers, pliers } = await changeQuantityToThree(api, productPage, checkout);
 
     await test.step('The stored cart has the new quantity and the other line is unchanged', async () => {
       await expect
@@ -61,9 +47,45 @@ test.describe('Cart', () => {
     await test.step(`The cart total in the UI is ${expectedTotalCents / 100}`, async () => {
       await expect.poll(async () => toCents(await checkout.cartTotal()), { message: 'cart total (cents)', timeout: 5_000 }).toBe(expectedTotalCents);
     });
+  });
 
-    await test.step('Confirmation message "Product quantity updated." was shown (CART AC2)', async () => {
+  // Separate test for the message so that the known defect (BUG-022) cannot hide a regression in the totals above.
+  test('TC-014 changing a quantity in the cart shows "Product quantity updated."', {
+    tag: ['@ui', '@TC-014', '@bug-BUG-022'],
+  }, async ({ page, api, productPage, checkout }) => {
+    knownDefect('BUG-022: no "Product quantity updated." message after changing a quantity in the cart', /getByText\('Product quantity updated\.'\)/);
+    await changeQuantityToThree(api, productPage, checkout);
+
+    await test.step('Confirmation message "Product quantity updated." is shown (CART AC2)', async () => {
       await expect(page.getByText('Product quantity updated.')).toBeVisible();
     });
   });
 });
+
+/**
+ * TC-014 setup shared by both TC-014 tests: Combination Pliers ($14.15) and Pliers ($12.01) from the seed
+ * (documented test data; adding to the cart does not consume stock), then the first quantity is changed to 3 in the cart.
+ */
+async function changeQuantityToThree(
+  api: ToolshopApi,
+  productPage: ProductPage,
+  checkout: CheckoutPage,
+): Promise<{ combinationPliers: Product; pliers: Product }> {
+  const combinationPliers = await api.product(1);
+  const pliers = await api.product(2);
+  expect((combinationPliers.stock ?? 0) > 0 && (pliers.stock ?? 0) > 0, 'both products are in stock (reset the DB otherwise)').toBe(true);
+
+  await test.step(`Add "${combinationPliers.name}" and "${pliers.name}" (quantity 1 each)`, async () => {
+    await productPage.open(combinationPliers);
+    await productPage.addToCart(1);
+    await productPage.open(pliers);
+    await productPage.addToCart(1);
+  });
+
+  await test.step(`Change the quantity of "${combinationPliers.name}" to 3 in the cart`, async () => {
+    await checkout.open();
+    await checkout.setQuantity(combinationPliers.name, 3);
+  });
+
+  return { combinationPliers, pliers };
+}

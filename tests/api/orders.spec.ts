@@ -1,5 +1,5 @@
 import type { APIResponse } from '@playwright/test';
-import { test, expect } from '../../src/fixtures';
+import { test, expect, knownDefect } from '../../src/fixtures';
 import { billingAddress, invoicePayload, orderTotal, toCents } from '../../src/data/factories';
 import type { InvoicePayload, OrderItem } from '../../src/data/factories';
 import type { ToolshopApi } from '../../src/api/toolshop.api';
@@ -62,8 +62,8 @@ test.describe('Orders via API', () => {
   test('TC-025 order with a tampered unit price is rejected or stored with the catalog price', {
     tag: ['@api', '@critical', '@TC-025', '@bug-BUG-017'],
   }, async ({ api, customer }) => {
-    // Known defect: the assertion stays strict; test.fail turns this test red as soon as the defect is fixed.
-    test.fail(true, 'BUG-017: POST /invoices stores the unit price and total sent by the client');
+    // Known defect: the assertion stays strict; the test turns red as soon as the defect is fixed.
+    knownDefect('BUG-017: POST /invoices stores the unit price and total sent by the client', /Expected value: 0\.01/);
 
     const [product] = await test.step('Pick an in-stock product', () => api.pickInStockProducts(1));
 
@@ -118,7 +118,7 @@ test.describe('Orders via API', () => {
     test(`TC-026 order with ${invalidCase.name} is rejected with 422 and creates no invoice`, {
       tag: ['@api', '@TC-026', `@bug-${bugId}`],
     }, async ({ api, customer }) => {
-      test.fail(true, invalidCase.bug);
+      knownDefect(invalidCase.bug, /Expected: 422[\s\S]*Received: 201/);
       const [inStockProduct] = await api.pickInStockProducts(1);
       // "Out of stock" means stock <= 0: earlier runs may have pushed stock below zero (BUG-019).
       const outOfStockProduct = (await api.allProducts()).find((product) => !product.is_rental && (product.stock ?? 0) <= 0);

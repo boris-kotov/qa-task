@@ -52,7 +52,7 @@ Full reports with steps and evidence: [BUGS.md](BUGS.md).
 | | Result |
 |---|---|
 | Test cases | 29 designed; **10 Pass, 19 Fail**, 0 not run ([TEST_CASES.md](TEST_CASES.md)) |
-| Autotests | 11 (7 API, 4 UI): 4 pass, 7 expected failures marked `test.fail` with a BUG ID; stable under `--repeat-each` ([report](reports/html/index.html)) |
+| Autotests | 12 (7 API, 5 UI): 4 pass, 8 expected failures (`knownDefect` with a BUG ID, each verified to fail for the expected reason); stable under `--repeat-each` ([report](reports/html/index.html)) |
 | Defects | 29 reproduced (4 Critical, 12 Major, 10 Minor, 3 Trivial) + 6 requirement issues |
 
 Risks from [TEST_PLAN.md](TEST_PLAN.md#4-risks) and how they turned out:
@@ -120,7 +120,7 @@ Owner input is needed before some ACs can be closed (details in [TEST_PLAN.md](T
    - the not-tested items above are at least smoke-checked: e-mail, invoice access in the UI.
 
 ## Limitations of this assessment
-- About 3 h 40 min of the 4 h budget (time log in [README](README.md#time-log)).
+- About 3 h 47 min of the 4 h budget (time log in [README](README.md#time-log)).
 - One browser: Chromium via Playwright; some checks were confirmed by the author in a regular browser.
 - The database was reset between runs, because orders consume stock.
 - Defects found by AI-driven runs were reproduced on the stand; evidence is in `reports/evidence/`.

@@ -2,9 +2,10 @@
   "name": "toolshop-qa-task",
   "private": true,
   "version": "0.1.0",
-  "description": "QA assessment of Practice Software Testing (Toolshop) — local instance only",
+  "description": "QA assessment of Practice Software Testing (Toolshop) \u2014 local instance only",
   "scripts": {
     "test": "playwright test",
+    "posttest": "node scripts/check-expected-failures.mjs",
     "test:api": "playwright test --project=api",
     "test:ui": "playwright test --project=ui-chromium",
     "test:stability": "playwright test --repeat-each=3 --workers=4",
@@ -15,7 +16,8 @@
     "guard": "node scripts/guard-repo.mjs --all",
     "sessions:export": "bash scripts/export-sessions.sh",
     "sessions:redact": "bash scripts/export-sessions.sh --redact-only",
-    "prepare": "git config core.hooksPath .githooks || true"
+    "prepare": "git config core.hooksPath .githooks || true",
+    "test:check-failures": "node scripts/check-expected-failures.mjs"
   },
   "engines": {
     "node": ">=20"
