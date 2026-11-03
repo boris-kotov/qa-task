@@ -1,8 +1,10 @@
 import { test as base, expect } from '@playwright/test';
-import type { Page } from '@playwright/test';
 import { env, isLocalHost } from './config/env';
 import { ToolshopApi } from './api/toolshop.api';
 import { newCustomer } from './data/factories';
+import { CatalogPage } from './pages/catalog.page';
+import { ProductPage } from './pages/product.page';
+import { CheckoutPage } from './pages/checkout.page';
 
 export type Customer = { id: number; email: string; password: string; firstName: string; lastName: string; token: string };
 
@@ -13,8 +15,9 @@ type Fixtures = {
   api: ToolshopApi;
   /** A new customer registered and logged in via API — unique per test, never a demo account. */
   customer: Customer;
-  /** Page where `customer` is already signed in (token put into sessionStorage before the app starts). */
-  signedInPage: Page;
+  catalog: CatalogPage;
+  productPage: ProductPage;
+  checkout: CheckoutPage;
 };
 
 /**
@@ -34,11 +37,9 @@ export const test = base.extend<Fixtures>({
     await use({ id: registered.id, email: data.email, password: data.password, firstName: data.first_name, lastName: data.last_name, token });
   },
 
-  signedInPage: async ({ page, customer }, use) => {
-    // The UI keeps the JWT in sessionStorage['auth-token'] (TokenStorageService).
-    await page.addInitScript((token) => window.sessionStorage.setItem('auth-token', token), customer.token);
-    await use(page);
-  },
+  catalog: async ({ page }, use) => use(new CatalogPage(page)),
+  productPage: async ({ page }, use) => use(new ProductPage(page)),
+  checkout: async ({ page }, use) => use(new CheckoutPage(page)),
 
   localOnlyNetwork: [
     async ({ context }, use, testInfo) => {

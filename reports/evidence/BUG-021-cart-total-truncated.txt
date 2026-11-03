@@ -1,0 +1,6 @@
+# Found by autotest TC-014 (random product pick), 2026-11-03 ~21:45, local stand
+Cart: Cordless Drill 18V ($119.24) quantity changed to 3 + Pliers ($12.01) quantity 1.
+Expected cart total: 3 x 119.24 + 12.01 = 369.73. UI shows: $369.72 (screenshot BUG-021-cart-total-truncated-369.72.png).
+JavaScript: 3*119.24+12.01 = 369.72999999999996 -> the UI truncates instead of rounding to cents.
+Playwright: "cart total (cents) Expected: 36973 Received: 36972".
+Deterministic for this data; the documented TC-014 data (3 x 14.15 + 12.01) sums to exactly 54.46 in JS and is not affected.
