@@ -66,8 +66,28 @@ npm run report                # open the report
 - `src/config/env.ts` accepts `BASE_URL`/`API_URL` only with host `localhost`/`127.0.0.1`; otherwise the run does not start.
 - `src/fixtures.ts` auto fixture aborts every browser request to a non-local host; an outgoing XHR/fetch fails the test.
 
+### Test data and repeated runs
+- **Orders consume stock** and the app accepts orders beyond stock (BUG-019). Tests therefore pick in-stock products
+  via the API at runtime instead of hard-coding them. Before a final or a long repeated run reset the data:
+  `RESET_DB=true npm test` (runs `migrate:fresh --seed` once in `globalSetup`).
+- TC-014 uses the seeded products 1 and 2 (documented test data); adding to the cart does not consume stock.
+
 ### Expected failures (defects)
-_Filled in during the work: test → BUG-ID._
+Tests that reproduce a defect keep strict assertions and are marked `test.fail(true, 'BUG-0XX: …')` + tag `@bug-BUG-0XX`.
+In the report they appear as passed ("expected to fail"); if a defect is fixed, the test turns red and the marker must be removed.
+
+| Test | Defect | Fails on |
+|---|---|---|
+| `tests/api/invoice-access.spec.ts › TC-028` | BUG-001 | other customers' invoices are returned |
+| `tests/api/orders.spec.ts › TC-025` | BUG-017 | invoice stores the client's unit price 0.01 |
+| `tests/api/orders.spec.ts › TC-026 … quantity 0` | BUG-018 | 201 instead of 422 |
+| `tests/api/orders.spec.ts › TC-026 … out of stock` | BUG-019 | 201 instead of 422 |
+| `tests/api/orders.spec.ts › TC-026 … unknown payment method` | BUG-004 | 201 instead of 422 |
+| `tests/ui/cart.spec.ts › TC-013` | BUG-005 | quantity stays 1 after adding the product again |
+| `tests/ui/cart.spec.ts › TC-014` | BUG-022 | no "Product quantity updated." message (totals are asserted before and pass) |
+| `tests/ui/catalog.spec.ts › TC-001` | BUG-020 | "Price (Low - High)" shows prices high → low |
+
+Passing tests: TC-002/TC-005 (API catalog filters), TC-023 (UI end-to-end order), TC-024 (API order → invoice).
 
 ## Borrowed code
 _None so far / to be filled in: source → what was taken → what was changed._
