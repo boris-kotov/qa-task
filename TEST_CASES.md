@@ -211,7 +211,7 @@ REG = User Registration (all in `docs/user-stories/v5.md`).
   2. Delete Pliers.
 - **Expected result:** After step 1: one line (Pliers), total $12.01. After step 2: message "Your shopping cart is empty",
   no Proceed button, header counter gone or 0.
-- **Status:** Fail · **Actual result:** Delete control in a cart row has no effect: after clicking it (twice, two locators) both lines and the total $26.16 stay, sessionStorage unchanged. Note: in the MCP browser the font-awesome icon is blocked (external CDN); the link itself is visible (26×14 px) and clickable — confirmation by hand requested from the author. Evidence: `reports/evidence/TC-015-delete-has-no-effect.png` · **Autotest:** Not automated (moved to the manual run when the autotest set was trimmed) · **Defect:** BUG-023
+- **Status:** Fail · **Actual result:** Delete control in a cart row has no effect: after clicking it (twice, two locators) both lines and the total $26.16 stay, sessionStorage unchanged. Confirmed manually by the author in a regular browser (signed-in customer): items cannot be removed from the cart at all. (In the MCP browser the font-awesome icon is blocked by the local-only network rule, which does not change the result.) Evidence: `reports/evidence/TC-015-delete-has-no-effect.png` · **Autotest:** Not automated (moved to the manual run when the autotest set was trimmed) · **Defect:** BUG-023
 
 ### TC-016 — Combination discount (rental + non-rental)
 - **Priority:** P2 · **Risk:** R12 · **AC:** CART AC7, AC8, CD AC1–AC3
