@@ -112,5 +112,7 @@ _None so far / to be filled in: source → what was taken → what was changed._
 | Block 2b — findings review | 2026-11-03 21:16 | 21:59 | 0:43 | registration findings with the author (duplicate e-mail, future DOB, postcode), requirement questions Q8–Q10, automation selection |
 | Block 3 — autotests | 2026-11-03 21:59 | 22:46 | 0:47 | plan (3 review rounds), TC-027 determinism spike, API + UI tests (11), page objects, expected failures, full run with DB reset |
 | Block 4 — bugs | 2026-11-03 22:46 | 23:36 | 0:50 | BUG-023 manual confirmation and workaround check, session export, BUGS.md (25 defects, requirement issues), re-check of single-seen defects after DB reset |
+| Block 5 — test code review, release | 2026-11-03 23:36 | 23:58 | 0:22 | readable names/comments in tests, flaky TC-023 analysed via traces (BUG-021 raised, BUG-027..029, Q13), fixed data, RELEASE.md (No-Go) |
+| **Total (without deployment)** | | | **3:28** | |
 
 Times after the deployment start are taken from git commit timestamps and the session log (start of block 1 = first command of the Claude Code session) and confirmed by the author.

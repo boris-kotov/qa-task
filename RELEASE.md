@@ -120,7 +120,7 @@ Owner input is needed before some ACs can be closed (details in [TEST_PLAN.md](T
    - the not-tested items above are at least smoke-checked: e-mail, name sort, invoice access in the UI.
 
 ## Limitations of this assessment
-- About 3 h 35 min of the 4 h budget (time log in [README](README.md#time-log)).
+- About 3 h 30 min of the 4 h budget (time log in [README](README.md#time-log)).
 - One browser: Chromium via Playwright; some checks were confirmed by the author in a regular browser.
 - The database was reset between runs, because orders consume stock.
 - Defects found by AI-driven runs were reproduced on the stand; evidence is in `reports/evidence/`.
