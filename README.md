@@ -107,5 +107,6 @@ _None so far / to be filled in: source → what was taken → what was changed._
 | Block 2 — test cases | 2026-11-03 20:43 | 21:16 | 0:33 | TEST_CASES.md (29 cases, AC traceability, 3 review rounds of the plan), manual run of 22 cases with evidence |
 | Block 2b — findings review | 2026-11-03 21:16 | 21:59 | 0:43 | registration findings with the author (duplicate e-mail, future DOB, postcode), requirement questions Q8–Q10, automation selection |
 | Block 3 — autotests | 2026-11-03 21:59 | 22:46 | 0:47 | plan (3 review rounds), TC-027 determinism spike, API + UI tests (11), page objects, expected failures, full run with DB reset |
+| Block 4 — bugs | 2026-11-03 22:46 | 23:36 | 0:50 | BUG-023 manual confirmation and workaround check, session export, BUGS.md (25 defects, requirement issues), re-check of single-seen defects after DB reset |
 
 Times after the deployment start are taken from git commit timestamps and the session log (start of block 1 = first command of the Claude Code session) and confirmed by the author.
