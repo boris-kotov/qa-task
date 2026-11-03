@@ -33,9 +33,9 @@ REG = User Registration (all in `docs/user-stories/v5.md`).
 | TC-006 | Price range slider: defaults and filtering | P2 | R8 | Fail | Not automated | BUG-010 |
 | TC-007 | Pagination shows every product exactly once | P2 | R8 | Pass | Not automated | — |
 | TC-008 | Quantity selector +/− and minimum 1 | P1 | R9 | Fail | Not automated | BUG-008 |
-| TC-009 | Manual quantity entry boundaries | P1 | R9 | Fail | Not automated | BUG-009 |
+| TC-009 | Manual quantity entry boundaries | P1 | R9 | Fail | Not automated | — (requirement issue Q12) |
 | TC-010 | Out-of-stock product cannot be added to cart | P2 | R11 | Pass | Not automated | — |
-| TC-011 | Product card and product detail content | P2 | — | Pass | Not automated | — |
+| TC-011 | Product card and product detail content | P2 | — | Pass | Not automated | — (observations: BUG-025, BUG-026) |
 | TC-012 | Add to cart shows correct line and total | P0 | R3 | Fail | Not automated | BUG-006, BUG-007, BUG-016 |
 | TC-013 | Several products and the same product twice | P0 | R3 | Fail | `tests/ui/cart.spec.ts › Cart › TC-013 adding a product that is already in the cart increases its quantity` | BUG-005 |
 | TC-014 | Update quantity in cart recalculates totals | P0 | R3 | Fail | `tests/ui/cart.spec.ts › Cart › TC-014 changing a quantity in the cart recalculates the cart total` | BUG-022, BUG-021 |
@@ -44,7 +44,7 @@ REG = User Registration (all in `docs/user-stories/v5.md`).
 | TC-017 | Guest signs in at the checkout sign-in step | P1 | R10 | Pass | Not automated | — |
 | TC-018 | Wrong password at checkout sign-in | P1 | R10 | Pass | Not automated | — |
 | TC-019 | Already signed-in user at the sign-in step | P2 | R10 | Pass | Not automated | — |
-| TC-020 | Billing address validation and pre-fill | P1 | R6 | Fail | Not automated | BUG-012, BUG-013 |
+| TC-020 | Billing address validation and pre-fill | P1 | R6 | Fail | Not automated | BUG-012, BUG-013, BUG-024 |
 | TC-021 | Payment methods and per-method fields | P0 | R5 | Fail | Not automated | BUG-003 |
 | TC-022 | Payment step required fields | P1 | R5 | Fail | Not automated | BUG-004 |
 | TC-023 | End-to-end order in the UI | P0 | R1 R2 R10 | Pass | `tests/ui/checkout.spec.ts › TC-023 customer finds a product by search, checks out with Cash on Delivery and the invoice matches the cart` | — |
@@ -151,7 +151,7 @@ REG = User Registration (all in `docs/user-stories/v5.md`).
 - **Steps:** For each value: type it into the quantity field, click Add to cart, read cart quantity (header counter / `sessionStorage['cart']`), clear the cart.
 - **Expected result:** Value is clamped to 1..999,999,999: `0` and `-1` → 1; `1` → 1; `999999999` → 999,999,999;
   `1000000000` → 999,999,999; `abc` is not accepted (quantity stays valid). A cart line never has quantity ≤ 0.
-- **Status:** Fail · **Actual result:** 0, −1, abc → 1 (correct). 999,999,999 and 1,000,000,000 (and 150) are capped at 99 instead of 999,999,999; cart stores total 1400.8500000000001 for 99 × 14.15. Evidence: `reports/evidence/TC-009-quantity-capped-at-99.png` · **Autotest:** Not automated · **Defect:** BUG-009
+- **Status:** Fail · **Actual result:** 0, −1, abc → 1 (correct). 999,999,999 and 1,000,000,000 (and 150) are capped at 99 instead of 999,999,999; cart stores total 1400.8500000000001 for 99 × 14.15. Re-check after the DB reset showed the message "You can order at most 99 of this product." (missed in the first run) — an explicit rule, so the mismatch with AC7 is recorded as requirement issue Q12, not a defect. Evidence: `reports/evidence/TC-009-quantity-capped-at-99.png` · **Autotest:** Not automated · **Defect:** — (requirement issue Q12)
 
 ### TC-010 — Out-of-stock product cannot be added to cart
 - **Priority:** P2 · **Risk:** R11 · **AC:** PO AC13, PD AC9
@@ -171,7 +171,7 @@ REG = User Registration (all in `docs/user-stories/v5.md`).
   3. Check the detail page.
 - **Expected result:** Card shows image, name, price $14.15. Click opens `#/product/1`. Detail shows image, name, description,
   price $14.15, category badge "Pliers", brand badge "Brand name 1", and a related products section.
-- **Status:** Pass · **Actual result:** — · **Autotest:** Not automated · **Defect:** —
+- **Status:** Pass · **Actual result:** Case passes. Observations on the same pages (outside the expected result): main menu "Home" opens the Contact page (BUG-025); UI typos "Sorth", "Serch", "Contakt", "Reltded products" (BUG-026). · **Autotest:** Not automated · **Defect:** — (observations: BUG-025, BUG-026)
 
 ## Cart
 
@@ -261,7 +261,7 @@ REG = User Registration (all in `docs/user-stories/v5.md`).
   3. Enter max and max+1 lengths.
 - **Expected result:** Fields pre-filled from the account. An empty field is highlighted as invalid and Proceed is disabled.
   Max length is accepted; max+1 is not possible to enter or is reported as invalid.
-- **Status:** Fail · **Actual result:** Empty field → invalid + Proceed disabled (correct). But: (1) postcode pre-filled as "missing value" although the account has 1011AA (`/users/me`); (2) no max length: street 71, state 41, country 41, postcode 11 chars accepted; (3) valid short city names are rejected (e.g. "Oslo", 4 chars) — Proceed stays disabled. Evidence: `reports/evidence/TC-020-postcode-prefill-missing-value.png`, `reports/evidence/TC-020-users-me-address.txt`, `reports/evidence/TC-020-city-oslo-rejected.png` · **Autotest:** Not automated · **Defect:** BUG-012, BUG-013
+- **Status:** Fail · **Actual result:** Empty field → invalid + Proceed disabled (correct). But: (1) postcode pre-filled as "missing value" although the account has 1011AA (`/users/me`); (2) no max length: street 71, state 41, country 41, postcode 11 chars accepted; (3) valid short city names are rejected (e.g. "Oslo", 4 chars) — Proceed stays disabled. Evidence: `reports/evidence/TC-020-postcode-prefill-missing-value.png`, `reports/evidence/TC-020-users-me-address.txt`, `reports/evidence/TC-020-city-oslo-rejected.png` · **Autotest:** Not automated · **Defect:** BUG-012, BUG-013, BUG-024
 
 ### TC-021 — Payment methods and per-method fields
 - **Priority:** P0 · **Risk:** R5 · **AC:** PAY AC1–AC8
@@ -403,7 +403,7 @@ Each item is reproduced on the stand; evidence in `reports/evidence/`.
 | F-1 | Duplicate e-mail on registration shows "User already registered - Your password hint is: Name of your cat!" instead of "Email is already in use." (REG AC5). No password hint is ever entered at registration, so the text itself is wrong; it also confirms the account exists | Application defect (AC5 is clear and reasonable) | TC-029, author + AI | `TC-029-duplicate-email-ui-password-hint.png`, `TC-029-duplicate-email-response.txt` |
 | F-2 | Date of birth in the future (2030-01-01) is accepted by the field (no `max`, field valid; the author could pick a future date in the date picker) and is rejected only after Register with "Customer must be 18 years old." The 18+ rule is not in REG AC1 (only ISO format) → question in TEST_PLAN + UX defect (late validation) | Requirement issue (Q9: undocumented 18+ rule) + usability suggestion (late validation) | Found manually by the author, reproduced by AI | `TC-029-future-dob-rejected-on-submit.png` |
 | F-3 | Registration accepts postal code `1011AA` although REG AC1 says "Postal code (numeric)" (API 201, UI registration succeeded) | Requirement issue (Q8: AC "numeric" looks wrong, app behaviour reasonable) | TC-029 | `TC-029-register-response.txt` |
-| F-4 | Defects already listed per case: TC-004, 006, 008, 009, 012, 013, 016, 020, 021, 022, 027, 028 | Application defects (per case) | Manual run | see each case |
+| F-4 | All application defects with full reports | Application defects | Manual run, autotests, author | see [BUGS.md](BUGS.md) |
 | F-5 | Registration rejects real last names with an apostrophe or hyphen (`O'Brien`, `Smith-Jones` → 422 "The last name field format is invalid."); REG AC1 has no name format rule | Requirement issue (Q11: undocumented name format) | Found by the autotest data generator (faker), reproduced via API | `F-5-last-name-format.txt` |
 
 Not a defect (closed): country dropdown — `selectOption` does not update the Angular form, keyboard selection and mouse

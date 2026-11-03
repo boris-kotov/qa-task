@@ -1,0 +1,11 @@
+# BUG-024 evidence — checkout billing address step, signed-in customer (manual run via Playwright MCP, 2026-11-03 ~21:07)
+# Values were set into each field (input + blur events), Proceed button state read from the DOM. No maxlength attribute on any field.
+field     typed length   AC1 max   value length kept   Proceed disabled?
+address   71             70        71                  no   (accepted)
+city      41             40        41                  yes  (rejected — city has min 6 / max 40 validation, see BUG-013)
+state     41             40        41                  no   (accepted)
+country   41             40        41                  no   (accepted)
+postcode  11             10        11                  no   (accepted)
+Raw result: {"over_address":{"len":71,"proceedDisabled":false},"over_city":{"len":41,"proceedDisabled":true},
+"over_state":{"len":41,"proceedDisabled":false},"over_country":{"len":41,"proceedDisabled":false},
+"over_postcode":{"len":11,"proceedDisabled":false}}
