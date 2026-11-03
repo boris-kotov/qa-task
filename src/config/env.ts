@@ -17,7 +17,7 @@ const schema = z.object({
   RESET_DB: z
     .enum(['true', 'false'])
     .default('false')
-    .transform((v) => v === 'true'),
+    .transform((value) => value === 'true'),
   TEST_USER_PASSWORD: z.string().min(8).default('ChangeMe-Str0ng!pass'),
   DEMO_CUSTOMER_EMAIL: z.string().email().optional(),
   DEMO_CUSTOMER_PASSWORD: z.string().optional(),
@@ -25,7 +25,7 @@ const schema = z.object({
 
 const parsed = schema.safeParse(process.env);
 if (!parsed.success) {
-  const details = parsed.error.issues.map((i) => `  - ${i.path.join('.')}: ${i.message}`).join('\n');
+  const details = parsed.error.issues.map((issue) => `  - ${issue.path.join('.')}: ${issue.message}`).join('\n');
   throw new Error(`Invalid test environment configuration:\n${details}`);
 }
 

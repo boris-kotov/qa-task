@@ -4,11 +4,14 @@ import { toCents } from '../../src/data/factories';
 test('TC-001 sorting by price low to high orders the whole catalog across all pages', {
   tag: ['@ui', '@TC-001', '@bug-BUG-020'],
 }, async ({ api, catalog }) => {
+  // Known defect: the assertion stays strict; test.fail turns this test red as soon as the defect is fixed.
   test.fail(true, 'BUG-020: "Price (Low - High)" sorts from high to low (sort option values are swapped)');
 
-  const expected = await test.step('Oracle: full catalog from the API, sorted by price (then name) by the test', async () =>
+  // Independent oracle: the catalog is loaded unsorted and sorted by the test. Comparing with the API's own
+  // `sort=` result would hide a defect that sits in the API.
+  const expectedOrder = await test.step('Oracle: full catalog from the API, sorted by price (then name) by the test', async () =>
     (await api.allProducts())
-      .map((p) => ({ name: p.name, price: p.price }))
+      .map((product) => ({ name: product.name, price: product.price }))
       .sort((a, b) => toCents(a.price) - toCents(b.price) || a.name.localeCompare(b.name)));
 
   await test.step('Open the catalog and select "Price (Low - High)"', async () => {
@@ -16,10 +19,11 @@ test('TC-001 sorting by price low to high orders the whole catalog across all pa
     await catalog.sortBy('Price (Low - High)');
   });
 
-  const shown = await test.step('Collect every card on every page', () => catalog.allCards());
+  const displayedCards = await test.step('Collect every card on every page', () => catalog.allCards());
 
   await test.step('All products are shown once, in ascending price order', () => {
-    expect(shown).toHaveLength(expected.length);
-    expect(shown.map((c) => toCents(c.price)), 'prices in display order').toEqual(expected.map((p) => toCents(p.price)));
+    expect(displayedCards).toHaveLength(expectedOrder.length);
+    // Prices (not names) are compared: products with equal prices may legitimately appear in any order.
+    expect(displayedCards.map((card) => toCents(card.price)), 'prices in display order').toEqual(expectedOrder.map((product) => toCents(product.price)));
   });
 });

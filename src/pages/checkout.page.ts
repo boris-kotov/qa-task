@@ -8,8 +8,13 @@ export type CartLine = z.infer<typeof cartLine>;
 
 /** The cart lives only in the browser: sessionStorage['cart'] (no cart API in this build). */
 export async function storedCart(page: Page): Promise<CartLine[]> {
-  const raw = await page.evaluate(() => window.sessionStorage.getItem('cart'));
-  return raw ? z.array(cartLine).parse(JSON.parse(raw)) : [];
+  const cartJson = await page.evaluate(() => window.sessionStorage.getItem('cart'));
+  return cartJson ? z.array(cartLine).parse(JSON.parse(cartJson)) : [];
+}
+
+/** Product id → quantity of every cart line, sorted by id (stable for comparisons). */
+export async function cartQuantities(page: Page): Promise<{ id: number; quantity: number }[]> {
+  return (await storedCart(page)).map((line) => ({ id: line.id, quantity: line.quantity })).sort((a, b) => a.id - b.id);
 }
 
 /** Money shown in the UI, e.g. "$1,234.56" → 1234.56. */
@@ -24,6 +29,7 @@ export class CheckoutPage {
     await expect(this.page.getByTestId('cart-total')).toBeVisible();
   }
 
+  /** Cart table row of a product, found by its exact title. */
   row(productName: string) {
     return this.page.getByRole('row').filter({ has: this.page.getByTestId('product-title').getByText(productName, { exact: true }) });
   }
@@ -33,9 +39,10 @@ export class CheckoutPage {
   }
 
   async setQuantity(productName: string, quantity: number): Promise<void> {
-    const input = this.row(productName).getByTestId('product-quantity');
-    await input.fill(String(quantity));
-    await input.press('Tab');
+    const quantityInput = this.row(productName).getByTestId('product-quantity');
+    await quantityInput.fill(String(quantity));
+    // The cart recalculates on "change", which fires when the field loses focus.
+    await quantityInput.press('Tab');
   }
 
   async signIn(email: string, password: string): Promise<void> {

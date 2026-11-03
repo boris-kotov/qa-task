@@ -17,16 +17,17 @@ export class CatalogPage {
 
   /** Selects a sort option by its visible label and waits for the sorted listing to load. */
   async sortBy(label: string): Promise<void> {
-    const sorted = this.page.waitForResponse((r) => r.url().includes('/products?') && r.url().includes('sort='));
+    // Start waiting before the action so a fast response is not missed.
+    const sortedListing = this.page.waitForResponse((response) => response.url().includes('/products?') && response.url().includes('sort='));
     await this.page.getByTestId('sort').selectOption({ label });
-    await sorted;
+    await sortedListing;
   }
 
   async search(query: string): Promise<void> {
-    const searched = this.page.waitForResponse((r) => r.url().includes('/products/search'));
+    const searchResults = this.page.waitForResponse((response) => response.url().includes('/products/search'));
     await this.page.getByTestId('search-query').fill(query);
     await this.page.getByTestId('search-submit').click();
-    await searched;
+    await searchResults;
     await expect(this.page.getByTestId('search-caption')).toContainText(query);
   }
 
@@ -38,21 +39,22 @@ export class CatalogPage {
   async visibleCards(): Promise<CatalogCard[]> {
     const names = await this.cards().getByTestId('product-name').allTextContents();
     const prices = await this.cards().getByTestId('product-price').allTextContents();
-    return names.map((name, i) => ({ name: name.trim(), price: Number((prices[i] ?? '').replace(/[^0-9.]/g, '')) }));
+    return names.map((name, index) => ({ name: name.trim(), price: Number((prices[index] ?? '').replace(/[^0-9.]/g, '')) }));
   }
 
   /** Cards of every page in display order, following the pagination control. */
   async allCards(): Promise<CatalogCard[]> {
     const pageNumbers = (await this.pagination().getByText(/^\d+$/).allTextContents()).map(Number);
     const lastPage = Math.max(1, ...pageNumbers);
-    const all = await this.visibleCards();
-    for (let n = 2; n <= lastPage; n++) {
-      const loaded = this.page.waitForResponse((r) => r.url().includes('/products?') && r.url().includes(`page=${n}`));
-      await this.pagination().getByText(String(n), { exact: true }).click();
-      await loaded;
-      await expect(this.pagination()).toContainText(`You're on page ${n}`);
-      all.push(...(await this.visibleCards()));
+    const cards = await this.visibleCards();
+    for (let pageNumber = 2; pageNumber <= lastPage; pageNumber++) {
+      const pageLoaded = this.page.waitForResponse((response) => response.url().includes('/products?') && response.url().includes(`page=${pageNumber}`));
+      await this.pagination().getByText(String(pageNumber), { exact: true }).click();
+      await pageLoaded;
+      // The grid is re-rendered after the response; the pager text confirms the page switch before reading cards.
+      await expect(this.pagination()).toContainText(`You're on page ${pageNumber}`);
+      cards.push(...(await this.visibleCards()));
     }
-    return all;
+    return cards;
   }
 }

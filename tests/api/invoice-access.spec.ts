@@ -4,24 +4,26 @@ import { invoicePayload, newCustomer } from '../../src/data/factories';
 test('TC-028 a customer cannot see invoices of another customer', {
   tag: ['@api', '@critical', '@TC-028', '@bug-BUG-001'],
 }, async ({ api, customer }) => {
+  // Known defect: the assertions stay strict; test.fail turns this test red as soon as the defect is fixed.
   test.fail(true, "BUG-001: GET /invoices and GET /invoices/{id} return other customers' invoices");
 
-  const owner = await test.step('Another customer (owner) places an order', async () => {
-    const data = newCustomer();
-    const registered = await api.register(data);
-    const token = await api.login(data.email, data.password);
-    const [item] = await api.pickInStockProducts(1);
-    const created = await api.createInvoiceOk(token, invoicePayload(registered.id, [{ product: item!, quantity: 1 }]));
-    return { id: registered.id, invoiceId: created.id };
+  const otherCustomerOrder = await test.step('Another customer places an order', async () => {
+    const otherCustomerData = newCustomer();
+    const otherCustomer = await api.register(otherCustomerData);
+    const otherCustomerToken = await api.login(otherCustomerData.email, otherCustomerData.password);
+    const [product] = await api.pickInStockProducts(1);
+    const otherCustomerInvoice = await api.createInvoiceOk(otherCustomerToken, invoicePayload(otherCustomer.id, [{ product: product!, quantity: 1 }]));
+    return { userId: otherCustomer.id, invoiceId: otherCustomerInvoice.id };
   });
 
   await test.step("GET /invoices for the customer contains only the customer's own invoices", async () => {
-    const foreignOwners = [...new Set((await api.invoices(customer.token)).map((i) => i.user_id).filter((id) => id !== customer.id))];
-    expect(foreignOwners, 'user ids of foreign invoices returned to the customer').toEqual([]);
+    const invoicesVisibleToCustomer = await api.invoices(customer.token);
+    const foreignUserIds = [...new Set(invoicesVisibleToCustomer.map((invoice) => invoice.user_id).filter((userId) => userId !== customer.id))];
+    expect(foreignUserIds, 'user ids of foreign invoices returned to the customer').toEqual([]);
   });
 
-  await test.step("GET /invoices/{id} of the owner's invoice is refused (403/404)", async () => {
-    const response = await api.invoiceResponse(customer.token, owner.invoiceId);
+  await test.step("GET /invoices/{id} of the other customer's invoice is refused (403/404)", async () => {
+    const response = await api.invoiceResponse(customer.token, otherCustomerOrder.invoiceId);
     expect([403, 404], `status ${response.status()}: ${(await response.text()).slice(0, 200)}`).toContain(response.status());
   });
 });
