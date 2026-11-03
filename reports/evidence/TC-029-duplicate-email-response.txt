@@ -1,0 +1,2 @@
+{"email":["User already registered - Your password hint is: Name of your cat!"]}
+HTTP 409

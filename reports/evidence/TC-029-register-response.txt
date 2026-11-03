@@ -1,0 +1,10 @@
+HTTP/1.1 201 Created
+Server: nginx
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: keep-alive
+Cache-Control: no-cache, private
+Date: Tue, 03 Nov 2026 20:05:17 GMT
+Access-Control-Allow-Origin: *
+
+{"first_name":"Manual","last_name":"Tester","address":"Main Street 1","city":"Amsterdam","state":"Noord-Holland","country":"Netherlands","postcode":"1011AA","phone":612345678,"dob":"1990-01-01","email":"reg.1793736317@example.test","password":"7e84e8d95ba484b3a6da40f663d50bb92ce26fd5d46ad60d53ef25fc7dc41120","role":"user","id":5}

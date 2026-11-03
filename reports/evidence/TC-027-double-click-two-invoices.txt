@@ -1,0 +1,6 @@
+# TC-027 evidence: double click on Confirm (UI, Cash on Delivery, 1 x Combination Pliers), user id 4, 2026-11-03 21:12
+# UI confirmation: Thanks for your order! Your invoice number is INV-2026000006.
+# GET /invoices filtered to user_id 4:
+{"id": 12, "invoice_number": "INV-2026000006", "invoice_date": "2026-11-03 20:11:54", "total": 14.15, "payment_method": "Cash on Delivery", "status": "AWAITING_FULFILLMENT"} [(1, 1, 14.15)]
+{"id": 13, "invoice_number": "INV-2026000006", "invoice_date": "2026-11-03 20:11:54", "total": 14.15, "payment_method": "Cash on Delivery", "status": "AWAITING_FULFILLMENT"} [(1, 1, 14.15)]
+{"id": 11, "invoice_number": "INV-2026000005", "invoice_date": "2026-11-03 20:08:53", "total": 14.15, "payment_method": "error", "status": "AWAITING_SHIPMENT"} [(1, 1, 14.15)]

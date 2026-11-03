@@ -1,0 +1,9 @@
+# GET /products?between=price,13&page=0
+total: 26 [(1, 14.15), (2, 12.01), (3, 48.41), (4, 14.24), (5, 9.17), (6, 13.41), (7, 12.58), (8, 11.48), (9, 11.14)]
+# GET /products?between=price,13,14&page=1
+total: 2 [(6, 13.41), (18, 13.96)]
+
+# UI (Playwright MCP, 2026-11-03 21:15): slider handles set to min 13 / max 14 (aria-valuenow), then the grid
+# still showed ids 1-9 incl. $48.41 and $9.17. Network log of the UI after the last key press:
+#   [GET] http://localhost:8091/products?between=price,13&page=0 => 200
+# The UI sends only the lower bound; the API needs "between=price,<min>,<max>" (second query above returns ids 6, 18).

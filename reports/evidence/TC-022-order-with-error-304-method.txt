@@ -1,0 +1,1 @@
+{"id": 11, "user_id": 4, "invoice_number": "INV-2026000005", "total": 14.15, "payment_method": "error", "payment_account_name": "Manual Tester", "payment_account_number": 1234567890, "status": "AWAITING_FULFILLMENT", "billing_city": "Amsterdam", "billing_postcode": "1011AA"} [(1, 1, 14.15)]
