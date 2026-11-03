@@ -94,7 +94,7 @@ In the report they appear as passed ("expected to fail"); if a defect is fixed, 
 Passing tests: TC-002/TC-005 (API catalog filters), TC-023 (UI end-to-end order), TC-024 (API order → invoice).
 
 ## Borrowed code
-_None so far / to be filled in: source → what was taken → what was changed._
+None. All test code was written in the Claude Code sessions in `ai_sessions/`; no public Toolshop suites or tests from the app repository were used. The app's user stories, `features.md` and Swagger were used only as requirements.
 
 ## Tooling (submission safety)
 - `npm run guard` — repository check: no `.env`, no application code, no public stand URLs in code, no `.only`, no SSH keys,
@@ -113,6 +113,7 @@ _None so far / to be filled in: source → what was taken → what was changed._
 | Block 3 — autotests | 2026-11-03 21:59 | 22:46 | 0:47 | plan (3 review rounds), TC-027 determinism spike, API + UI tests (11), page objects, expected failures, full run with DB reset |
 | Block 4 — bugs | 2026-11-03 22:46 | 23:36 | 0:50 | BUG-023 manual confirmation and workaround check, session export, BUGS.md (25 defects, requirement issues), re-check of single-seen defects after DB reset |
 | Block 5 — test code review, release | 2026-11-03 23:36 | 23:58 | 0:22 | readable names/comments in tests, flaky TC-023 analysed via traces (BUG-021 raised, BUG-027..029, Q13), fixed data, RELEASE.md (No-Go) |
-| **Total (without deployment)** | | | **3:28** | |
+| Block 6 — final checks, AI notes | 2026-11-03 23:58 | 2026-11-04 00:12 | 0:14 | `user_id` check (BUG-030), name sort (BUG-020 extended), AI_NOTES, final run, export |
+| **Total (without deployment)** | | | **3:42** | |
 
 Times after the deployment start are taken from git commit timestamps and the session log (start of block 1 = first command of the Claude Code session) and confirmed by the author.
