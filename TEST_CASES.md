@@ -27,7 +27,7 @@ REG = User Registration (all in `docs/user-stories/v5.md`).
 |---|---|---|---|---|---|---|
 | TC-001 | Sorting orders the entire result set across pages | P1 | R7 | Fail | `tests/ui/catalog.spec.ts › TC-001 sorting by price low to high orders the whole catalog across all pages` | BUG-020 |
 | TC-002 | Search returns only matching products and resets filters | P1 | R8 | Pass | `tests/api/catalog.spec.ts › TC-002 TC-005 search and combined category + brand filter return exactly the matching products` | — |
-| TC-003 | Search input boundaries and special input | P2 | R8 | Pass | Not automated | — |
+| TC-003 | Search input boundaries and special input | P2 | R8 | Fail | Not automated | BUG-027, BUG-028 |
 | TC-004 | Category filter incl. parent → children selection | P1 | R8 | Fail | Not automated | BUG-014 |
 | TC-005 | Brand filter and combined category + brand | P1 | R8 | Pass | `tests/api/catalog.spec.ts › TC-002 TC-005 search and combined category + brand filter return exactly the matching products` | — |
 | TC-006 | Price range slider: defaults and filtering | P2 | R8 | Fail | Not automated | BUG-010 |
@@ -38,7 +38,7 @@ REG = User Registration (all in `docs/user-stories/v5.md`).
 | TC-011 | Product card and product detail content | P2 | — | Pass | Not automated | — (observations: BUG-025, BUG-026) |
 | TC-012 | Add to cart shows correct line and total | P0 | R3 | Fail | Not automated | BUG-006, BUG-007, BUG-016 |
 | TC-013 | Several products and the same product twice | P0 | R3 | Fail | `tests/ui/cart.spec.ts › Cart › TC-013 adding a product that is already in the cart increases its quantity` | BUG-005 |
-| TC-014 | Update quantity in cart recalculates totals | P0 | R3 | Fail | `tests/ui/cart.spec.ts › Cart › TC-014 changing a quantity in the cart recalculates the cart total` | BUG-022, BUG-021 |
+| TC-014 | Update quantity in cart recalculates totals | P0 | R3 | Fail | `tests/ui/cart.spec.ts › Cart › TC-014 changing a quantity in the cart recalculates the cart total` | BUG-022 (BUG-021 found with random data) |
 | TC-015 | Delete item and empty cart | P0 | R3 | Fail | Not automated (moved to the manual run when the autotest set was trimmed) | BUG-023 |
 | TC-016 | Combination discount (rental + non-rental) | P2 | R12 | Fail | Not automated | BUG-011 |
 | TC-017 | Guest signs in at the checkout sign-in step | P1 | R10 | Pass | Not automated | — |
@@ -47,7 +47,7 @@ REG = User Registration (all in `docs/user-stories/v5.md`).
 | TC-020 | Billing address validation and pre-fill | P1 | R6 | Fail | Not automated | BUG-012, BUG-013, BUG-024 |
 | TC-021 | Payment methods and per-method fields | P0 | R5 | Fail | Not automated | BUG-003 |
 | TC-022 | Payment step required fields | P1 | R5 | Fail | Not automated | BUG-004 |
-| TC-023 | End-to-end order in the UI | P0 | R1 R2 R10 | Pass | `tests/ui/checkout.spec.ts › TC-023 customer finds a product by search, checks out with Cash on Delivery and the invoice matches the cart` | — |
+| TC-023 | End-to-end order in the UI | P0 | R1 R2 R10 | Pass | `tests/ui/checkout.spec.ts › TC-023 customer finds a product by search, checks out with Cash on Delivery and the invoice matches the cart` | — (found BUG-021, BUG-029, BUG-027 while using random data) |
 | TC-024 | API order with each payment method creates a correct invoice | P0 | R1 R2 | Pass | `tests/api/orders.spec.ts › Orders via API › TC-024 order creates an invoice with the ordered lines, catalog prices, total and payment method` | — |
 | TC-025 | API order with tampered price | P0 | R4 | Fail | `tests/api/orders.spec.ts › Orders via API › TC-025 order with a tampered unit price is rejected or stored with the catalog price` | BUG-017 |
 | TC-026 | API rejects invalid orders | P1 | R1 R11 | Fail | `tests/api/orders.spec.ts › Orders via API › TC-026 order with … is rejected with 422 and creates no invoice` (3 rows: quantity 0, out-of-stock product, unknown payment method) | BUG-018, BUG-019, BUG-004 |
@@ -89,7 +89,7 @@ REG = User Registration (all in `docs/user-stories/v5.md`).
 - **Steps:** Enter each value and submit.
 - **Expected result:** 2 and 41 chars are rejected (search not executed or validation message); 3 and 40 chars are executed;
   special characters do not break the page and are treated as text; no-match query shows an empty-result message, not an error.
-- **Status:** Pass · **Actual result:** — · **Autotest:** Not automated · **Defect:** —
+- **Status:** Fail · **Actual result:** Manual run: 2 and 41 chars ignored, 3 and 40 executed, `'%_`, Unicode and `<b>x</b>` shown as text, no-match shows "0 products found" (pass). Found later by autotest TC-023 (random product names): parentheses → HTTP 500 ("Spanners (Set)"), hyphen → wrong results ("Open-end"). Evidence: `reports/evidence/BUG-027-028-search-special-chars.txt` · **Autotest:** Not automated · **Defect:** BUG-027, BUG-028
 
 ### TC-004 — Category filter incl. parent → children selection
 - **Priority:** P1 · **Risk:** R8 · **AC:** PO AC5, AC6
@@ -296,7 +296,7 @@ REG = User Registration (all in `docs/user-stories/v5.md`).
 - **Expected result:** Confirmation shows an invoice number; cart is cleared. `GET /invoices` for the user returns exactly one invoice with
   lines Pliers ×2 @ 12.01 and Slip Joint Pliers ×1 @ 9.17, total 33.19, payment method Cash on Delivery, billing address as entered.
   My invoices list shows the invoice number, street, date, total $33.19; detail shows address, payment method and the two lines.
-- **Status:** Pass · **Actual result:** — · **Autotest:** `tests/ui/checkout.spec.ts › TC-023 customer finds a product by search, checks out with Cash on Delivery and the invoice matches the cart` · **Defect:** —
+- **Status:** Pass · **Actual result:** Passes with the documented data (Pliers × 2 + Slip Joint Pliers × 1). Earlier versions with random products failed intermittently and exposed BUG-021 (invoice total 1 cent low), BUG-029 (rejected order not shown) and BUG-027 (search 500); the test now uses fixed data. · **Autotest:** `tests/ui/checkout.spec.ts › TC-023 customer finds a product by search, checks out with Cash on Delivery and the invoice matches the cart` · **Defect:** —
 
 ### TC-024 — API order with each payment method creates a correct invoice
 - **Priority:** P0 · **Risk:** R1 R2 · **AC:** PAY AC9

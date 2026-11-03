@@ -1,0 +1,16 @@
+# Search with special characters (API, local stand, 2026-11-03 ~23:50; found by autotest TC-023 with a random product)
+# GET /products/search?q=Spanners (Set)
+HTTP 500
+total None {"message":"Something went wrong"}
+# GET /products/search?q=Open-end
+HTTP 200
+total 2 ['Long Nose Pliers', 'Excavator']
+# GET /products/search?q=end
+HTTP 200
+total 1 ['Open-end Spanners (Set)']
+# GET /products/search?q=Open
+HTTP 200
+total 5 ['Open-end Spanners (Set)', 'Long Nose Pliers', 'Slip Joint Pliers', 'Adjustable Wrench', 'Excavator']
+
+# The catalog has a product named exactly 'Open-end Spanners (Set)' (id 16).
+# UI: searching the full name 'Open-end Spanners (Set)' shows no product card (TC-023 timed out waiting for the card): BUG-027-028-ui-search-full-name.png

@@ -4,3 +4,10 @@ Expected cart total: 3 x 119.24 + 12.01 = 369.73. UI shows: $369.72 (screenshot 
 JavaScript: 3*119.24+12.01 = 369.72999999999996 -> the UI truncates instead of rounding to cents.
 Playwright: "cart total (cents) Expected: 36973 Received: 36972".
 Deterministic for this data; the documented TC-014 data (3 x 14.15 + 12.01) sums to exactly 54.46 in JS and is not affected.
+
+# Update: the truncated total is also SENT with the order and stored on the invoice (found by autotest TC-023, random data)
+# 2 x Sledgehammer (17.75) + 1 x Open-end Spanners (Set) (38.51) = 74.01 (sum of lines)
+# UI request POST /invoices:
+{"user_id":45,"billing_address":"Main Street 1","billing_city":"Amsterdam","billing_state":"Noord-Holland","billing_country":"Netherlands","billing_postcode":"1011AA","total":74,"payment_method":"Cash on Delivery","payment_account_name":"Elroy StrackeMann","payment_account_number":"1234567890","invoice_items":[{"product_id":10,"unit_price":17.75,"quantity":2},{"product_id":16,"unit_price":38.51,"quantity":1}]}
+# Response 201: invoice INV-2026000042 stored with "total":74 -> invoice total (74.00) != sum of its lines (74.01).
+# JavaScript: 2*17.75+38.51 = 74.00999999999999 -> truncated to 74.00.

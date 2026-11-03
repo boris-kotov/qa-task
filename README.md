@@ -67,10 +67,14 @@ npm run report                # open the report
 - `src/fixtures.ts` auto fixture aborts every browser request to a non-local host; an outgoing XHR/fetch fails the test.
 
 ### Test data and repeated runs
-- **Orders consume stock** and the app accepts orders beyond stock (BUG-019). Tests therefore pick in-stock products
-  via the API at runtime instead of hard-coding them. Before a final or a long repeated run reset the data:
-  `RESET_DB=true npm test` (runs `migrate:fresh --seed` once in `globalSetup`).
-- TC-014 uses the seeded products 1 and 2 (documented test data); adding to the cart does not consume stock.
+- **Orders consume stock** and the app accepts orders beyond stock (BUG-019). Reset the data before a final or a
+  repeated run: `RESET_DB=true npm test` (runs `migrate:fresh --seed` once in `globalSetup`).
+- **Fixed data** (documented in TEST_CASES.md): TC-014 uses products 1 and 2 (cart only, no stock used); TC-023 orders
+  Pliers × 2 + Slip Joint Pliers × 1 — after a reset there is stock for 5 runs of TC-023.
+- **Random data** (TC-013, TC-024, TC-025, TC-026, TC-028): in-stock products are picked via the API at runtime, skipping
+  the fixed-data products above and Thor Hammer (one per order, TEST_PLAN Q13).
+- Why TC-023 uses fixed data: with random products it failed intermittently on real defects (BUG-021 1-cent total,
+  BUG-027 search 500, BUG-029 silent rejection). They are reported; the end-to-end test stays deterministic.
 
 ### Expected failures (defects)
 Tests that reproduce a defect keep strict assertions and are marked `test.fail(true, 'BUG-0XX: …')` + tag `@bug-BUG-0XX`.

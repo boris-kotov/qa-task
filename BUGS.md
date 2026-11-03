@@ -26,13 +26,16 @@ broken without a reasonable workaround · Minor — wrong behaviour with a worka
 | [BUG-020](#bug-020) | Sort "Price (Low - High)" shows prices from high to low | Major | Medium | no | TC-001 | ui/catalog › TC-001 |
 | [BUG-010](#bug-010) | Price range filter is not applied | Major | Medium | no | TC-006 | — |
 | [BUG-011](#bug-011) | Combination discount (rental + non-rental, 15%) is not applied | Major | Medium | no | TC-016 | — |
+| [BUG-021](#bug-021) | Order total is truncated (−1 cent) in the cart **and on the invoice** | Major | High | yes | TC-014, TC-023 | — (found by TC-014 / TC-023 with random data) |
+| [BUG-029](#bug-029) | A rejected order shows no error — Confirm silently does nothing | Major | Medium | no | TC-023 | — (found by TC-023) |
+| [BUG-027](#bug-027) | Search with parentheses returns HTTP 500 | Major | Medium | no | TC-003 | — |
 | [BUG-018](#bug-018) | Order lines with quantity 0 are accepted (API and UI) | Major | Medium | no | TC-026, TC-015 | api/orders › TC-026 (quantity 0) |
-| [BUG-021](#bug-021) | Cart total is truncated instead of rounded (−1 cent) | Minor | Medium | no | TC-014 | — (found by TC-014 with random data) |
 | [BUG-006](#bug-006) | Cart line total shows $00.00 | Minor | Medium | no | TC-012 | — |
 | [BUG-007](#bug-007) | Add to cart shows "Oeps, something went wrong." although the item is added | Minor | Medium | no | TC-012 | — |
 | [BUG-008](#bug-008) | Quantity +/− buttons on the product page do nothing | Minor | Medium | no | TC-008 | — |
 | [BUG-012](#bug-012) | Billing postcode is pre-filled with "missing value" | Minor | Medium | no | TC-020 | — |
 | [BUG-015](#bug-015) | Duplicate e-mail on registration shows a "password hint" message | Minor | Medium | no | TC-029 | — |
+| [BUG-028](#bug-028) | Search with a hyphen returns wrong products | Minor | Medium | no | TC-003 | — |
 | [BUG-023](#bug-023) | Delete button in the cart does nothing | Minor | Medium | no | TC-015 | — |
 | [BUG-025](#bug-025) | Main menu "Home" opens the Contact page | Minor | Medium | no | TC-011 | — |
 | [BUG-014](#bug-014) | No checkbox for parent categories (Hand Tools, Power Tools) | Minor | Low | no | TC-004 | — |
@@ -183,6 +186,39 @@ requirement issue [Q12](#requirement-issues-not-application-defects).
 - **Evidence:** `TC-016-no-combination-discount.png`.
 - **Related:** TC-016 · not automated.
 
+### BUG-021
+**Order total is truncated instead of rounded — in the cart and on the invoice**
+- **Impact:** for some price combinations the cart shows and the UI **sends** a total 1 cent lower than the sum of the lines; the server stores it (BUG-017), so the invoice total differs from its own lines.
+- **Severity / Priority:** Major / High — wrong money in financial records (small amount, but the invoice is internally inconsistent). **Release blocker** together with BUG-017.
+- **Reproducibility:** deterministic for the data below; found twice by autotests with random products (TC-014 cart total, TC-023 invoice).
+- **Steps (cart):** add Cordless Drill 18V ($119.24) and Pliers ($12.01); in the cart set the drill quantity to 3.
+  **Steps (order):** order 2 × Sledgehammer ($17.75) + 1 × Open-end Spanners (Set) ($38.51) through the UI.
+- **Expected:** cart $369.73; invoice total $74.01 = sum of its lines.
+- **Actual:** cart $369.72; the UI sends `"total": 74` and invoice INV-2026000042 stores 74.00 while its lines sum to 74.01. JavaScript float sums (369.72999…, 74.00999…) are cut instead of rounded.
+- **Evidence:** `BUG-021-cart-total-truncated-369.72.png`, `BUG-021-cart-total-truncated.txt` (incl. the order request/response).
+- **Related:** TC-014, TC-023 (both now use documented data that is not affected) · not automated as a separate test.
+
+### BUG-029
+**A rejected order shows no error — Confirm silently does nothing**
+- **Impact:** when the API rejects an order, the customer sees "Payment was successful" and the Confirm button, but no error and no order; they cannot tell what went wrong.
+- **Severity / Priority:** Major / Medium — silent failure on the last checkout step; triggered by any rejected order (observed with the per-order limit, Q13).
+- **Reproducibility:** UI 1/1 (autotest run); the API rejection is deterministic: `POST /invoices` with 2 × Thor Hammer → 400 "You can only order one Thor Hammer.".
+- **Steps:** add Thor Hammer × 2 to the cart, check out with Cash on Delivery, click Confirm twice.
+- **Expected:** a clear error message (e.g. the API text) and a way to fix the cart.
+- **Actual:** POST /invoices → 400 `{"message":"You can only order one Thor Hammer."}`; the page stays on the payment step without any message.
+- **Evidence:** `BUG-029-order-rejected-no-message.png`, `BUG-029-order-rejected-no-message.txt`.
+- **Related:** TC-023 (found when a random pick chose Thor Hammer) · not automated.
+
+### BUG-027
+**Search with parentheses returns HTTP 500**
+- **Impact:** searching for a product by its full name, e.g. "Open-end Spanners (Set)", fails; the customer gets no results.
+- **Severity / Priority:** Major / Medium — server error on ordinary input in a core catalog function; searching for one word still works.
+- **Reproducibility:** always — API 2/2, UI 1/1.
+- **Steps:** `GET /products/search?q=Spanners (Set)` (or search "Open-end Spanners (Set)" in the UI).
+- **Expected:** 200 with the matching product (PO AC4). **Actual:** HTTP 500 `{"message":"Something went wrong"}`; the UI shows no product.
+- **Evidence:** `BUG-027-028-search-special-chars.txt`, `BUG-027-028-ui-search-full-name.png`.
+- **Related:** TC-003 (parentheses were not in the original test data; found by TC-023 with a random product).
+
 ### BUG-018
 **Order lines with quantity 0 are accepted**
 - **Impact:** invoices contain lines with quantity 0; reachable from the UI by the delete workaround (BUG-023).
@@ -195,16 +231,6 @@ requirement issue [Q12](#requirement-issues-not-application-defects).
 - **Related:** TC-026, TC-015 · `tests/api/orders.spec.ts › … TC-026 order with quantity 0 …`.
 
 ## Minor
-
-### BUG-021
-**Cart total is truncated instead of rounded**
-- **Impact:** for some price combinations the cart shows 1 cent less than the correct total.
-- **Severity / Priority:** Minor / Medium — money shown wrong, 1 cent.
-- **Reproducibility:** deterministic for the data below; found by autotest TC-014 (random products), 1 observed run.
-- **Steps:** add Cordless Drill 18V ($119.24) and Pliers ($12.01); in the cart set the drill quantity to 3.
-- **Expected:** $369.73. **Actual:** $369.72 (JavaScript: 3*119.24+12.01 = 369.72999999999996, cut instead of rounded).
-- **Evidence:** `BUG-021-cart-total-truncated-369.72.png`, `BUG-021-cart-total-truncated.txt`.
-- **Related:** TC-014 (documented data 3 × 14.15 + 12.01 is not affected) · not automated.
 
 ### BUG-006
 **Cart line total shows $00.00**
@@ -255,6 +281,16 @@ requirement issue [Q12](#requirement-issues-not-application-defects).
 - **Expected:** "Email is already in use." (REG AC5). **Actual:** "User already registered - Your password hint is: Name of your cat!" (API 409 with the same text).
 - **Evidence:** `TC-029-duplicate-email-ui-password-hint.png`, `TC-029-duplicate-email-response.txt`.
 - **Related:** TC-029.
+
+### BUG-028
+**Search with a hyphen returns wrong products**
+- **Impact:** "Open-end" finds Long Nose Pliers and Excavator but not "Open-end Spanners (Set)".
+- **Severity / Priority:** Minor / Medium — other words of the name work ("Spanners", "end").
+- **Reproducibility:** always — API 2/2.
+- **Steps:** `GET /products/search?q=Open-end`.
+- **Expected:** products whose name contains "Open-end" (PO AC4). **Actual:** 2 unrelated products; the product itself is missing.
+- **Evidence:** `BUG-027-028-search-special-chars.txt`.
+- **Related:** TC-003.
 
 ### BUG-023
 **Delete button in the cart does nothing**
@@ -320,8 +356,9 @@ requirement owner. Details and the assumptions used for testing are in [TEST_PLA
 | Q9 | REG AC1: only ISO date format | Rejects customers under 18 after submit ("Customer must be 18 years old."); future dates accepted by the field | Is 18+ a rule? If yes — document it and validate inline |
 | Q11 | REG AC1: no name format rule | Rejects `O'Brien`, `Smith-Jones` (422) | Intended? Real customers cannot register |
 | Q12 | PD AC7: quantity clamped 1..999,999,999 | Limits to 99 with "You can order at most 99 of this product." | AC value looks unrealistic; is 99 the real limit? |
+| Q13 | No AC limits quantities per product | `POST /invoices` rejects 2 × Thor Hammer: "You can only order one Thor Hammer." (400) | Is a per-order limit intended? If yes — document it and show it before checkout |
 
-Evidence: `TC-029-register-response.txt` (Q8), `TC-029-future-dob-rejected-on-submit.png` (Q9), `F-5-last-name-format.txt` (Q11), `TC-009-quantity-capped-at-99.png` (Q12).
+Evidence: `TC-029-register-response.txt` (Q8), `TC-029-future-dob-rejected-on-submit.png` (Q9), `F-5-last-name-format.txt` (Q11), `TC-009-quantity-capped-at-99.png` (Q12), `BUG-029-order-rejected-no-message.txt` (Q13).
 
 ## Suggestions and unconfirmed assumptions
 - **Not verified:** `POST /invoices` takes `user_id` from the request body — a customer might create orders on behalf of another user. Not tested (time); recommended as the next security check.
