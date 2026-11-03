@@ -352,7 +352,7 @@ REG = User Registration (all in `docs/user-stories/v5.md`).
   3. Register again with the same e-mail.
 - **Expected result:** Step 1: account created, user redirected to login. Step 2: sign-in succeeds.
   Step 3: registration rejected with a duplicate e-mail message.
-- **Status:** Fail · **Actual result:** Steps 1–2 pass in the UI (register from checkout → login page, cart kept → sign-in OK). Step 3 via API: duplicate e-mail is rejected (409) but the message is "User already registered - Your password hint is: Name of your cat!" instead of "Email is already in use." (reveals a password hint to anyone who knows the e-mail). UI part of step 3 not verified: the country select did not register a value on the second form fill (tooling or app — not concluded). Evidence: `reports/evidence/TC-029-duplicate-email-response.txt` · **Autotest:** Not automated · **Defect:** tbd
+- **Status:** Fail · **Actual result:** Steps 1–2 pass in the UI (register from checkout → login page, cart kept → sign-in OK). Step 3 (UI and API): the duplicate e-mail is rejected (API 409), but the message is "User already registered - Your password hint is: Name of your cat!" instead of "Email is already in use." — anyone who knows a customer's e-mail sees that account's password hint. Note for automation: `selectOption` on the country dropdown sets the DOM value but the Angular form stays invalid; selecting by keyboard (type the country name, Tab) works. Manual selection with the mouse works (checked by the author). Evidence: `reports/evidence/TC-029-duplicate-email-ui-password-hint.png`, `reports/evidence/TC-029-duplicate-email-response.txt` · **Autotest:** Not automated · **Defect:** tbd
 
 ---
 
