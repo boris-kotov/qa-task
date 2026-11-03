@@ -8,6 +8,7 @@ dist/
 !.env.example
 .redact.local
 .ssh
+.claude/settings.local.json
 
 # private assignment materials (not part of the submission)
 task.pdf

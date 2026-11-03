@@ -61,6 +61,9 @@ for (const file of files) {
   if (/-----BEGIN [A-Z ]*PRIVATE KEY-----/.test(content)) fail(file, 'contains a private key.');
 
   const inSessions = file.startsWith('ai_sessions/');
+
+  // Project language is English (CLAUDE.md §0). Original transcripts in ai_sessions/ are exempt.
+  if (!inSessions && /\p{Script=Cyrillic}/u.test(content)) fail(file, 'contains Cyrillic text: project files must be in English (use \\u escapes for test data).');
   const isDoc = /\.md$/i.test(file) || inSessions || file.startsWith('reports/') || file.startsWith('.claude/') || file === 'scripts/guard-repo.mjs';
 
   // Public stand in code/config

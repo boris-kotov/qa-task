@@ -1,67 +1,74 @@
 # AI_NOTES
 
-## Инструменты и модели
-| Инструмент | Версия / модель | Для чего |
+## Tools and models
+| Tool | Version / model | Used for |
 |---|---|---|
-| Claude Code CLI | v2.1.317, Claude Opus 5.5 (`claude-opus-5-5`), auto mode | анализ задания, защитные настройки, каркас, далее — тест-план, кейсы, автотесты |
-| Playwright MCP | `@playwright/mcp@0.0.83`, `--isolated`, только `localhost:4200/8091` | исследование UI и подбор локаторов |
-| Инлайн-автодополнение | _не использовалось / указать_ | |
+| Claude Code CLI | v2.1.317, Claude Opus 5.5 (`claude-opus-5-5`), auto mode | task analysis, guard settings, scaffold; later test plan, test cases, autotests |
+| Playwright MCP | `@playwright/mcp@0.0.83`, `--isolated`, `localhost:4200/8091` only | UI exploration and locator discovery |
+| Inline autocomplete | _not used / specify_ | |
+| Web search (outside Claude Code) | Google AI answer | question which Claude Code files to gitignore (see Corrections) |
 
-Файлы инструкций агента (в репозитории): `CLAUDE.md`, `.claude/settings.json`, `.claude/hooks/guard.mjs`, `.mcp.json`.
-Rulebook, которым поделился знакомый (`LLM-CODEGEN-RULEBOOK.md`, правила другого проекта), агенту не подключался:
-он был прочитан и оценён в сессии `b74ee855`, на его основе написан собственный `CLAUDE.md`. Сам файл в репозиторий не входит.
+Agent instruction files (in the repo): `CLAUDE.md`, `.claude/settings.json`, `.claude/hooks/guard.mjs`, `.mcp.json`.
+`.claude/settings.local.json` is gitignored: it is Claude Code's personal per-machine permission allowlist (can contain local paths),
+not an instruction file. It did not exist at the time of writing; all shared agent rules are committed.
+The rulebook shared by a friend (`LLM-CODEGEN-RULEBOOK.md`, rules from another project) was not given to the agent as instructions:
+it was read and evaluated in session `b74ee855`, and our own `CLAUDE.md` was written instead. The file itself is not in the repo.
 
-## Список сессий
-| Файл | Инструмент | Задача | Что появилось |
+## Session list
+| File | Tool | Task | Output |
 |---|---|---|---|
-| `ai_sessions/claude-code/9c021ebc-….jsonl` (+ `00-export-trial/*.txt` — тот же диалог через `/export`) | Claude Code | пробная сессия проверки экспорта | `export-check.txt` |
-| `ai_sessions/claude-code/b74ee855-….jsonl` | Claude Code | разбор задания и пояснений рекрутера, оценка rulebook, `CLAUDE.md`; защита от дисквалифицирующих ошибок; клон приложения; каркас Playwright; экспорт сессий | коммиты `b9d7478`, `2c25ae9`, `8fa654c` и следующие из этой сессии |
+| `ai_sessions/claude-code/9c021ebc-….jsonl` (+ `00-export-trial/*.txt` — same dialog via `/export`) | Claude Code | trial session to check export | `export-check.txt` |
+| `ai_sessions/claude-code/b74ee855-….jsonl` | Claude Code | task and recruiter notes analysis, rulebook review, `CLAUDE.md`; guards against disqualifying mistakes; app clone; Playwright scaffold; session export; English-only rule | all commits authored with `Co-Authored-By: Claude` |
 
-Без AI (вручную):
-- создан приватный репозиторий на GitHub, настроен SSH-доступ, коммит `62a5908` (команды быстрого старта GitHub);
-- создан `.env`, в `.gitignore` добавлена строка `.ssh`;
-- запуск Docker Desktop.
+Done without AI (manually):
+- private GitHub repository, SSH access, commit `62a5908` (GitHub quickstart commands);
+- `.env` created, `.ssh` added to `.gitignore`;
+- a commit adding `.claude/settings.local.json` to `.gitignore`, then two `git reset --hard HEAD~1` (visible in reflog) that also removed
+  an AI commit; both changes were re-applied by the agent at the user's request;
+- Docker Desktop started.
 
-### Формат экспорта
-`/export` (txt) сворачивает результаты инструментов (`Read 1 file (ctrl+o to expand)`) — это видно в пробной сессии
-(`00-export-trial/`). Поэтому основной формат — исходные JSONL-транскрипты Claude Code
-(`~/.claude/projects/<проект>/*.jsonl`, с вызовами инструментов, их результатами и транскриптами субагентов),
-которые без сокращений копирует `npm run sessions:export`. Экспорт повторяется в конце каждой рабочей сессии,
-файлы перезаписываются полной версией.
+### Export format
+`/export` (txt) collapses tool results (`Read 1 file (ctrl+o to expand)`), as seen in the trial session
+(`00-export-trial/`). The primary format is therefore the raw Claude Code JSONL transcripts
+(`~/.claude/projects/<project>/*.jsonl`, with tool calls, tool results and subagent transcripts),
+copied unabridged by `npm run sessions:export`. The export is repeated at the end of every working session; files are overwritten with the full version.
 
-## Проверка результата
-- Защитный хук агента: самотест `bash scripts/test-guard.sh` — 15 сценариев (10 запрещённых, 5 разрешённых), все ожидаемо.
-  Хук также сработал «вживую»: заблокировал собственную тестовую команду агента с `git push --force`.
-- Git-guard: в индекс намеренно добавлены нарушения (spec с публичным URL и `test.only`, `sprint5/API/x.php`) —
-  все пойманы; заодно найден немаскированный домашний путь в пробном экспорте.
-- Утверждение AI про ловушку с готовыми образами проверено по исходникам приложения:
-  `sprint5-with-bugs/UI/src/environments/environment.prod.ts` → `apiUrl` публичного API; `environment.ts` → `localhost:8091`.
-- Каркас: `tsc --noEmit`, `eslint` без ошибок; `npm run guard` перед каждым коммитом.
-- После маскирования: поиск e-mail, личных имён, путей и токенов по `ai_sessions/` — остались только публичные демо-адреса Toolshop и служебные адреса.
-- _Далее: как проверялись тест-кейсы, автотесты и дефекты (прогоны, ручное воспроизведение, сверка со Swagger/user stories)._
+## Verifying AI output
+- Agent guard hook: self-test `bash scripts/test-guard.sh` — 15 scenarios (10 blocked, 5 allowed), all as expected.
+  The hook also fired for real: it blocked the agent's own test command containing `git push --force`.
+- Git guard: violations were staged on purpose (spec with a public URL and `test.only`, `sprint5/API/x.php`) —
+  all caught; it also found an unredacted home path in the trial export.
+- The AI claim about the prebuilt-image trap was checked against the app sources:
+  `sprint5-with-bugs/UI/src/environments/environment.prod.ts` → public API `apiUrl`; `environment.ts` → `localhost:8091`.
+- Scaffold: `tsc --noEmit`, `eslint` clean; `npm run guard` before every commit.
+- After redaction: search for e-mails, personal names, paths and tokens in `ai_sessions/` — only public Toolshop demo addresses and service addresses remain.
+- _Next: how test cases, autotests and defects were verified (runs, manual reproduction, Swagger/user stories cross-check)._
 
-## Исправления (что AI предложил / сделал неправильно и что изменено)
-| Что | Исправление |
+## Corrections (what AI proposed or did wrong, and what changed)
+| What | Correction |
 |---|---|
-| Задание допускает готовые образы `docker-compose.prod.yml` | Отклонено: UI в них ходит на публичный API → дисквалификация. Только сборка из исходников; команда заблокирована хуком. |
-| Хук считал нарушением демо-e-mail `customer@<домен стенда>` | Регулярное выражение исправлено: e-mail — не сетевой вызов. В `.env.example` сначала был подставлен выдуманный адрес `…@….local`, заменён на реальный из README приложения. |
-| `export-sessions.sh` падал на `set -o pipefail`, когда значение не найдено | Добавлен `|| true` к подсчёту. |
-| Сводка замен дублировала строки; агрегация на `awk` сломалась | Переписано на `perl`, суммирование по меткам. |
-| Тест хука в одной bash-команде был заблокирован самим хуком | Тесты вынесены в `scripts/test-guard.sh`. |
-| `npx @playwright/mcp --help` заблокирован классификатором auto mode | Флаги взяты из README пакета (`npm view … readme`). |
-| Последняя версия `@playwright/mcp@0.0.84` вышла 3 дня назад | Закреплена `0.0.83` (осторожность к свежим релизам). |
-| TypeScript 7 / ESLint 10 — последние мажорные версии | Выбраны TS 5.9.3 и ESLint 9 для совместимости с typescript-eslint и eslint-plugin-playwright (консервативный выбор, несовместимость не проверялась). |
-| Пользователь при создании `.env` удалил `.env.example` | Восстановлен: задание требует `.env.example` в репозитории. |
-| Быстрый старт GitHub дописал `# qa-task` в конец README | Строка удалена. |
-| Маскирование было чувствительно к регистру: в транскрипте остались фрагменты имени в нижнем регистре (из команд проверки) | Замена и подсчёт сделаны регистронезависимыми, в список добавлены отдельные части имени; повторный поиск — чисто. |
-| В листинг `~/Documents` попали имена личных файлов | Добавлены в локальный список маскирования `.redact.local` (не в репозитории). |
+| The task allows prebuilt images `docker-compose.prod.yml` | Rejected: their UI calls the public API → disqualification. Source build only; the command is blocked by the hook. |
+| The hook treated the demo e-mail `customer@<stand domain>` as a violation | Regex fixed: an e-mail is not a network call. `.env.example` first got an invented address `…@….local`; replaced with the real one from the app README. |
+| `export-sessions.sh` failed under `set -o pipefail` when a value was not found | Added `|| true` to the counter. |
+| Redaction summary had duplicate rows; `awk` aggregation broke | Rewritten in `perl`, summed per label. |
+| Redaction was case-sensitive: lowercase name fragments (from check commands) stayed in the transcript | Replacement and counting made case-insensitive, name parts added to the list; rescan clean. |
+| Testing the hook in a single bash command was blocked by the hook itself | Tests moved to `scripts/test-guard.sh`. |
+| `npx @playwright/mcp --help` was denied by the auto mode classifier | Flags taken from the package README (`npm view … readme`). |
+| Latest `@playwright/mcp@0.0.84` was 3 days old | Pinned `0.0.83` (caution with fresh releases). |
+| TypeScript 7 / ESLint 10 are the latest majors | Chose TS 5.9.3 and ESLint 9 for compatibility with typescript-eslint and eslint-plugin-playwright (conservative choice, incompatibility not verified). |
+| The user deleted `.env.example` while creating `.env` | Restored: the task requires `.env.example` in the repo. |
+| GitHub quickstart appended `# qa-task` to the end of README | Line removed (again after the reset). |
+| Web search suggested gitignoring `.claude/settings.local.json`; the user doubted it (everything should be open for review) | Kept ignored: it is a personal permission allowlist, not an instruction file; shared rules are committed. Reasoning recorded here. |
+| Personal file names leaked into the `~/Documents` listing | Added to the local redaction list `.redact.local` (not in the repo). |
+| Project docs were written in Russian | Rewritten in English at the user's request; `CLAUDE.md` now requires English for all project files (enforced by `guard-repo`). |
 
-## Пробелы и маскирование
-- Маскирование — `scripts/export-sessions.sh`, сводка — [`ai_sessions/REDACTIONS.md`](ai_sessions/REDACTIONS.md).
-  Заменены только значения на `<REDACTED: метка>`: домашний путь, имя пользователя ОС, e-mail, имя и фамилия,
-  имена личных и чужих файлов из листинга каталога. Сообщения и вызовы инструментов не удалялись.
-- Учётные данные Toolshop публичны и не маскируются.
-- В транскрипте `b74ee855` встроены материалы задания (`task.pdf`, скриншот сообщения рекрутера со ссылкой на документ задания).
-  Изображения не маскируются: это материалы самой компании.
-- Сессия `b74ee855` началась с `/clear` после пробной сессии; до неё работы по заданию не было.
-- Пробелы записи: нет.
+## Gaps and redaction
+- Redaction: `scripts/export-sessions.sh`, summary in [`ai_sessions/REDACTIONS.md`](ai_sessions/REDACTIONS.md).
+  Only values were replaced with `<REDACTED: label>`: home path, OS username, e-mail, first/last name,
+  personal and third-party file names from a directory listing. No messages or tool calls were removed.
+- Toolshop credentials are public and not redacted.
+- Transcript `b74ee855` embeds task materials (`task.pdf`, a screenshot of the recruiter's message with a link to the task document).
+  Images are not redacted: they are the company's own materials.
+- Session `b74ee855` started with `/clear` after the trial session; no task work happened before it.
+- Conversation with the agent is in Russian; all project files are in English.
+- Recording gaps: none.
