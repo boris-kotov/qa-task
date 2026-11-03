@@ -4,10 +4,10 @@ Values replaced with `<REDACTED: label>` (value itself not listed). Messages and
 
 | Label | Occurrences replaced |
 |---|---|
-| OS username | 299 |
+| OS username | 303 |
 | email | 12 |
-| home path | 6664 |
-| name | 89 |
+| home path | 6730 |
+| name | 95 |
 | personal file name | 48 |
 | third-party file name | 13 |
 | third-party name | 74 |
