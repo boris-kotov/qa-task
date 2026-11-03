@@ -5,9 +5,9 @@
 
 ## Decision: **No-Go**
 
-The purchase flow is **not ready for release**. Nine release-blocking defects were reproduced, and each of them alone
+The purchase flow is **not ready for release**. Ten release-blocking defects were reproduced, and each of them alone
 would stop a web shop release:
-- any customer can read every customer's invoices (addresses, payment account numbers);
+- any customer can read every customer's invoices and can place orders in another customer's account;
 - the server accepts the prices sent by the browser and stores wrong order totals;
 - 4 of 5 payment methods cannot capture payment data, and an invalid payment method is accepted;
 - the order content can silently differ from what the customer wanted (re-adding a product, duplicate orders, overselling);
@@ -15,10 +15,11 @@ would stop a web shop release:
 
 "Go with conditions" is not an option: the conditions would be fixes of the core flow itself.
 
-## Release blockers (9)
+## Release blockers (10)
 | Area | Defect | Severity | What the customer / business gets |
 |---|---|---|---|
 | Data security | [BUG-001](BUGS.md#bug-001) | Critical | Every customer sees all other customers' invoices |
+| Data security | [BUG-030](BUGS.md#bug-030) | Critical | A customer can create orders in another customer's account (`user_id` from the request) |
 | Money | [BUG-017](BUGS.md#bug-017) | Critical | Any price can be sent and is stored (0.01 for a $48.41 item) |
 | Money | [BUG-021](BUGS.md#bug-021) | Major | Order total 1 cent lower than the sum of its lines (cart and invoice) |
 | Payment | [BUG-003](BUGS.md#bug-003) | Critical | No card / bank / BNPL / gift card fields; every method asks for "account name/number" |
@@ -40,7 +41,7 @@ would stop a web shop release:
 
 ## Other defects (not blocking, fix in this or the next release)
 - **Major (6):** BUG-010 price range filter does nothing · BUG-011 combination discount missing · BUG-018 quantity-0 lines
-  accepted · BUG-020 "Price (Low - High)" sorts high → low · BUG-027 search with "(" returns HTTP 500 · BUG-029 a rejected
+  accepted · BUG-020 all four sort options reversed · BUG-027 search with "(" returns HTTP 500 · BUG-029 a rejected
   order shows no error.
 - **Minor (10):** BUG-006, 007, 008, 012, 014, 015, 023, 024, 025, 028.
 - **Trivial (3):** BUG-016, 022, 026.
@@ -52,7 +53,7 @@ Full reports with steps and evidence: [BUGS.md](BUGS.md).
 |---|---|
 | Test cases | 29 designed; **10 Pass, 19 Fail**, 0 not run ([TEST_CASES.md](TEST_CASES.md)) |
 | Autotests | 11 (7 API, 4 UI): 4 pass, 7 expected failures marked `test.fail` with a BUG ID; stable under `--repeat-each` ([report](reports/html/index.html)) |
-| Defects | 28 reproduced (3 Critical, 12 Major, 10 Minor, 3 Trivial) + 6 requirement issues |
+| Defects | 29 reproduced (4 Critical, 12 Major, 10 Minor, 3 Trivial) + 6 requirement issues |
 
 Risks from [TEST_PLAN.md](TEST_PLAN.md#4-risks) and how they turned out:
 
@@ -64,7 +65,7 @@ Risks from [TEST_PLAN.md](TEST_PLAN.md#4-risks) and how they turned out:
 | R4 server trusts client price | ✗ materialised: BUG-017 |
 | R5 payment validation | ✗ materialised: BUG-003, BUG-004 |
 | R6 address validation | ✗ materialised: BUG-013, BUG-024, BUG-012 |
-| R7 sorting | ✗ materialised: BUG-020 |
+| R7 sorting | ✗ materialised: BUG-020 (all four options reversed) |
 | R8 search / filters | ~ partially: category, brand and simple search work; BUG-010, BUG-027, BUG-028, BUG-014 |
 | R9 quantity boundaries | ~ partially: BUG-008; limit 99 vs AC (Q12) |
 | R10 sign-in / cart kept | ✓ mitigated: TC-017–TC-019, TC-023 pass; registration: BUG-015, Q9, Q11 |
@@ -77,11 +78,10 @@ Risks from [TEST_PLAN.md](TEST_PLAN.md#4-risks) and how they turned out:
 - **Not tested for time reasons:**
   - geo-location discount — it needs geolocation spoofing;
   - confirmation e-mail via mailcatcher (Q4);
-  - name sorting (Name A-Z / Z-A);
   - the UI part of invoice access by another user.
 - **Cannot be tested until BUG-003 is fixed:** card number, expiry, CVV and gift card validation — the fields do not exist.
-- **Security beyond observations.** Possible ordering on behalf of another customer: `POST /invoices` takes `user_id`
-  from the request body. This is not verified and is the first item for a follow-up security check.
+- **Security beyond observations.** Only targeted checks were made (BUG-001, BUG-017, BUG-030); no systematic
+  security testing (authentication, injection, rate limits).
 - **Not covered at all:**
   - other browsers (Chromium only) and mobile;
   - performance;
@@ -98,7 +98,7 @@ Owner input is needed before some ACs can be closed (details in [TEST_PLAN.md](T
 
 ## Next steps
 1. **Fix order for development:**
-   1. security and money: BUG-001, BUG-017, BUG-021;
+   1. security and money: BUG-001, BUG-030, BUG-017, BUG-021;
    2. payment: BUG-003, BUG-004;
    3. order integrity: BUG-005, BUG-002 (idempotent submit, unique invoice numbers), BUG-019, BUG-018;
    4. checkout access and feedback: BUG-013, BUG-029.
@@ -111,13 +111,13 @@ Owner input is needed before some ACs can be closed (details in [TEST_PLAN.md](T
    - double submit / idempotency;
    - invoice total = sum of lines for several price combinations;
    - search with special characters;
-   - `user_id` spoofing in `POST /invoices`.
+   - order ownership: `user_id` of another customer in `POST /invoices` (BUG-030).
 4. **Clarify** the requirement questions with the product owner and update the ACs.
 5. **Go criteria:**
-   - all 9 blockers fixed and verified;
+   - all 10 blockers fixed and verified;
    - no new Critical or Major defect in the purchase flow;
    - all autotests pass without `test.fail` markers for blockers;
-   - the not-tested items above are at least smoke-checked: e-mail, name sort, invoice access in the UI.
+   - the not-tested items above are at least smoke-checked: e-mail, invoice access in the UI.
 
 ## Limitations of this assessment
 - About 3 h 30 min of the 4 h budget (time log in [README](README.md#time-log)).

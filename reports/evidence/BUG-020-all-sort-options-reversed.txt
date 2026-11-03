@@ -1,0 +1,9 @@
+# All four sort options (UI, Playwright MCP, local stand, 2026-11-04 00:02). First page (9 cards) after selecting each option.
+Price (Low - High)  -> descending prices $125.23 ... (autotest TC-001, all 26 products across 3 pages)
+Name (A - Z)        -> Wood Saw, Thor Hammer, Slip Joint Pliers, Sledgehammer, Sheet Sander, Random Orbit Sander, Pliers,
+                       Phillips Screwdriver, Open-end Spanners (Set)            (descending)   request: sort=name,desc
+Name (Z - A)        -> Adjustable Wrench, Angled Spanner, Belt Sander, Bolt Cutters, Circular Saw, Claw Hammer, ...  (ascending)
+                                                                                               request: sort=name,asc
+Price (High - Low)  -> $4.92, $9.17, $11.14, $11.48, $12.01, $12.18, $12.58, $13.41, $13.96   (ascending)
+Option values in the DOM: "Name (A - Z)"=name,desc · "Name (Z - A)"=name,asc · "Price (High - Low)"=price,asc · "Price (Low - High)"=price,desc
+Screenshot of Name (A - Z): BUG-020-name-a-z-sorted-descending.png

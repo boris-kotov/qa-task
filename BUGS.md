@@ -16,6 +16,7 @@ broken without a reasonable workaround · Minor — wrong behaviour with a worka
 | ID | Title | Severity | Priority | Blocker | TC | Autotest |
 |---|---|---|---|---|---|---|
 | [BUG-001](#bug-001) | Any customer can read all other customers' invoices | Critical | Highest | yes | TC-028 | api/invoice-access › TC-028 |
+| [BUG-030](#bug-030) | A customer can place orders in another customer's account (`user_id` from the request body) | Critical | Highest | yes | TC-028 (security) | — |
 | [BUG-017](#bug-017) | Server stores the unit price and total sent by the client | Critical | Highest | yes | TC-025 | api/orders › TC-025 |
 | [BUG-003](#bug-003) | Payment step has no method-specific fields (card, BNPL, gift card…) | Critical | Highest | yes | TC-021 | — |
 | [BUG-002](#bug-002) | Double Confirm creates two orders with the same invoice number | Major | High | yes | TC-027 | — |
@@ -23,7 +24,7 @@ broken without a reasonable workaround · Minor — wrong behaviour with a worka
 | [BUG-005](#bug-005) | Adding a product already in the cart replaces its quantity | Major | High | yes | TC-013 | ui/cart › TC-013 |
 | [BUG-019](#bug-019) | Orders are accepted beyond stock; stock becomes negative | Major | High | yes | TC-026 | api/orders › TC-026 (out of stock) |
 | [BUG-013](#bug-013) | Valid short city names are rejected at checkout ("Oslo") | Major | High | yes | TC-020 | — |
-| [BUG-020](#bug-020) | Sort "Price (Low - High)" shows prices from high to low | Major | Medium | no | TC-001 | ui/catalog › TC-001 |
+| [BUG-020](#bug-020) | All four sort options sort in the opposite direction | Major | Medium | no | TC-001 | ui/catalog › TC-001 |
 | [BUG-010](#bug-010) | Price range filter is not applied | Major | Medium | no | TC-006 | — |
 | [BUG-011](#bug-011) | Combination discount (rental + non-rental, 15%) is not applied | Major | Medium | no | TC-016 | — |
 | [BUG-021](#bug-021) | Order total is truncated (−1 cent) in the cart **and on the invoice** | Major | High | yes | TC-014, TC-023 | — (found by TC-014 / TC-023 with random data) |
@@ -65,6 +66,18 @@ requirement issue [Q12](#requirement-issues-not-application-defects).
 - **Actual:** step 2 returns invoices of other users (`user_id` 2, 3, …) with addresses and account numbers; step 3 returns 200 with A's invoice.
 - **Evidence:** `TC-028-invoices-of-other-users.txt`; autotest report.
 - **Related:** TC-028 · `tests/api/invoice-access.spec.ts › TC-028 a customer cannot see invoices of another customer`.
+
+### BUG-030
+**A customer can place orders in another customer's account**
+- **Impact:** any logged-in customer can create orders that appear in someone else's account (fraud, unwanted Cash-on-Delivery orders to an attacker's address billed to the victim).
+- **Severity / Priority:** Critical / Highest — authorization missing on order creation; trivial to exploit. **Release blocker.**
+- **Reproducibility:** always (deterministic API behaviour) — API 1/1.
+- **Preconditions:** two customers A (victim) and B (attacker).
+- **Steps:** with B's token send `POST /invoices` with `user_id` = A's id (billing address "Attacker Street 9"); log in as A and list invoices.
+- **Expected:** 403/422, or the order is created for the token owner B; `user_id` must not come from the client.
+- **Actual:** 201; invoice INV-2026000012 has `user_id` = A and appears in A's invoice list.
+- **Evidence:** `BUG-030-order-on-behalf-of-another-user.txt`.
+- **Related:** TC-028 area (invoice ownership) · not automated (found in the final time slot).
 
 ### BUG-017
 **The server stores the unit price and the total sent by the client**
@@ -154,15 +167,15 @@ requirement issue [Q12](#requirement-issues-not-application-defects).
 - **Related:** TC-020 · not automated.
 
 ### BUG-020
-**Sort "Price (Low - High)" shows prices from high to low**
-- **Impact:** customers looking for the cheapest products get the most expensive first.
+**All four sort options sort in the opposite direction**
+- **Impact:** customers looking for the cheapest products get the most expensive first; "A - Z" lists Z first.
 - **Severity / Priority:** Major / Medium — core catalog function returns the opposite order; customers can still browse.
-- **Reproducibility:** always — autotest TC-001 every run.
-- **Steps:** open the catalog, select "Price (Low - High)", go through pages 1–3.
-- **Expected:** all 26 products in ascending price order (PO AC9).
-- **Actual:** exactly descending ($125.23 … $4.92). The option's value is `price,desc` (label and value are swapped).
-- **Evidence:** autotest report (TC-001 diff of all 26 prices).
-- **Related:** TC-001 · `tests/ui/catalog.spec.ts › TC-001 …`. Name sorting was not verified (see assumptions).
+- **Reproducibility:** always — autotest TC-001 every run (Price Low-High); manual 1/1 for the other three options.
+- **Steps:** open the catalog, select each sort option; for "Price (Low - High)" go through pages 1–3.
+- **Expected:** products ordered as the label says (PO AC9).
+- **Actual:** every option is reversed: Price Low-High → $125.23 … $4.92; Price High-Low → $4.92 first; Name A-Z → Wood Saw first; Name Z-A → Adjustable Wrench first. Option values are swapped (e.g. "Name (A - Z)" = `name,desc`).
+- **Evidence:** autotest report (TC-001 diff of all 26 prices); `BUG-020-all-sort-options-reversed.txt`, `BUG-020-name-a-z-sorted-descending.png`.
+- **Related:** TC-001 · `tests/ui/catalog.spec.ts › TC-001 …` (price low→high).
 
 ### BUG-010
 **The price range filter is not applied**
@@ -361,8 +374,6 @@ requirement owner. Details and the assumptions used for testing are in [TEST_PLA
 Evidence: `TC-029-register-response.txt` (Q8), `TC-029-future-dob-rejected-on-submit.png` (Q9), `F-5-last-name-format.txt` (Q11), `TC-009-quantity-capped-at-99.png` (Q12), `BUG-029-order-rejected-no-message.txt` (Q13).
 
 ## Suggestions and unconfirmed assumptions
-- **Not verified:** `POST /invoices` takes `user_id` from the request body — a customer might create orders on behalf of another user. Not tested (time); recommended as the next security check.
-- **Not verified:** the name sort options look swapped as well (option "Name (A - Z)" has value `name,desc`). Only price sorting was tested.
 - Sign-in step text differs from SI AC5 ("Hello … you are already logged in" vs "You are already signed in as …") — functionally fine; align the text.
 - Search with 2 or 41 characters is ignored silently; a hint about the 3–40 limit would help. Filters with no result show an empty grid without a message.
 - `payment_account_number` is stored as an integer (`"1234567890"` → `1234567890`): leading zeros of real account numbers would be lost. Observed in responses; not tested with a leading zero.

