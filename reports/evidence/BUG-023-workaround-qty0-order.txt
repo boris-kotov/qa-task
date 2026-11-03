@@ -1,0 +1,3 @@
+# BUG-023 workaround check (2026-11-03, UI + API): cart Combination Pliers qty set to 0, Pliers qty 1; cart total shown $12.01; order placed (Cash on Delivery)
+# GET /invoices filtered to the customer (user_id 12):
+INV-2026000010 total 12.01 lines [(1, 0, 14.15), (2, 1, 12.01)]
