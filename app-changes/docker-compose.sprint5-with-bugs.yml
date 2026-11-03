@@ -1,0 +1,14 @@
+# Compose override for SPRINT=sprint5-with-bugs (no application files are modified).
+#
+# Why: upstream docker-compose.yml starts the UI with `node set-version.js`, but that script exists only in
+# sprint5/UI (commit ae7caecb). In sprint5-with-bugs the container fails with
+# "Cannot find module '/app/set-version.js'". The sprint5-with-bugs UI does not use the generated version file,
+# so the step is skipped here; everything else is identical to the upstream command.
+#
+# Usage (from the toolshop-app folder):
+#   docker compose -f docker-compose.yml -f docker-compose.override.yml \
+#     -f ../qa-task/app-changes/docker-compose.sprint5-with-bugs.yml up -d
+services:
+  angular-ui:
+    command: >
+      bash -c "npm install --force && ng serve --host 0.0.0.0 --port 4200"

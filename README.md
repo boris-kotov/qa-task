@@ -27,13 +27,24 @@ git clone https://github.com/testsmith-io/practice-software-testing.git toolshop
 cd toolshop-app
 git checkout ae7caecb811dd8952c09d997e69be7cb946ecd44
 echo "SPRINT=sprint5-with-bugs" > .env
-docker compose up -d
-# wait ~30 s for MariaDB
+# the third file is our override from this repo (see "Application changes")
+docker compose -f docker-compose.yml -f docker-compose.override.yml \
+  -f ../qa-task/app-changes/docker-compose.sprint5-with-bugs.yml up -d
+# wait until the composer container has exited (~3 min on first run) and MariaDB is up
 docker compose exec laravel-api php artisan migrate:fresh --seed
+# UI dev server needs another 1-3 min (npm install + ng serve) before http://localhost:4200 answers
 ```
-UI: http://localhost:4200 · API: http://localhost:8091
+UI: http://localhost:4200 · API: http://localhost:8091 · Swagger: http://localhost:8091/api/documentation
 
-Application changes: none (except `SPRINT` in `.env`, as instructed by the task). If any appear: `app-changes/*.patch` + reason here.
+Seed check (2026-11-03): 26 products, 12 categories, 10 brands; demo customer login returns a token.
+
+### Application changes
+No application files are modified (besides `SPRINT` in `.env`, as instructed by the task).
+One configuration override is required to start the UI:
+
+| File | Reason |
+|---|---|
+| `app-changes/docker-compose.sprint5-with-bugs.yml` | Upstream `docker-compose.yml` starts the UI with `node set-version.js`, which exists only in `sprint5/UI`. For `sprint5-with-bugs` the container exits with `Cannot find module '/app/set-version.js'`. The override runs the same command without that step; the `sprint5-with-bugs` UI does not use the generated version file. |
 
 ## Running the tests
 ```bash
