@@ -7,6 +7,7 @@ dist/
 .env.*
 !.env.example
 .redact.local
+.ssh
 
 # private assignment materials (not part of the submission)
 task.pdf

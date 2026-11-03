@@ -45,6 +45,7 @@ for (const file of files) {
 
   // Private/source materials of the assignment
   if (['task.pdf', 'hr-task.png', 'LLM-CODEGEN-RULEBOOK.md', '.redact.local'].includes(base)) fail(file, 'private material, keep it out of the repo.');
+  if (/(^|\/)\.ssh\//.test(file) || /^id_(rsa|ed25519|ecdsa)(\.pub)?$/.test(base) || /\.(pem|key|p12)$/.test(base)) fail(file, 'SSH key / certificate must not be committed.');
 
   // Application sources (license forbids redistribution)
   if (/^(sprint\d[^/]*|_docker|_user-stories|API|UI)\//.test(file) || /\.php$/.test(file) || ['artisan', 'angular.json', 'composer.json', 'docker-compose.prod.yml'].includes(base)) {
@@ -56,6 +57,8 @@ for (const file of files) {
   const isText = /\.(ts|js|mjs|cjs|json|ya?ml|sh|md|txt|html|jsonl|example)$/i.test(file) || base === '.env.example';
   if (!isText) continue;
   const content = read(file);
+
+  if (/-----BEGIN [A-Z ]*PRIVATE KEY-----/.test(content)) fail(file, 'contains a private key.');
 
   const inSessions = file.startsWith('ai_sessions/');
   const isDoc = /\.md$/i.test(file) || inSessions || file.startsWith('reports/') || file.startsWith('.claude/') || file === 'scripts/guard-repo.mjs';
