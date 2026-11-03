@@ -82,4 +82,7 @@ _None so far / to be filled in: source → what was taken → what was changed._
 ## Time log
 | Block | Start | End | Duration | Done |
 |---|---|---|---|---|
-| Deployment (not part of the 4 h) | 2026-11-03 18:40 | | | repository setup, guard settings, app clone |
+| Deployment (not part of the 4 h) | 2026-11-03 18:40 | 20:25 | 1:45 | repository setup, guard settings, app clone |
+| Block 1 — test plan | 2026-11-03 20:27 | 20:40 | 0:13 | TEST_PLAN.md: sources review, UI recon via Playwright MCP, risks, questions |
+
+Times after the deployment start are taken from git commit timestamps and the session log (start of block 1 = first command of the Claude Code session) and confirmed by the author.
