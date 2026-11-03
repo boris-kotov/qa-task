@@ -1,0 +1,27 @@
+# deps / build
+node_modules/
+dist/
+
+# secrets & local-only
+.env
+.env.*
+!.env.example
+.redact.local
+
+# private assignment materials (not part of the submission)
+task.pdf
+hr-task.png
+LLM-CODEGEN-RULEBOOK.md
+
+# Playwright scratch output (final report goes to reports/)
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+.playwright-mcp/
+.auth/
+
+# OS / IDE
+.DS_Store
+.vscode/
+.idea/

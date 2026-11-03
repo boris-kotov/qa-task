@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "additionalDirectories": ["../toolshop-app"],
+    "deny": [
+      "WebFetch(domain:practicesoftwaretesting.com)",
+      "WebFetch(domain:www.practicesoftwaretesting.com)",
+      "WebFetch(domain:api.practicesoftwaretesting.com)",
+      "WebFetch(domain:api-with-bugs.practicesoftwaretesting.com)",
+      "Read(./.env)",
+      "Edit(./.env)",
+      "mcp__claude-in-chrome",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(docker compose -f docker-compose.prod.yml:*)"
+    ]
+  },
+  "enabledMcpjsonServers": ["playwright"],
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|WebFetch|Write|Edit|MultiEdit|NotebookEdit|mcp__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard.mjs\""
+          }
+        ]
+      }
+    ]
+  }
+}

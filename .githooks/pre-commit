@@ -1,0 +1,3 @@
+#!/bin/sh
+# Enabled via: git config core.hooksPath .githooks
+exec node scripts/guard-repo.mjs --staged
