@@ -26,10 +26,13 @@ export const billingAddress = {
   postcode: '1011AA',
 } as const;
 
+/** Letters only: the API rejects names with an apostrophe or hyphen (O'Brien, Smith-Jones — see finding F-5). */
+const lettersOnly = (name: string): string => name.replace(/[^A-Za-z]/g, '') || 'Tester';
+
 export function newCustomer(): NewCustomer {
   return {
-    first_name: faker.person.firstName(),
-    last_name: faker.person.lastName(),
+    first_name: lettersOnly(faker.person.firstName()),
+    last_name: lettersOnly(faker.person.lastName()),
     ...billingAddress,
     phone: '0612345678',
     dob: '1990-01-01',

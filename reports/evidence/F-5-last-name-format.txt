@@ -1,0 +1,9 @@
+# POST /users/register last_name=O'Brien
+{"last_name":["The last name field format is invalid."]}
+HTTP 422
+# POST /users/register last_name=Smith-Jones
+{"last_name":["The last name field format is invalid."]}
+HTTP 422
+# POST /users/register last_name=Smith
+{"first_name":"Test","last_name":"Smith","address":"Main Street 1","city":"Amsterdam","state":"NH","country":"
+HTTP 201

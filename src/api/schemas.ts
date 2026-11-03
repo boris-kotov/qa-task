@@ -53,7 +53,8 @@ export const invoice = createdInvoice.extend({
   billing_city: z.string(),
   billing_state: z.string(),
   billing_country: z.string(),
-  billing_postcode: z.string(),
+  // Seeded invoices return numeric postcodes (e.g. 72764), new ones return strings.
+  billing_postcode: z.union([z.string(), z.number()]).transform(String),
   invoicelines: z.array(invoiceLine),
 });
 

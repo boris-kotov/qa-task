@@ -404,6 +404,7 @@ Each item is reproduced on the stand; evidence in `reports/evidence/`.
 | F-2 | Date of birth in the future (2030-01-01) is accepted by the field (no `max`, field valid; the author could pick a future date in the date picker) and is rejected only after Register with "Customer must be 18 years old." The 18+ rule is not in REG AC1 (only ISO format) → question in TEST_PLAN + UX defect (late validation) | Requirement issue (Q9: undocumented 18+ rule) + usability suggestion (late validation) | Found manually by the author, reproduced by AI | `TC-029-future-dob-rejected-on-submit.png` |
 | F-3 | Registration accepts postal code `1011AA` although REG AC1 says "Postal code (numeric)" (API 201, UI registration succeeded) | Requirement issue (Q8: AC "numeric" looks wrong, app behaviour reasonable) | TC-029 | `TC-029-register-response.txt` |
 | F-4 | Defects already listed per case: TC-004, 006, 008, 009, 012, 013, 016, 020, 021, 022, 027, 028 | Application defects (per case) | Manual run | see each case |
+| F-5 | Registration rejects real last names with an apostrophe or hyphen (`O'Brien`, `Smith-Jones` → 422 "The last name field format is invalid."); REG AC1 has no name format rule | Requirement issue (Q11: undocumented name format) | Found by the autotest data generator (faker), reproduced via API | `F-5-last-name-format.txt` |
 
 Not a defect (closed): country dropdown — `selectOption` does not update the Angular form, keyboard selection and mouse
 selection work; automation note only.
