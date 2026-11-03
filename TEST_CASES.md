@@ -5,8 +5,7 @@ Scope, risks (R1–R12) and priorities: [TEST_PLAN.md](TEST_PLAN.md). Defects: [
 **Manual run:** 2026-11-03, Playwright MCP against the local stand, fresh users registered via API/UI. Defect IDs (`tbd`) are assigned in BUGS.md.
 
 **Status values:** `Pass` · `Fail` · `Blocked (reason)` · `Not run (reason)`.
-**Autotest:** `tests/<file> › <title>` or `Not automated`. Cases marked *(proposed)* are candidates for automation,
-pending confirmation. **Defect:** `BUG-00X` or `—`.
+**Autotest:** `tests/<file> › <title>` or `Not automated`. Cases marked *(selected)* were selected for automation by the author (2026-11-03). **Defect:** `BUG-00X` or `—`.
 
 **AC references:** PO = Product Overview, PD = Product Detail, CART = Checkout – Cart Review, SI = Checkout – Sign In,
 BA = Checkout – Billing Address, PAY = Checkout – Payment (Advanced), INV = Invoices, CD = Combination Discount,
@@ -26,7 +25,7 @@ REG = User Registration (all in `docs/user-stories/v5.md`).
 ## Summary
 | ID | Title | P | Risk | Status | Autotest | Defect |
 |---|---|---|---|---|---|---|
-| TC-001 | Sorting orders the entire result set across pages | P1 | R7 | Not run (proposed for automation) | Not automated *(proposed)* | — |
+| TC-001 | Sorting orders the entire result set across pages | P1 | R7 | Not run (selected for automation) | Not automated *(selected)* | — |
 | TC-002 | Search returns only matching products and resets filters | P1 | R8 | Pass | Not automated | — |
 | TC-003 | Search input boundaries and special input | P2 | R8 | Pass | Not automated | — |
 | TC-004 | Category filter incl. parent → children selection | P1 | R8 | Fail | Not automated | tbd |
@@ -39,8 +38,8 @@ REG = User Registration (all in `docs/user-stories/v5.md`).
 | TC-011 | Product card and product detail content | P2 | — | Pass | Not automated | — |
 | TC-012 | Add to cart shows correct line and total | P0 | R3 | Fail | Not automated | tbd |
 | TC-013 | Several products and the same product twice | P0 | R3 | Fail | Not automated | tbd |
-| TC-014 | Update quantity in cart recalculates totals | P0 | R3 | Not run (proposed for automation) | Not automated *(proposed)* | — |
-| TC-015 | Delete item and empty cart | P0 | R3 | Not run (proposed for automation) | Not automated *(proposed)* | — |
+| TC-014 | Update quantity in cart recalculates totals | P0 | R3 | Not run (selected for automation) | Not automated *(selected)* | — |
+| TC-015 | Delete item and empty cart | P0 | R3 | Not run (selected for automation) | Not automated *(selected)* | — |
 | TC-016 | Combination discount (rental + non-rental) | P2 | R12 | Fail | Not automated | tbd |
 | TC-017 | Guest signs in at the checkout sign-in step | P1 | R10 | Pass | Not automated | — |
 | TC-018 | Wrong password at checkout sign-in | P1 | R10 | Pass | Not automated | — |
@@ -48,12 +47,12 @@ REG = User Registration (all in `docs/user-stories/v5.md`).
 | TC-020 | Billing address validation and pre-fill | P1 | R6 | Fail | Not automated | tbd |
 | TC-021 | Payment methods and per-method fields | P0 | R5 | Fail | Not automated | tbd |
 | TC-022 | Payment step required fields | P1 | R5 | Fail | Not automated | tbd |
-| TC-023 | End-to-end order in the UI | P0 | R1 R2 R10 | Not run (proposed for automation) | Not automated *(proposed)* | — |
-| TC-024 | API order with each payment method creates a correct invoice | P0 | R1 R2 | Not run (proposed for automation) | Not automated *(proposed)* | — |
-| TC-025 | API order with tampered price | P0 | R4 | Not run (proposed for automation) | Not automated *(proposed)* | — |
-| TC-026 | API rejects invalid orders | P1 | R1 R11 | Not run (proposed for automation) | Not automated *(proposed)* | — |
-| TC-027 | Double click on Confirm creates one invoice | P1 | R1 | Fail | Not automated | tbd |
-| TC-028 | Another user's invoice is not accessible | P2 | R1 | Fail | Not automated | tbd |
+| TC-023 | End-to-end order in the UI | P0 | R1 R2 R10 | Not run (selected for automation) | Not automated *(selected)* | — |
+| TC-024 | API order with each payment method creates a correct invoice | P0 | R1 R2 | Not run (selected for automation) | Not automated *(selected)* | — |
+| TC-025 | API order with tampered price | P0 | R4 | Not run (selected for automation) | Not automated *(selected)* | — |
+| TC-026 | API rejects invalid orders | P1 | R1 R11 | Not run (selected for automation) | Not automated *(selected)* | — |
+| TC-027 | Double click on Confirm creates one invoice | P1 | R1 | Fail | Not automated *(selected)* | tbd |
+| TC-028 | Another user's invoice is not accessible | P2 | R1 | Fail | Not automated *(selected)* | tbd |
 | TC-029 | Customer registration from checkout | P1 | R10 | Fail | Not automated | tbd |
 
 ---
@@ -70,7 +69,7 @@ REG = User Registration (all in `docs/user-stories/v5.md`).
   3. Repeat for each option.
 - **Expected result:** The concatenated list of all 26 products (3 pages) is ordered by the selected key and direction
   (names case-insensitive; prices numeric). No product is missing or duplicated.
-- **Status:** Not run (proposed for automation) · **Actual result:** — · **Autotest:** Not automated *(proposed)* · **Defect:** —
+- **Status:** Not run (selected for automation) · **Actual result:** — · **Autotest:** Not automated *(selected)* · **Defect:** —
 
 ### TC-002 — Search returns only matching products and resets filters
 - **Priority:** P1 · **Risk:** R8 · **AC:** PO AC4
@@ -202,7 +201,7 @@ REG = User Registration (all in `docs/user-stories/v5.md`).
 - **Steps:** In the cart, set the quantity of Combination Pliers to 3 and leave the field.
 - **Expected result:** Message "Product quantity updated."; line total $42.45 (exactly, two decimals); Pliers line unchanged $12.01;
   cart total $54.46.
-- **Status:** Not run (proposed for automation) · **Actual result:** — · **Autotest:** Not automated *(proposed)* · **Defect:** —
+- **Status:** Not run (selected for automation) · **Actual result:** — · **Autotest:** Not automated *(selected)* · **Defect:** —
 
 ### TC-015 — Delete item and empty cart
 - **Priority:** P0 · **Risk:** R3 · **AC:** CART AC3, AC4, AC5
@@ -212,7 +211,7 @@ REG = User Registration (all in `docs/user-stories/v5.md`).
   2. Delete Pliers.
 - **Expected result:** After step 1: one line (Pliers), total $12.01. After step 2: message "Your shopping cart is empty",
   no Proceed button, header counter gone or 0.
-- **Status:** Not run (proposed for automation) · **Actual result:** — · **Autotest:** Not automated *(proposed)* · **Defect:** —
+- **Status:** Not run (selected for automation) · **Actual result:** — · **Autotest:** Not automated *(selected)* · **Defect:** —
 
 ### TC-016 — Combination discount (rental + non-rental)
 - **Priority:** P2 · **Risk:** R12 · **AC:** CART AC7, AC8, CD AC1–AC3
@@ -297,7 +296,7 @@ REG = User Registration (all in `docs/user-stories/v5.md`).
 - **Expected result:** Confirmation shows an invoice number; cart is cleared. `GET /invoices` for the user returns exactly one invoice with
   lines Pliers ×2 @ 12.01 and Slip Joint Pliers ×1 @ 9.17, total 33.19, payment method Cash on Delivery, billing address as entered.
   My invoices list shows the invoice number, street, date, total $33.19; detail shows address, payment method and the two lines.
-- **Status:** Not run (proposed for automation) · **Actual result:** — · **Autotest:** Not automated *(proposed)* · **Defect:** —
+- **Status:** Not run (selected for automation) · **Actual result:** — · **Autotest:** Not automated *(selected)* · **Defect:** —
 
 ### TC-024 — API order with each payment method creates a correct invoice
 - **Priority:** P0 · **Risk:** R1 R2 · **AC:** PAY AC9
@@ -307,7 +306,7 @@ REG = User Registration (all in `docs/user-stories/v5.md`).
 - **Steps:** For each method `POST /invoices`, then `GET /invoices/{id}`.
 - **Expected result:** 2xx with invoice id and number; the stored invoice has payment method = sent method, two lines with
   the quantities and catalog unit prices, total 40.88, billing address as sent.
-- **Status:** Not run (proposed for automation) · **Actual result:** — · **Autotest:** Not automated *(proposed)* · **Defect:** —
+- **Status:** Not run (selected for automation) · **Actual result:** — · **Autotest:** Not automated *(selected)* · **Defect:** —
 
 ### TC-025 — API order with tampered price
 - **Priority:** P0 · **Risk:** R4 · **AC:** — (Q6)
@@ -316,7 +315,7 @@ REG = User Registration (all in `docs/user-stories/v5.md`).
 - **Steps:** `POST /invoices`; if created, `GET /invoices/{id}`.
 - **Expected result:** Either rejected (4xx) or the stored invoice uses the catalog price: line unit price 48.41, total 48.41.
   An invoice with 0.01 is a defect.
-- **Status:** Not run (proposed for automation) · **Actual result:** — · **Autotest:** Not automated *(proposed)* · **Defect:** —
+- **Status:** Not run (selected for automation) · **Actual result:** — · **Autotest:** Not automated *(selected)* · **Defect:** —
 
 ### TC-026 — API rejects invalid orders
 - **Priority:** P1 · **Risk:** R1 R11 · **AC:** —
@@ -325,14 +324,14 @@ REG = User Registration (all in `docs/user-stories/v5.md`).
   missing `billing_city`; no `Authorization` header.
 - **Steps:** Send each request; then `GET /invoices` for the user.
 - **Expected result:** 422 for invalid payloads (401 without auth); the user's invoice count is unchanged after each request.
-- **Status:** Not run (proposed for automation) · **Actual result:** — · **Autotest:** Not automated *(proposed)* · **Defect:** —
+- **Status:** Not run (selected for automation) · **Actual result:** — · **Autotest:** Not automated *(selected)* · **Defect:** —
 
 ### TC-027 — Double click on Confirm creates one invoice
 - **Priority:** P1 · **Risk:** R1 · **AC:** —
 - **Preconditions:** Signed-in fresh user at the payment step with product 1, Cash on Delivery selected.
 - **Steps:** Double-click Confirm; then `GET /invoices` for the user.
 - **Expected result:** Exactly one invoice is created.
-- **Status:** Fail · **Actual result:** Double click on Confirm created two invoices (ids 12 and 13) with the same invoice number INV-2026000006, same lines and total. Evidence: `reports/evidence/TC-027-double-click-two-invoices.txt` · **Autotest:** Not automated · **Defect:** tbd
+- **Status:** Fail · **Actual result:** Double click on Confirm created two invoices (ids 12 and 13) with the same invoice number INV-2026000006, same lines and total. Evidence: `reports/evidence/TC-027-double-click-two-invoices.txt` · **Autotest:** Not automated *(selected)* · **Defect:** tbd
 
 ### TC-028 — Another user's invoice is not accessible
 - **Priority:** P2 · **Risk:** R1 · **AC:** INV AC3
@@ -341,7 +340,7 @@ REG = User Registration (all in `docs/user-stories/v5.md`).
   1. As B, `GET /invoices/X`.
   2. As B in the UI open `#/account/invoices/X`.
 - **Expected result:** API 403/404 without A's data; UI shows a "not found" message.
-- **Status:** Fail · **Actual result:** API: a freshly registered user (id 4) gets all invoices of users 2 and 3 from `GET /invoices` (billing address, payment method, account number) and `GET /invoices/1` returns 200 with user 2's invoice. UI part not run. Evidence: `reports/evidence/TC-028-invoices-of-other-users.txt` · **Autotest:** Not automated · **Defect:** tbd
+- **Status:** Fail · **Actual result:** API: a freshly registered user (id 4) gets all invoices of users 2 and 3 from `GET /invoices` (billing address, payment method, account number) and `GET /invoices/1` returns 200 with user 2's invoice. UI part not run. Evidence: `reports/evidence/TC-028-invoices-of-other-users.txt` · **Autotest:** Not automated *(selected)* · **Defect:** tbd
 
 ### TC-029 — Customer registration from checkout
 - **Priority:** P1 · **Risk:** R10 · **AC:** REG AC1, AC5, AC6
