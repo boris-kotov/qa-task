@@ -1,0 +1,21 @@
+# TC-027 spike (2026-11-03 21:34, local API) — one-off script, not part of the test suite
+# Fresh user (id 10) registered + logged in via API. 20 times: two concurrent POST /invoices with the same body
+# (user_id, billing address, Cash on Delivery, 1 x product 19 "Sheet Sander" @ 58.48, total 58.48).
+
+Result: all 40 requests -> 201. Same invoice number in both responses in 18 of 20 pairs:
+201/201 INV-2026000007 INV-2026000007 DUP
+201/201 INV-2026000008 INV-2026000008 DUP
+...                                        (pairs 3-9 DUP)
+201/201 INV-2026000017 INV-2026000016
+201/201 INV-2026000019 INV-2026000018
+201/201 INV-2026000020 INV-2026000020 DUP
+...                                        (pairs 13-20 DUP)
+duplicates: 18/20
+
+Conclusions:
+1. Invoice numbers are not unique under concurrent orders (BUG-002 root cause, confirmed at API level).
+   Not deterministic (2/20 pairs got distinct numbers) -> not automated (a flickering test.fail would be worse than none).
+2. Product 19 had stock 11 before the spike; 41 orders of quantity 1 were accepted; GET /products/19 afterwards:
+   {"id":19,"name":"Sheet Sander","stock":-30}  -> orders are accepted beyond stock, stock goes negative.
+Note: the very first spike attempt sent no user_id and got 422 for all requests; the script also counted
+undefined === undefined as a duplicate. Both were fixed before the run above (spike mistake, not an app result).

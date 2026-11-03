@@ -1,16 +1,45 @@
 import { test as base, expect } from '@playwright/test';
-import { isLocalHost } from './config/env';
+import type { Page } from '@playwright/test';
+import { env, isLocalHost } from './config/env';
+import { ToolshopApi } from './api/toolshop.api';
+import { newCustomer } from './data/factories';
 
-type GuardFixtures = {
+export type Customer = { id: number; email: string; password: string; firstName: string; lastName: string; token: string };
+
+type Fixtures = {
   /** Auto fixture: aborts every browser request that leaves the local machine. */
   localOnlyNetwork: void;
+  /** Toolshop REST API bound to API_URL (localhost only). */
+  api: ToolshopApi;
+  /** A new customer registered and logged in via API — unique per test, never a demo account. */
+  customer: Customer;
+  /** Page where `customer` is already signed in (token put into sessionStorage before the app starts). */
+  signedInPage: Page;
 };
 
 /**
  * Entry point for all specs: import { test, expect } from '../../src/fixtures'.
- * Further fixtures (api client, fresh user, page objects) are added here as the suite grows.
  */
-export const test = base.extend<GuardFixtures>({
+export const test = base.extend<Fixtures>({
+  api: async ({ playwright }, use) => {
+    const context = await playwright.request.newContext({ baseURL: env.API_URL, extraHTTPHeaders: { Accept: 'application/json' } });
+    await use(new ToolshopApi(context));
+    await context.dispose();
+  },
+
+  customer: async ({ api }, use) => {
+    const data = newCustomer();
+    const registered = await api.register(data);
+    const token = await api.login(data.email, data.password);
+    await use({ id: registered.id, email: data.email, password: data.password, firstName: data.first_name, lastName: data.last_name, token });
+  },
+
+  signedInPage: async ({ page, customer }, use) => {
+    // The UI keeps the JWT in sessionStorage['auth-token'] (TokenStorageService).
+    await page.addInitScript((token) => window.sessionStorage.setItem('auth-token', token), customer.token);
+    await use(page);
+  },
+
   localOnlyNetwork: [
     async ({ context }, use, testInfo) => {
       const blockedApiCalls: string[] = [];
