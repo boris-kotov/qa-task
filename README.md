@@ -54,6 +54,7 @@ npx playwright install chromium
 cp .env.example .env          # defaults point to localhost
 npm test                      # all tests, HTML report: reports/html; then checks expected failures (posttest)
 npm run test:api | npm run test:ui
+npm run test:report           # final report run: DB reset + trace and screenshot for every test (incl. expected failures)
 npm run report                # open the report
 ```
 
@@ -84,7 +85,9 @@ if a defect is fixed, the test turns red and the marker must be removed.
 `test.fail` alone accepts **any** failure as expected — a setup error or a new regression would be hidden. Therefore
 `npm test` runs `scripts/check-expected-failures.mjs` afterwards (`posttest`, also `npm run test:check-failures`): it reads
 `reports/results.json` and fails if an expected failure failed with a different error or has no expected-error annotation.
-(`npx playwright test` skips this step — use `npm test`.) The script was self-tested with a tampered report: both cases are caught.
+(`npx playwright test` skips this step — use `npm test`.)
+The committed report in `reports/html` was produced by `npm run test:report`: with plain `retain-on-failure` Playwright drops the
+traces of expected failures, but the task asks for traces/screenshots of failing autotests. The script was self-tested with a tampered report: both cases are caught.
 
 | Test | Defect | Fails on |
 |---|---|---|
@@ -122,6 +125,7 @@ None. All test code was written in the Claude Code sessions in `ai_sessions/`; n
 | Block 5 — test code review, release | 2026-11-03 23:36 | 23:58 | 0:22 | readable names/comments in tests, flaky TC-023 analysed via traces (BUG-021 raised, BUG-027..029, Q13), fixed data, RELEASE.md (No-Go) |
 | Block 6 — final checks, AI notes | 2026-11-03 23:58 | 2026-11-04 00:12 | 0:14 | `user_id` check (BUG-030), name sort (BUG-020 extended), AI_NOTES, final run, export |
 | Block 7 — false positives | 2026-11-04 00:12 | 00:17 | 0:05 | TC-014 split, `knownDefect` + expected-failure check script (self-tested), count fix in RELEASE, final run |
-| **Total (without deployment)** | | | **3:47** | |
+| Block 8 — submission check | 2026-11-04 00:20 | 00:26 | 0:06 | requirement check against task.pdf: traces/screenshots of failing tests added to the report (`npm run test:report`) |
+| **Total (without deployment)** | | | **3:53** | |
 
 Times after the deployment start are taken from git commit timestamps and the session log (start of block 1 = first command of the Claude Code session) and confirmed by the author.

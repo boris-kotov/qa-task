@@ -73,8 +73,8 @@
         "use": {
           "baseURL": "http://localhost:4200",
           "testIdAttribute": "data-test",
-          "trace": "retain-on-failure",
-          "screenshot": "only-on-failure",
+          "trace": "on",
+          "screenshot": "on",
           "video": "retain-on-failure"
         },
         "dependencies": [],
@@ -99,8 +99,8 @@
         "use": {
           "baseURL": "http://localhost:4200",
           "testIdAttribute": "data-test",
-          "trace": "retain-on-failure",
-          "screenshot": "only-on-failure",
+          "trace": "on",
+          "screenshot": "on",
           "video": "retain-on-failure",
           "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
           "viewport": {
@@ -180,7 +180,7 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 228,
+                  "duration": 203,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
@@ -188,20 +188,26 @@
                   "steps": [
                     {
                       "title": "Load the full catalog (oracle)",
-                      "duration": 122
+                      "duration": 86
                     },
                     {
                       "title": "Search \"pliers\" returns every product whose name contains \"pliers\" and nothing else",
-                      "duration": 21
+                      "duration": 14
                     },
                     {
                       "title": "Category Pliers AND Brand name 2 returns exactly the products matching both",
-                      "duration": 17
+                      "duration": 16
                     }
                   ],
-                  "startTime": "2026-11-03T23:14:57.198Z",
+                  "startTime": "2026-11-03T23:20:33.925Z",
                   "annotations": [],
-                  "attachments": []
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/mrkamposter/Documents/qa-task/reports/test-results/catalog-TC-002-TC-005-sear-a54dd-actly-the-matching-products-api/trace.zip"
+                    }
+                  ]
                 }
               ],
               "status": "expected"
@@ -255,10 +261,10 @@
                   "workerIndex": 1,
                   "parallelIndex": 1,
                   "status": "failed",
-                  "duration": 329,
+                  "duration": 401,
                   "error": {
-                    "message": "Error: user ids of foreign invoices returned to the customer\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 7\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   4,\u001b[39m\n\u001b[31m+   5,\u001b[39m\n\u001b[31m+   7,\u001b[39m\n\u001b[31m+   2,\u001b[39m\n\u001b[31m+   3,\u001b[39m\n\u001b[31m+ ]\u001b[39m",
-                    "stack": "Error: user ids of foreign invoices returned to the customer\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 7\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   4,\u001b[39m\n\u001b[31m+   5,\u001b[39m\n\u001b[31m+   7,\u001b[39m\n\u001b[31m+   2,\u001b[39m\n\u001b[31m+   3,\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at /Users/mrkamposter/Documents/qa-task/tests/api/invoice-access.spec.ts:22:85\n    at /Users/mrkamposter/Documents/qa-task/tests/api/invoice-access.spec.ts:19:3",
+                    "message": "Error: user ids of foreign invoices returned to the customer\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 7\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   5,\u001b[39m\n\u001b[31m+   4,\u001b[39m\n\u001b[31m+   7,\u001b[39m\n\u001b[31m+   2,\u001b[39m\n\u001b[31m+   3,\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                    "stack": "Error: user ids of foreign invoices returned to the customer\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 7\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   5,\u001b[39m\n\u001b[31m+   4,\u001b[39m\n\u001b[31m+   7,\u001b[39m\n\u001b[31m+   2,\u001b[39m\n\u001b[31m+   3,\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at /Users/mrkamposter/Documents/qa-task/tests/api/invoice-access.spec.ts:22:85\n    at /Users/mrkamposter/Documents/qa-task/tests/api/invoice-access.spec.ts:19:3",
                     "location": {
                       "file": "/Users/mrkamposter/Documents/qa-task/tests/api/invoice-access.spec.ts",
                       "column": 85,
@@ -273,7 +279,7 @@
                         "column": 85,
                         "line": 22
                       },
-                      "message": "Error: user ids of foreign invoices returned to the customer\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 7\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   4,\u001b[39m\n\u001b[31m+   5,\u001b[39m\n\u001b[31m+   7,\u001b[39m\n\u001b[31m+   2,\u001b[39m\n\u001b[31m+   3,\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n  20 |     const invoicesVisibleToCustomer = await api.invoices(customer.token);\n  21 |     const foreignUserIds = [...new Set(invoicesVisibleToCustomer.map((invoice) => invoice.user_id).filter((userId) => userId !== customer.id))];\n> 22 |     expect(foreignUserIds, 'user ids of foreign invoices returned to the customer').toEqual([]);\n     |                                                                                     ^\n  23 |   });\n  24 |\n  25 |   await test.step(\"GET /invoices/{id} of the other customer's invoice is refused (403/404)\", async () => {\n    at /Users/mrkamposter/Documents/qa-task/tests/api/invoice-access.spec.ts:22:85\n    at /Users/mrkamposter/Documents/qa-task/tests/api/invoice-access.spec.ts:19:3"
+                      "message": "Error: user ids of foreign invoices returned to the customer\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 7\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   5,\u001b[39m\n\u001b[31m+   4,\u001b[39m\n\u001b[31m+   7,\u001b[39m\n\u001b[31m+   2,\u001b[39m\n\u001b[31m+   3,\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n  20 |     const invoicesVisibleToCustomer = await api.invoices(customer.token);\n  21 |     const foreignUserIds = [...new Set(invoicesVisibleToCustomer.map((invoice) => invoice.user_id).filter((userId) => userId !== customer.id))];\n> 22 |     expect(foreignUserIds, 'user ids of foreign invoices returned to the customer').toEqual([]);\n     |                                                                                     ^\n  23 |   });\n  24 |\n  25 |   await test.step(\"GET /invoices/{id} of the other customer's invoice is refused (403/404)\", async () => {\n    at /Users/mrkamposter/Documents/qa-task/tests/api/invoice-access.spec.ts:22:85\n    at /Users/mrkamposter/Documents/qa-task/tests/api/invoice-access.spec.ts:19:3"
                     }
                   ],
                   "stdout": [],
@@ -282,14 +288,14 @@
                   "steps": [
                     {
                       "title": "Another customer places an order",
-                      "duration": 117
+                      "duration": 173
                     },
                     {
                       "title": "GET /invoices for the customer contains only the customer's own invoices",
-                      "duration": 39,
+                      "duration": 26,
                       "error": {
-                        "message": "Error: user ids of foreign invoices returned to the customer\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 7\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   4,\u001b[39m\n\u001b[31m+   5,\u001b[39m\n\u001b[31m+   7,\u001b[39m\n\u001b[31m+   2,\u001b[39m\n\u001b[31m+   3,\u001b[39m\n\u001b[31m+ ]\u001b[39m",
-                        "stack": "Error: user ids of foreign invoices returned to the customer\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 7\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   4,\u001b[39m\n\u001b[31m+   5,\u001b[39m\n\u001b[31m+   7,\u001b[39m\n\u001b[31m+   2,\u001b[39m\n\u001b[31m+   3,\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at /Users/mrkamposter/Documents/qa-task/tests/api/invoice-access.spec.ts:22:85\n    at /Users/mrkamposter/Documents/qa-task/tests/api/invoice-access.spec.ts:19:3",
+                        "message": "Error: user ids of foreign invoices returned to the customer\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 7\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   5,\u001b[39m\n\u001b[31m+   4,\u001b[39m\n\u001b[31m+   7,\u001b[39m\n\u001b[31m+   2,\u001b[39m\n\u001b[31m+   3,\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                        "stack": "Error: user ids of foreign invoices returned to the customer\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 7\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   5,\u001b[39m\n\u001b[31m+   4,\u001b[39m\n\u001b[31m+   7,\u001b[39m\n\u001b[31m+   2,\u001b[39m\n\u001b[31m+   3,\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at /Users/mrkamposter/Documents/qa-task/tests/api/invoice-access.spec.ts:22:85\n    at /Users/mrkamposter/Documents/qa-task/tests/api/invoice-access.spec.ts:19:3",
                         "location": {
                           "file": "/Users/mrkamposter/Documents/qa-task/tests/api/invoice-access.spec.ts",
                           "column": 85,
@@ -299,7 +305,7 @@
                       }
                     }
                   ],
-                  "startTime": "2026-11-03T23:14:57.198Z",
+                  "startTime": "2026-11-03T23:20:33.924Z",
                   "annotations": [
                     {
                       "type": "fail",
@@ -320,6 +326,11 @@
                       "name": "error-context",
                       "contentType": "text/markdown",
                       "path": "/Users/mrkamposter/Documents/qa-task/reports/test-results/invoice-access-TC-028-a-cu-a6da8-nvoices-of-another-customer-api/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/mrkamposter/Documents/qa-task/reports/test-results/invoice-access-TC-028-a-cu-a6da8-nvoices-of-another-customer-api/trace.zip"
                     }
                   ],
                   "errorLocation": {
@@ -372,7 +383,7 @@
                       "workerIndex": 2,
                       "parallelIndex": 2,
                       "status": "passed",
-                      "duration": 301,
+                      "duration": 411,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
@@ -384,11 +395,11 @@
                         },
                         {
                           "title": "Place the order (POST /invoices) with Bank Transfer",
-                          "duration": 72
+                          "duration": 129
                         },
                         {
                           "title": "Read the stored invoice (GET /invoices/{id})",
-                          "duration": 18
+                          "duration": 20
                         },
                         {
                           "title": "Invoice belongs to the customer and has the expected header",
@@ -396,12 +407,18 @@
                         },
                         {
                           "title": "Invoice lines equal the ordered products, quantities and catalog prices",
-                          "duration": 1
+                          "duration": 0
                         }
                       ],
-                      "startTime": "2026-11-03T23:14:57.170Z",
+                      "startTime": "2026-11-03T23:20:33.915Z",
                       "annotations": [],
-                      "attachments": []
+                      "attachments": [
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/mrkamposter/Documents/qa-task/reports/test-results/orders-Orders-via-API-TC-0-3059d-es-total-and-payment-method-api/trace.zip"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -447,10 +464,10 @@
                       "workerIndex": 3,
                       "parallelIndex": 3,
                       "status": "failed",
-                      "duration": 310,
+                      "duration": 386,
                       "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m0.01\u001b[39m\nReceived array: \u001b[31m[\"rejected\", 11.48]\u001b[39m",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m0.01\u001b[39m\nReceived array: \u001b[31m[\"rejected\", 11.48]\u001b[39m\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:79:42\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:78:5",
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m0.01\u001b[39m\nReceived array: \u001b[31m[\"rejected\", 20.33]\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m0.01\u001b[39m\nReceived array: \u001b[31m[\"rejected\", 20.33]\u001b[39m\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:79:42\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:78:5",
                         "location": {
                           "file": "/Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts",
                           "column": 42,
@@ -465,7 +482,7 @@
                             "column": 42,
                             "line": 79
                           },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m0.01\u001b[39m\nReceived array: \u001b[31m[\"rejected\", 11.48]\u001b[39m\n\n  77 |\n  78 |     await test.step('The order is rejected, or the stored invoice uses the catalog price', async () => {\n> 79 |       expect(['rejected', catalogPrice]).toContain(await rejectedOrStoredUnitPrice(api, customer.token, response));\n     |                                          ^\n  80 |     });\n  81 |   });\n  82 |\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:79:42\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:78:5"
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m0.01\u001b[39m\nReceived array: \u001b[31m[\"rejected\", 20.33]\u001b[39m\n\n  77 |\n  78 |     await test.step('The order is rejected, or the stored invoice uses the catalog price', async () => {\n> 79 |       expect(['rejected', catalogPrice]).toContain(await rejectedOrStoredUnitPrice(api, customer.token, response));\n     |                                          ^\n  80 |     });\n  81 |   });\n  82 |\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:79:42\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:78:5"
                         }
                       ],
                       "stdout": [],
@@ -474,18 +491,18 @@
                       "steps": [
                         {
                           "title": "Pick an in-stock product",
-                          "duration": 52
+                          "duration": 51
                         },
                         {
-                          "title": "Send the order with unit_price 0.01 instead of 11.48",
-                          "duration": 69
+                          "title": "Send the order with unit_price 0.01 instead of 20.33",
+                          "duration": 121
                         },
                         {
                           "title": "The order is rejected, or the stored invoice uses the catalog price",
-                          "duration": 28,
+                          "duration": 18,
                           "error": {
-                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m0.01\u001b[39m\nReceived array: \u001b[31m[\"rejected\", 11.48]\u001b[39m",
-                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m0.01\u001b[39m\nReceived array: \u001b[31m[\"rejected\", 11.48]\u001b[39m\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:79:42\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:78:5",
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m0.01\u001b[39m\nReceived array: \u001b[31m[\"rejected\", 20.33]\u001b[39m",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m0.01\u001b[39m\nReceived array: \u001b[31m[\"rejected\", 20.33]\u001b[39m\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:79:42\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:78:5",
                             "location": {
                               "file": "/Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts",
                               "column": 42,
@@ -495,7 +512,7 @@
                           }
                         }
                       ],
-                      "startTime": "2026-11-03T23:14:57.196Z",
+                      "startTime": "2026-11-03T23:20:33.948Z",
                       "annotations": [
                         {
                           "type": "fail",
@@ -516,6 +533,11 @@
                           "name": "error-context",
                           "contentType": "text/markdown",
                           "path": "/Users/mrkamposter/Documents/qa-task/reports/test-results/orders-Orders-via-API-TC-0-805ce-ored-with-the-catalog-price-api/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/mrkamposter/Documents/qa-task/reports/test-results/orders-Orders-via-API-TC-0-805ce-ored-with-the-catalog-price-api/trace.zip"
                         }
                       ],
                       "errorLocation": {
@@ -567,10 +589,10 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 256,
+                      "duration": 271,
                       "error": {
-                        "message": "Error: {\"user_id\":8,\"billing_address\":\"Main Street 1\",\"billing_city\":\"Amsterdam\",\"billing_state\":\"Noord-Holland\",\"billing_country\":\"Netherlands\",\"billing_postcode\":\"1011AA\",\"payment_method\":\"Cash on Delivery\",\"payment_account_name\":\"Test Customer\",\"payment_account_number\":1234567890,\"total\":0,\"invoice_date\":\"2026-11-03 23-14-57\",\"invoice_number\":\"INV-2026000008\",\"id\":14}\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m201\u001b[39m",
-                        "stack": "Error: {\"user_id\":8,\"billing_address\":\"Main Street 1\",\"billing_city\":\"Amsterdam\",\"billing_state\":\"Noord-Holland\",\"billing_country\":\"Netherlands\",\"billing_postcode\":\"1011AA\",\"payment_method\":\"Cash on Delivery\",\"payment_account_name\":\"Test Customer\",\"payment_account_number\":1234567890,\"total\":0,\"invoice_date\":\"2026-11-03 23-14-57\",\"invoice_number\":\"INV-2026000008\",\"id\":14}\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m201\u001b[39m\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:133:58\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:132:7",
+                        "message": "Error: {\"user_id\":8,\"billing_address\":\"Main Street 1\",\"billing_city\":\"Amsterdam\",\"billing_state\":\"Noord-Holland\",\"billing_country\":\"Netherlands\",\"billing_postcode\":\"1011AA\",\"payment_method\":\"Cash on Delivery\",\"payment_account_name\":\"Test Customer\",\"payment_account_number\":1234567890,\"total\":0,\"invoice_date\":\"2026-11-03 23-20-34\",\"invoice_number\":\"INV-2026000007\",\"id\":14}\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m201\u001b[39m",
+                        "stack": "Error: {\"user_id\":8,\"billing_address\":\"Main Street 1\",\"billing_city\":\"Amsterdam\",\"billing_state\":\"Noord-Holland\",\"billing_country\":\"Netherlands\",\"billing_postcode\":\"1011AA\",\"payment_method\":\"Cash on Delivery\",\"payment_account_name\":\"Test Customer\",\"payment_account_number\":1234567890,\"total\":0,\"invoice_date\":\"2026-11-03 23-20-34\",\"invoice_number\":\"INV-2026000007\",\"id\":14}\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m201\u001b[39m\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:133:58\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:132:7",
                         "location": {
                           "file": "/Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts",
                           "column": 58,
@@ -585,7 +607,7 @@
                             "column": 58,
                             "line": 133
                           },
-                          "message": "Error: {\"user_id\":8,\"billing_address\":\"Main Street 1\",\"billing_city\":\"Amsterdam\",\"billing_state\":\"Noord-Holland\",\"billing_country\":\"Netherlands\",\"billing_postcode\":\"1011AA\",\"payment_method\":\"Cash on Delivery\",\"payment_account_name\":\"Test Customer\",\"payment_account_number\":1234567890,\"total\":0,\"invoice_date\":\"2026-11-03 23-14-57\",\"invoice_number\":\"INV-2026000008\",\"id\":14}\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m201\u001b[39m\n\n  131 |\n  132 |       await test.step('Response is 422 Unprocessable Entity', async () => {\n> 133 |         expect(response.status(), await response.text()).toBe(422);\n      |                                                          ^\n  134 |       });\n  135 |\n  136 |       await test.step('No invoice was created for the customer', async () => {\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:133:58\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:132:7"
+                          "message": "Error: {\"user_id\":8,\"billing_address\":\"Main Street 1\",\"billing_city\":\"Amsterdam\",\"billing_state\":\"Noord-Holland\",\"billing_country\":\"Netherlands\",\"billing_postcode\":\"1011AA\",\"payment_method\":\"Cash on Delivery\",\"payment_account_name\":\"Test Customer\",\"payment_account_number\":1234567890,\"total\":0,\"invoice_date\":\"2026-11-03 23-20-34\",\"invoice_number\":\"INV-2026000007\",\"id\":14}\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m201\u001b[39m\n\n  131 |\n  132 |       await test.step('Response is 422 Unprocessable Entity', async () => {\n> 133 |         expect(response.status(), await response.text()).toBe(422);\n      |                                                          ^\n  134 |       });\n  135 |\n  136 |       await test.step('No invoice was created for the customer', async () => {\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:133:58\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:132:7"
                         }
                       ],
                       "stdout": [],
@@ -594,14 +616,14 @@
                       "steps": [
                         {
                           "title": "POST /invoices with quantity 0",
-                          "duration": 75
+                          "duration": 55
                         },
                         {
                           "title": "Response is 422 Unprocessable Entity",
                           "duration": 2,
                           "error": {
-                            "message": "Error: {\"user_id\":8,\"billing_address\":\"Main Street 1\",\"billing_city\":\"Amsterdam\",\"billing_state\":\"Noord-Holland\",\"billing_country\":\"Netherlands\",\"billing_postcode\":\"1011AA\",\"payment_method\":\"Cash on Delivery\",\"payment_account_name\":\"Test Customer\",\"payment_account_number\":1234567890,\"total\":0,\"invoice_date\":\"2026-11-03 23-14-57\",\"invoice_number\":\"INV-2026000008\",\"id\":14}\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m201\u001b[39m",
-                            "stack": "Error: {\"user_id\":8,\"billing_address\":\"Main Street 1\",\"billing_city\":\"Amsterdam\",\"billing_state\":\"Noord-Holland\",\"billing_country\":\"Netherlands\",\"billing_postcode\":\"1011AA\",\"payment_method\":\"Cash on Delivery\",\"payment_account_name\":\"Test Customer\",\"payment_account_number\":1234567890,\"total\":0,\"invoice_date\":\"2026-11-03 23-14-57\",\"invoice_number\":\"INV-2026000008\",\"id\":14}\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m201\u001b[39m\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:133:58\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:132:7",
+                            "message": "Error: {\"user_id\":8,\"billing_address\":\"Main Street 1\",\"billing_city\":\"Amsterdam\",\"billing_state\":\"Noord-Holland\",\"billing_country\":\"Netherlands\",\"billing_postcode\":\"1011AA\",\"payment_method\":\"Cash on Delivery\",\"payment_account_name\":\"Test Customer\",\"payment_account_number\":1234567890,\"total\":0,\"invoice_date\":\"2026-11-03 23-20-34\",\"invoice_number\":\"INV-2026000007\",\"id\":14}\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m201\u001b[39m",
+                            "stack": "Error: {\"user_id\":8,\"billing_address\":\"Main Street 1\",\"billing_city\":\"Amsterdam\",\"billing_state\":\"Noord-Holland\",\"billing_country\":\"Netherlands\",\"billing_postcode\":\"1011AA\",\"payment_method\":\"Cash on Delivery\",\"payment_account_name\":\"Test Customer\",\"payment_account_number\":1234567890,\"total\":0,\"invoice_date\":\"2026-11-03 23-20-34\",\"invoice_number\":\"INV-2026000007\",\"id\":14}\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m201\u001b[39m\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:133:58\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:132:7",
                             "location": {
                               "file": "/Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts",
                               "column": 58,
@@ -611,7 +633,7 @@
                           }
                         }
                       ],
-                      "startTime": "2026-11-03T23:14:57.692Z",
+                      "startTime": "2026-11-03T23:20:34.497Z",
                       "annotations": [
                         {
                           "type": "fail",
@@ -632,6 +654,11 @@
                           "name": "error-context",
                           "contentType": "text/markdown",
                           "path": "/Users/mrkamposter/Documents/qa-task/reports/test-results/orders-Orders-via-API-TC-0-ee095--422-and-creates-no-invoice-api/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/mrkamposter/Documents/qa-task/reports/test-results/orders-Orders-via-API-TC-0-ee095--422-and-creates-no-invoice-api/trace.zip"
                         }
                       ],
                       "errorLocation": {
@@ -680,13 +707,13 @@
                   "projectName": "api",
                   "results": [
                     {
-                      "workerIndex": 2,
-                      "parallelIndex": 2,
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
                       "status": "failed",
-                      "duration": 184,
+                      "duration": 219,
                       "error": {
-                        "message": "Error: {\"user_id\":9,\"billing_address\":\"Main Street 1\",\"billing_city\":\"Amsterdam\",\"billing_state\":\"Noord-Holland\",\"billing_country\":\"Netherlands\",\"billing_postcode\":\"1011AA\",\"payment_method\":\"Cash on Delivery\",\"payment_account_name\":\"Test Customer\",\"payment_account_number\":1234567890,\"total\":18.63,\"invoice_date\":\"2026-11-03 23-14-57\",\"invoice_number\":\"INV-2026000009\",\"id\":16}\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m201\u001b[39m",
-                        "stack": "Error: {\"user_id\":9,\"billing_address\":\"Main Street 1\",\"billing_city\":\"Amsterdam\",\"billing_state\":\"Noord-Holland\",\"billing_country\":\"Netherlands\",\"billing_postcode\":\"1011AA\",\"payment_method\":\"Cash on Delivery\",\"payment_account_name\":\"Test Customer\",\"payment_account_number\":1234567890,\"total\":18.63,\"invoice_date\":\"2026-11-03 23-14-57\",\"invoice_number\":\"INV-2026000009\",\"id\":16}\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m201\u001b[39m\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:133:58\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:132:7",
+                        "message": "Error: {\"user_id\":9,\"billing_address\":\"Main Street 1\",\"billing_city\":\"Amsterdam\",\"billing_state\":\"Noord-Holland\",\"billing_country\":\"Netherlands\",\"billing_postcode\":\"1011AA\",\"payment_method\":\"Cash on Delivery\",\"payment_account_name\":\"Test Customer\",\"payment_account_number\":1234567890,\"total\":12.58,\"invoice_date\":\"2026-11-03 23-20-34\",\"invoice_number\":\"INV-2026000008\",\"id\":15}\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m201\u001b[39m",
+                        "stack": "Error: {\"user_id\":9,\"billing_address\":\"Main Street 1\",\"billing_city\":\"Amsterdam\",\"billing_state\":\"Noord-Holland\",\"billing_country\":\"Netherlands\",\"billing_postcode\":\"1011AA\",\"payment_method\":\"Cash on Delivery\",\"payment_account_name\":\"Test Customer\",\"payment_account_number\":1234567890,\"total\":12.58,\"invoice_date\":\"2026-11-03 23-20-34\",\"invoice_number\":\"INV-2026000008\",\"id\":15}\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m201\u001b[39m\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:133:58\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:132:7",
                         "location": {
                           "file": "/Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts",
                           "column": 58,
@@ -701,7 +728,7 @@
                             "column": 58,
                             "line": 133
                           },
-                          "message": "Error: {\"user_id\":9,\"billing_address\":\"Main Street 1\",\"billing_city\":\"Amsterdam\",\"billing_state\":\"Noord-Holland\",\"billing_country\":\"Netherlands\",\"billing_postcode\":\"1011AA\",\"payment_method\":\"Cash on Delivery\",\"payment_account_name\":\"Test Customer\",\"payment_account_number\":1234567890,\"total\":18.63,\"invoice_date\":\"2026-11-03 23-14-57\",\"invoice_number\":\"INV-2026000009\",\"id\":16}\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m201\u001b[39m\n\n  131 |\n  132 |       await test.step('Response is 422 Unprocessable Entity', async () => {\n> 133 |         expect(response.status(), await response.text()).toBe(422);\n      |                                                          ^\n  134 |       });\n  135 |\n  136 |       await test.step('No invoice was created for the customer', async () => {\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:133:58\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:132:7"
+                          "message": "Error: {\"user_id\":9,\"billing_address\":\"Main Street 1\",\"billing_city\":\"Amsterdam\",\"billing_state\":\"Noord-Holland\",\"billing_country\":\"Netherlands\",\"billing_postcode\":\"1011AA\",\"payment_method\":\"Cash on Delivery\",\"payment_account_name\":\"Test Customer\",\"payment_account_number\":1234567890,\"total\":12.58,\"invoice_date\":\"2026-11-03 23-20-34\",\"invoice_number\":\"INV-2026000008\",\"id\":15}\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m201\u001b[39m\n\n  131 |\n  132 |       await test.step('Response is 422 Unprocessable Entity', async () => {\n> 133 |         expect(response.status(), await response.text()).toBe(422);\n      |                                                          ^\n  134 |       });\n  135 |\n  136 |       await test.step('No invoice was created for the customer', async () => {\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:133:58\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:132:7"
                         }
                       ],
                       "stdout": [],
@@ -710,14 +737,14 @@
                       "steps": [
                         {
                           "title": "POST /invoices with a product that is out of stock",
-                          "duration": 32
+                          "duration": 35
                         },
                         {
                           "title": "Response is 422 Unprocessable Entity",
-                          "duration": 2,
+                          "duration": 1,
                           "error": {
-                            "message": "Error: {\"user_id\":9,\"billing_address\":\"Main Street 1\",\"billing_city\":\"Amsterdam\",\"billing_state\":\"Noord-Holland\",\"billing_country\":\"Netherlands\",\"billing_postcode\":\"1011AA\",\"payment_method\":\"Cash on Delivery\",\"payment_account_name\":\"Test Customer\",\"payment_account_number\":1234567890,\"total\":18.63,\"invoice_date\":\"2026-11-03 23-14-57\",\"invoice_number\":\"INV-2026000009\",\"id\":16}\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m201\u001b[39m",
-                            "stack": "Error: {\"user_id\":9,\"billing_address\":\"Main Street 1\",\"billing_city\":\"Amsterdam\",\"billing_state\":\"Noord-Holland\",\"billing_country\":\"Netherlands\",\"billing_postcode\":\"1011AA\",\"payment_method\":\"Cash on Delivery\",\"payment_account_name\":\"Test Customer\",\"payment_account_number\":1234567890,\"total\":18.63,\"invoice_date\":\"2026-11-03 23-14-57\",\"invoice_number\":\"INV-2026000009\",\"id\":16}\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m201\u001b[39m\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:133:58\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:132:7",
+                            "message": "Error: {\"user_id\":9,\"billing_address\":\"Main Street 1\",\"billing_city\":\"Amsterdam\",\"billing_state\":\"Noord-Holland\",\"billing_country\":\"Netherlands\",\"billing_postcode\":\"1011AA\",\"payment_method\":\"Cash on Delivery\",\"payment_account_name\":\"Test Customer\",\"payment_account_number\":1234567890,\"total\":12.58,\"invoice_date\":\"2026-11-03 23-20-34\",\"invoice_number\":\"INV-2026000008\",\"id\":15}\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m201\u001b[39m",
+                            "stack": "Error: {\"user_id\":9,\"billing_address\":\"Main Street 1\",\"billing_city\":\"Amsterdam\",\"billing_state\":\"Noord-Holland\",\"billing_country\":\"Netherlands\",\"billing_postcode\":\"1011AA\",\"payment_method\":\"Cash on Delivery\",\"payment_account_name\":\"Test Customer\",\"payment_account_number\":1234567890,\"total\":12.58,\"invoice_date\":\"2026-11-03 23-20-34\",\"invoice_number\":\"INV-2026000008\",\"id\":15}\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m201\u001b[39m\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:133:58\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:132:7",
                             "location": {
                               "file": "/Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts",
                               "column": 58,
@@ -727,7 +754,7 @@
                           }
                         }
                       ],
-                      "startTime": "2026-11-03T23:14:57.762Z",
+                      "startTime": "2026-11-03T23:20:34.677Z",
                       "annotations": [
                         {
                           "type": "fail",
@@ -748,6 +775,11 @@
                           "name": "error-context",
                           "contentType": "text/markdown",
                           "path": "/Users/mrkamposter/Documents/qa-task/reports/test-results/orders-Orders-via-API-TC-0-b2fac--422-and-creates-no-invoice-api/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/mrkamposter/Documents/qa-task/reports/test-results/orders-Orders-via-API-TC-0-b2fac--422-and-creates-no-invoice-api/trace.zip"
                         }
                       ],
                       "errorLocation": {
@@ -796,13 +828,13 @@
                   "projectName": "api",
                   "results": [
                     {
-                      "workerIndex": 3,
-                      "parallelIndex": 3,
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
                       "status": "failed",
-                      "duration": 168,
+                      "duration": 230,
                       "error": {
-                        "message": "Error: {\"user_id\":10,\"billing_address\":\"Main Street 1\",\"billing_city\":\"Amsterdam\",\"billing_state\":\"Noord-Holland\",\"billing_country\":\"Netherlands\",\"billing_postcode\":\"1011AA\",\"payment_method\":\"Missing Payment Gateway\",\"payment_account_name\":\"Test Customer\",\"payment_account_number\":1234567890,\"total\":73.59,\"invoice_date\":\"2026-11-03 23-14-57\",\"invoice_number\":\"INV-2026000009\",\"id\":15}\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m201\u001b[39m",
-                        "stack": "Error: {\"user_id\":10,\"billing_address\":\"Main Street 1\",\"billing_city\":\"Amsterdam\",\"billing_state\":\"Noord-Holland\",\"billing_country\":\"Netherlands\",\"billing_postcode\":\"1011AA\",\"payment_method\":\"Missing Payment Gateway\",\"payment_account_name\":\"Test Customer\",\"payment_account_number\":1234567890,\"total\":73.59,\"invoice_date\":\"2026-11-03 23-14-57\",\"invoice_number\":\"INV-2026000009\",\"id\":15}\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m201\u001b[39m\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:133:58\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:132:7",
+                        "message": "Error: {\"user_id\":10,\"billing_address\":\"Main Street 1\",\"billing_city\":\"Amsterdam\",\"billing_state\":\"Noord-Holland\",\"billing_country\":\"Netherlands\",\"billing_postcode\":\"1011AA\",\"payment_method\":\"Missing Payment Gateway\",\"payment_account_name\":\"Test Customer\",\"payment_account_number\":1234567890,\"total\":14.14,\"invoice_date\":\"2026-11-03 23-20-34\",\"invoice_number\":\"INV-2026000009\",\"id\":16}\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m201\u001b[39m",
+                        "stack": "Error: {\"user_id\":10,\"billing_address\":\"Main Street 1\",\"billing_city\":\"Amsterdam\",\"billing_state\":\"Noord-Holland\",\"billing_country\":\"Netherlands\",\"billing_postcode\":\"1011AA\",\"payment_method\":\"Missing Payment Gateway\",\"payment_account_name\":\"Test Customer\",\"payment_account_number\":1234567890,\"total\":14.14,\"invoice_date\":\"2026-11-03 23-20-34\",\"invoice_number\":\"INV-2026000009\",\"id\":16}\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m201\u001b[39m\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:133:58\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:132:7",
                         "location": {
                           "file": "/Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts",
                           "column": 58,
@@ -817,7 +849,7 @@
                             "column": 58,
                             "line": 133
                           },
-                          "message": "Error: {\"user_id\":10,\"billing_address\":\"Main Street 1\",\"billing_city\":\"Amsterdam\",\"billing_state\":\"Noord-Holland\",\"billing_country\":\"Netherlands\",\"billing_postcode\":\"1011AA\",\"payment_method\":\"Missing Payment Gateway\",\"payment_account_name\":\"Test Customer\",\"payment_account_number\":1234567890,\"total\":73.59,\"invoice_date\":\"2026-11-03 23-14-57\",\"invoice_number\":\"INV-2026000009\",\"id\":15}\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m201\u001b[39m\n\n  131 |\n  132 |       await test.step('Response is 422 Unprocessable Entity', async () => {\n> 133 |         expect(response.status(), await response.text()).toBe(422);\n      |                                                          ^\n  134 |       });\n  135 |\n  136 |       await test.step('No invoice was created for the customer', async () => {\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:133:58\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:132:7"
+                          "message": "Error: {\"user_id\":10,\"billing_address\":\"Main Street 1\",\"billing_city\":\"Amsterdam\",\"billing_state\":\"Noord-Holland\",\"billing_country\":\"Netherlands\",\"billing_postcode\":\"1011AA\",\"payment_method\":\"Missing Payment Gateway\",\"payment_account_name\":\"Test Customer\",\"payment_account_number\":1234567890,\"total\":14.14,\"invoice_date\":\"2026-11-03 23-20-34\",\"invoice_number\":\"INV-2026000009\",\"id\":16}\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m201\u001b[39m\n\n  131 |\n  132 |       await test.step('Response is 422 Unprocessable Entity', async () => {\n> 133 |         expect(response.status(), await response.text()).toBe(422);\n      |                                                          ^\n  134 |       });\n  135 |\n  136 |       await test.step('No invoice was created for the customer', async () => {\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:133:58\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:132:7"
                         }
                       ],
                       "stdout": [],
@@ -826,14 +858,14 @@
                       "steps": [
                         {
                           "title": "POST /invoices with an unknown payment method",
-                          "duration": 34
+                          "duration": 41
                         },
                         {
                           "title": "Response is 422 Unprocessable Entity",
                           "duration": 1,
                           "error": {
-                            "message": "Error: {\"user_id\":10,\"billing_address\":\"Main Street 1\",\"billing_city\":\"Amsterdam\",\"billing_state\":\"Noord-Holland\",\"billing_country\":\"Netherlands\",\"billing_postcode\":\"1011AA\",\"payment_method\":\"Missing Payment Gateway\",\"payment_account_name\":\"Test Customer\",\"payment_account_number\":1234567890,\"total\":73.59,\"invoice_date\":\"2026-11-03 23-14-57\",\"invoice_number\":\"INV-2026000009\",\"id\":15}\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m201\u001b[39m",
-                            "stack": "Error: {\"user_id\":10,\"billing_address\":\"Main Street 1\",\"billing_city\":\"Amsterdam\",\"billing_state\":\"Noord-Holland\",\"billing_country\":\"Netherlands\",\"billing_postcode\":\"1011AA\",\"payment_method\":\"Missing Payment Gateway\",\"payment_account_name\":\"Test Customer\",\"payment_account_number\":1234567890,\"total\":73.59,\"invoice_date\":\"2026-11-03 23-14-57\",\"invoice_number\":\"INV-2026000009\",\"id\":15}\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m201\u001b[39m\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:133:58\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:132:7",
+                            "message": "Error: {\"user_id\":10,\"billing_address\":\"Main Street 1\",\"billing_city\":\"Amsterdam\",\"billing_state\":\"Noord-Holland\",\"billing_country\":\"Netherlands\",\"billing_postcode\":\"1011AA\",\"payment_method\":\"Missing Payment Gateway\",\"payment_account_name\":\"Test Customer\",\"payment_account_number\":1234567890,\"total\":14.14,\"invoice_date\":\"2026-11-03 23-20-34\",\"invoice_number\":\"INV-2026000009\",\"id\":16}\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m201\u001b[39m",
+                            "stack": "Error: {\"user_id\":10,\"billing_address\":\"Main Street 1\",\"billing_city\":\"Amsterdam\",\"billing_state\":\"Noord-Holland\",\"billing_country\":\"Netherlands\",\"billing_postcode\":\"1011AA\",\"payment_method\":\"Missing Payment Gateway\",\"payment_account_name\":\"Test Customer\",\"payment_account_number\":1234567890,\"total\":14.14,\"invoice_date\":\"2026-11-03 23-20-34\",\"invoice_number\":\"INV-2026000009\",\"id\":16}\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m422\u001b[39m\nReceived: \u001b[31m201\u001b[39m\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:133:58\n    at /Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts:132:7",
                             "location": {
                               "file": "/Users/mrkamposter/Documents/qa-task/tests/api/orders.spec.ts",
                               "column": 58,
@@ -843,7 +875,7 @@
                           }
                         }
                       ],
-                      "startTime": "2026-11-03T23:14:57.779Z",
+                      "startTime": "2026-11-03T23:20:34.698Z",
                       "annotations": [
                         {
                           "type": "fail",
@@ -864,6 +896,11 @@
                           "name": "error-context",
                           "contentType": "text/markdown",
                           "path": "/Users/mrkamposter/Documents/qa-task/reports/test-results/orders-Orders-via-API-TC-0-dded9--422-and-creates-no-invoice-api/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/mrkamposter/Documents/qa-task/reports/test-results/orders-Orders-via-API-TC-0-dded9--422-and-creates-no-invoice-api/trace.zip"
                         }
                       ],
                       "errorLocation": {
@@ -935,12 +972,12 @@
                   "results": [
                     {
                       "workerIndex": 4,
-                      "parallelIndex": 1,
+                      "parallelIndex": 2,
                       "status": "failed",
-                      "duration": 6737,
+                      "duration": 6359,
                       "error": {
-                        "message": "Error: cart lines\n\ncart lines\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[2m    Object {\u001b[22m\n\u001b[2m      \"id\": 11,\u001b[22m\n\u001b[32m-     \"quantity\": 2,\u001b[39m\n\u001b[31m+     \"quantity\": 1,\u001b[39m\n\u001b[2m    },\u001b[22m\n\u001b[2m  ]\u001b[22m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate",
-                        "stack": "Error: cart lines\n\ncart lines\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[2m    Object {\u001b[22m\n\u001b[2m      \"id\": 11,\u001b[22m\n\u001b[32m-     \"quantity\": 2,\u001b[39m\n\u001b[31m+     \"quantity\": 1,\u001b[39m\n\u001b[2m    },\u001b[22m\n\u001b[2m  ]\u001b[22m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n    at /Users/mrkamposter/Documents/qa-task/tests/ui/cart.spec.ts:25:96\n    at /Users/mrkamposter/Documents/qa-task/tests/ui/cart.spec.ts:23:5",
+                        "message": "Error: cart lines\n\ncart lines\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[2m    Object {\u001b[22m\n\u001b[2m      \"id\": 20,\u001b[22m\n\u001b[32m-     \"quantity\": 2,\u001b[39m\n\u001b[31m+     \"quantity\": 1,\u001b[39m\n\u001b[2m    },\u001b[22m\n\u001b[2m  ]\u001b[22m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate",
+                        "stack": "Error: cart lines\n\ncart lines\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[2m    Object {\u001b[22m\n\u001b[2m      \"id\": 20,\u001b[22m\n\u001b[32m-     \"quantity\": 2,\u001b[39m\n\u001b[31m+     \"quantity\": 1,\u001b[39m\n\u001b[2m    },\u001b[22m\n\u001b[2m  ]\u001b[22m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n    at /Users/mrkamposter/Documents/qa-task/tests/ui/cart.spec.ts:25:96\n    at /Users/mrkamposter/Documents/qa-task/tests/ui/cart.spec.ts:23:5",
                         "location": {
                           "file": "/Users/mrkamposter/Documents/qa-task/tests/ui/cart.spec.ts",
                           "column": 96,
@@ -955,7 +992,7 @@
                             "column": 96,
                             "line": 25
                           },
-                          "message": "Error: cart lines\n\ncart lines\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[2m    Object {\u001b[22m\n\u001b[2m      \"id\": 11,\u001b[22m\n\u001b[32m-     \"quantity\": 2,\u001b[39m\n\u001b[31m+     \"quantity\": 1,\u001b[39m\n\u001b[2m    },\u001b[22m\n\u001b[2m  ]\u001b[22m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  23 |     await test.step('The cart has one line with quantity 2', async () => {\n  24 |       // The cart is written to sessionStorage asynchronously, so the state is polled instead of read once.\n> 25 |       await expect.poll(() => cartQuantities(page), { message: 'cart lines', timeout: 5_000 }).toEqual([{ id: product!.id, quantity: 2 }]);\n     |                                                                                                ^\n  26 |     });\n  27 |\n  28 |     await test.step('The cart total in the UI is 2 × price', async () => {\n    at /Users/mrkamposter/Documents/qa-task/tests/ui/cart.spec.ts:25:96\n    at /Users/mrkamposter/Documents/qa-task/tests/ui/cart.spec.ts:23:5"
+                          "message": "Error: cart lines\n\ncart lines\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[2m    Object {\u001b[22m\n\u001b[2m      \"id\": 20,\u001b[22m\n\u001b[32m-     \"quantity\": 2,\u001b[39m\n\u001b[31m+     \"quantity\": 1,\u001b[39m\n\u001b[2m    },\u001b[22m\n\u001b[2m  ]\u001b[22m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  23 |     await test.step('The cart has one line with quantity 2', async () => {\n  24 |       // The cart is written to sessionStorage asynchronously, so the state is polled instead of read once.\n> 25 |       await expect.poll(() => cartQuantities(page), { message: 'cart lines', timeout: 5_000 }).toEqual([{ id: product!.id, quantity: 2 }]);\n     |                                                                                                ^\n  26 |     });\n  27 |\n  28 |     await test.step('The cart total in the UI is 2 × price', async () => {\n    at /Users/mrkamposter/Documents/qa-task/tests/ui/cart.spec.ts:25:96\n    at /Users/mrkamposter/Documents/qa-task/tests/ui/cart.spec.ts:23:5"
                         }
                       ],
                       "stdout": [],
@@ -963,15 +1000,15 @@
                       "retry": 0,
                       "steps": [
                         {
-                          "title": "Add \"Claw Hammer with Fiberglass Handle\" to the cart twice (quantity 1 each time)",
-                          "duration": 1171
+                          "title": "Add \"Belt Sander\" to the cart twice (quantity 1 each time)",
+                          "duration": 861
                         },
                         {
                           "title": "The cart has one line with quantity 2",
-                          "duration": 4937,
+                          "duration": 4935,
                           "error": {
-                            "message": "Error: cart lines\n\ncart lines\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[2m    Object {\u001b[22m\n\u001b[2m      \"id\": 11,\u001b[22m\n\u001b[32m-     \"quantity\": 2,\u001b[39m\n\u001b[31m+     \"quantity\": 1,\u001b[39m\n\u001b[2m    },\u001b[22m\n\u001b[2m  ]\u001b[22m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate",
-                            "stack": "Error: cart lines\n\ncart lines\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[2m    Object {\u001b[22m\n\u001b[2m      \"id\": 11,\u001b[22m\n\u001b[32m-     \"quantity\": 2,\u001b[39m\n\u001b[31m+     \"quantity\": 1,\u001b[39m\n\u001b[2m    },\u001b[22m\n\u001b[2m  ]\u001b[22m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n    at /Users/mrkamposter/Documents/qa-task/tests/ui/cart.spec.ts:25:96\n    at /Users/mrkamposter/Documents/qa-task/tests/ui/cart.spec.ts:23:5",
+                            "message": "Error: cart lines\n\ncart lines\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[2m    Object {\u001b[22m\n\u001b[2m      \"id\": 20,\u001b[22m\n\u001b[32m-     \"quantity\": 2,\u001b[39m\n\u001b[31m+     \"quantity\": 1,\u001b[39m\n\u001b[2m    },\u001b[22m\n\u001b[2m  ]\u001b[22m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate",
+                            "stack": "Error: cart lines\n\ncart lines\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[2m    Object {\u001b[22m\n\u001b[2m      \"id\": 20,\u001b[22m\n\u001b[32m-     \"quantity\": 2,\u001b[39m\n\u001b[31m+     \"quantity\": 1,\u001b[39m\n\u001b[2m    },\u001b[22m\n\u001b[2m  ]\u001b[22m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n    at /Users/mrkamposter/Documents/qa-task/tests/ui/cart.spec.ts:25:96\n    at /Users/mrkamposter/Documents/qa-task/tests/ui/cart.spec.ts:23:5",
                             "location": {
                               "file": "/Users/mrkamposter/Documents/qa-task/tests/ui/cart.spec.ts",
                               "column": 96,
@@ -981,7 +1018,7 @@
                           }
                         }
                       ],
-                      "startTime": "2026-11-03T23:14:58.134Z",
+                      "startTime": "2026-11-03T23:20:35.049Z",
                       "annotations": [
                         {
                           "type": "fail",
@@ -1003,9 +1040,19 @@
                       ],
                       "attachments": [
                         {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/mrkamposter/Documents/qa-task/reports/test-results/cart-Cart-TC-013-adding-a--2145f-cart-increases-its-quantity-ui-chromium/test-finished-1.png"
+                        },
+                        {
                           "name": "error-context",
                           "contentType": "text/markdown",
                           "path": "/Users/mrkamposter/Documents/qa-task/reports/test-results/cart-Cart-TC-013-adding-a--2145f-cart-increases-its-quantity-ui-chromium/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/mrkamposter/Documents/qa-task/reports/test-results/cart-Cart-TC-013-adding-a--2145f-cart-increases-its-quantity-ui-chromium/trace.zip"
                         }
                       ],
                       "errorLocation": {
@@ -1046,9 +1093,9 @@
                   "results": [
                     {
                       "workerIndex": 5,
-                      "parallelIndex": 2,
+                      "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1756,
+                      "duration": 1865,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
@@ -1056,11 +1103,11 @@
                       "steps": [
                         {
                           "title": "Add \"Combination Pliers\" and \"Pliers\" (quantity 1 each)",
-                          "duration": 1335
+                          "duration": 1107
                         },
                         {
                           "title": "Change the quantity of \"Combination Pliers\" to 3 in the cart",
-                          "duration": 99
+                          "duration": 143
                         },
                         {
                           "title": "The stored cart has the new quantity and the other line is unchanged",
@@ -1068,17 +1115,28 @@
                         },
                         {
                           "title": "The cart total in the UI is 54.46",
-                          "duration": 9
+                          "duration": 11
                         }
                       ],
-                      "startTime": "2026-11-03T23:14:58.330Z",
+                      "startTime": "2026-11-03T23:20:35.142Z",
                       "annotations": [
                         {
                           "type": "blocked-non-local-request",
                           "description": "stylesheet https://cdnjs.cloudflare.com"
                         }
                       ],
-                      "attachments": []
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/mrkamposter/Documents/qa-task/reports/test-results/cart-Cart-TC-014-changing--a9180-red-cart-and-the-cart-total-ui-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/mrkamposter/Documents/qa-task/reports/test-results/cart-Cart-TC-014-changing--a9180-red-cart-and-the-cart-total-ui-chromium/trace.zip"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -1124,10 +1182,10 @@
                   "projectName": "ui-chromium",
                   "results": [
                     {
-                      "workerIndex": 7,
+                      "workerIndex": 6,
                       "parallelIndex": 3,
                       "status": "failed",
-                      "duration": 8946,
+                      "duration": 8616,
                       "error": {
                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('Product quantity updated.')\nExpected: visible\nTimeout: 7000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByText('Product quantity updated.') with timeout 7000ms\u001b[22m\n\u001b[2m  - waiting for getByText('Product quantity updated.')\u001b[22m\n",
                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('Product quantity updated.')\nExpected: visible\nTimeout: 7000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByText('Product quantity updated.') with timeout 7000ms\u001b[22m\n\u001b[2m  - waiting for getByText('Product quantity updated.')\u001b[22m\n\n    at /Users/mrkamposter/Documents/qa-task/tests/ui/cart.spec.ts:60:65\n    at /Users/mrkamposter/Documents/qa-task/tests/ui/cart.spec.ts:59:5",
@@ -1154,11 +1212,11 @@
                       "steps": [
                         {
                           "title": "Add \"Combination Pliers\" and \"Pliers\" (quantity 1 each)",
-                          "duration": 1334
+                          "duration": 931
                         },
                         {
                           "title": "Change the quantity of \"Combination Pliers\" to 3 in the cart",
-                          "duration": 95
+                          "duration": 55
                         },
                         {
                           "title": "Confirmation message \"Product quantity updated.\" is shown (CART AC2)",
@@ -1175,7 +1233,7 @@
                           }
                         }
                       ],
-                      "startTime": "2026-11-03T23:14:58.324Z",
+                      "startTime": "2026-11-03T23:20:35.383Z",
                       "annotations": [
                         {
                           "type": "fail",
@@ -1197,9 +1255,19 @@
                       ],
                       "attachments": [
                         {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/mrkamposter/Documents/qa-task/reports/test-results/cart-Cart-TC-014-changing--d6eb5-s-Product-quantity-updated--ui-chromium/test-finished-1.png"
+                        },
+                        {
                           "name": "error-context",
                           "contentType": "text/markdown",
                           "path": "/Users/mrkamposter/Documents/qa-task/reports/test-results/cart-Cart-TC-014-changing--d6eb5-s-Product-quantity-updated--ui-chromium/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/mrkamposter/Documents/qa-task/reports/test-results/cart-Cart-TC-014-changing--d6eb5-s-Product-quantity-updated--ui-chromium/trace.zip"
                         }
                       ],
                       "errorLocation": {
@@ -1262,10 +1330,10 @@
               "projectName": "ui-chromium",
               "results": [
                 {
-                  "workerIndex": 6,
-                  "parallelIndex": 0,
+                  "workerIndex": 7,
+                  "parallelIndex": 1,
                   "status": "failed",
-                  "duration": 1671,
+                  "duration": 1525,
                   "error": {
                     "message": "Error: prices in display order\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 25\u001b[39m\n\u001b[31m+ Received  + 25\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   492,\u001b[39m\n\u001b[32m-   917,\u001b[39m\n\u001b[32m-   1114,\u001b[39m\n\u001b[32m-   1148,\u001b[39m\n\u001b[32m-   1201,\u001b[39m\n\u001b[32m-   1218,\u001b[39m\n\u001b[32m-   1258,\u001b[39m\n\u001b[32m-   1341,\u001b[39m\n\u001b[32m-   1396,\u001b[39m\n\u001b[32m-   1414,\u001b[39m\n\u001b[32m-   1415,\u001b[39m\n\u001b[32m-   1424,\u001b[39m\n\u001b[32m-   1775,\u001b[39m\n\u001b[32m-   1863,\u001b[39m\n\u001b[32m-   2014,\u001b[39m\n\u001b[32m-   2033,\u001b[39m\n\u001b[32m-   3851,\u001b[39m\n\u001b[32m-   4650,\u001b[39m\n\u001b[32m-   4841,\u001b[39m\n\u001b[32m-   5848,\u001b[39m\n\u001b[32m-   6654,\u001b[39m\n\u001b[32m-   7359,\u001b[39m\n\u001b[32m-   8019,\u001b[39m\n\u001b[32m-   10079,\u001b[39m\n\u001b[32m-   11924,\u001b[39m\n\u001b[2m    12523,\u001b[22m\n\u001b[31m+   11924,\u001b[39m\n\u001b[31m+   10079,\u001b[39m\n\u001b[31m+   8019,\u001b[39m\n\u001b[31m+   7359,\u001b[39m\n\u001b[31m+   6654,\u001b[39m\n\u001b[31m+   5848,\u001b[39m\n\u001b[31m+   4841,\u001b[39m\n\u001b[31m+   4650,\u001b[39m\n\u001b[31m+   3851,\u001b[39m\n\u001b[31m+   2033,\u001b[39m\n\u001b[31m+   2014,\u001b[39m\n\u001b[31m+   1863,\u001b[39m\n\u001b[31m+   1775,\u001b[39m\n\u001b[31m+   1424,\u001b[39m\n\u001b[31m+   1415,\u001b[39m\n\u001b[31m+   1414,\u001b[39m\n\u001b[31m+   1396,\u001b[39m\n\u001b[31m+   1341,\u001b[39m\n\u001b[31m+   1258,\u001b[39m\n\u001b[31m+   1218,\u001b[39m\n\u001b[31m+   1201,\u001b[39m\n\u001b[31m+   1148,\u001b[39m\n\u001b[31m+   1114,\u001b[39m\n\u001b[31m+   917,\u001b[39m\n\u001b[31m+   492,\u001b[39m\n\u001b[2m  ]\u001b[22m",
                     "stack": "Error: prices in display order\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 25\u001b[39m\n\u001b[31m+ Received  + 25\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   492,\u001b[39m\n\u001b[32m-   917,\u001b[39m\n\u001b[32m-   1114,\u001b[39m\n\u001b[32m-   1148,\u001b[39m\n\u001b[32m-   1201,\u001b[39m\n\u001b[32m-   1218,\u001b[39m\n\u001b[32m-   1258,\u001b[39m\n\u001b[32m-   1341,\u001b[39m\n\u001b[32m-   1396,\u001b[39m\n\u001b[32m-   1414,\u001b[39m\n\u001b[32m-   1415,\u001b[39m\n\u001b[32m-   1424,\u001b[39m\n\u001b[32m-   1775,\u001b[39m\n\u001b[32m-   1863,\u001b[39m\n\u001b[32m-   2014,\u001b[39m\n\u001b[32m-   2033,\u001b[39m\n\u001b[32m-   3851,\u001b[39m\n\u001b[32m-   4650,\u001b[39m\n\u001b[32m-   4841,\u001b[39m\n\u001b[32m-   5848,\u001b[39m\n\u001b[32m-   6654,\u001b[39m\n\u001b[32m-   7359,\u001b[39m\n\u001b[32m-   8019,\u001b[39m\n\u001b[32m-   10079,\u001b[39m\n\u001b[32m-   11924,\u001b[39m\n\u001b[2m    12523,\u001b[22m\n\u001b[31m+   11924,\u001b[39m\n\u001b[31m+   10079,\u001b[39m\n\u001b[31m+   8019,\u001b[39m\n\u001b[31m+   7359,\u001b[39m\n\u001b[31m+   6654,\u001b[39m\n\u001b[31m+   5848,\u001b[39m\n\u001b[31m+   4841,\u001b[39m\n\u001b[31m+   4650,\u001b[39m\n\u001b[31m+   3851,\u001b[39m\n\u001b[31m+   2033,\u001b[39m\n\u001b[31m+   2014,\u001b[39m\n\u001b[31m+   1863,\u001b[39m\n\u001b[31m+   1775,\u001b[39m\n\u001b[31m+   1424,\u001b[39m\n\u001b[31m+   1415,\u001b[39m\n\u001b[31m+   1414,\u001b[39m\n\u001b[31m+   1396,\u001b[39m\n\u001b[31m+   1341,\u001b[39m\n\u001b[31m+   1258,\u001b[39m\n\u001b[31m+   1218,\u001b[39m\n\u001b[31m+   1201,\u001b[39m\n\u001b[31m+   1148,\u001b[39m\n\u001b[31m+   1114,\u001b[39m\n\u001b[31m+   917,\u001b[39m\n\u001b[31m+   492,\u001b[39m\n\u001b[2m  ]\u001b[22m\n    at /Users/mrkamposter/Documents/qa-task/tests/ui/catalog.spec.ts:27:90\n    at /Users/mrkamposter/Documents/qa-task/tests/ui/catalog.spec.ts:24:3",
@@ -1292,19 +1360,19 @@
                   "steps": [
                     {
                       "title": "Oracle: full catalog from the API, sorted by price (then name) by the test",
-                      "duration": 119
+                      "duration": 245
                     },
                     {
                       "title": "Open the catalog and select \"Price (Low - High)\"",
-                      "duration": 993
+                      "duration": 656
                     },
                     {
                       "title": "Collect every card on every page",
-                      "duration": 314
+                      "duration": 217
                     },
                     {
                       "title": "All products are shown once, in ascending price order",
-                      "duration": 8,
+                      "duration": 3,
                       "error": {
                         "message": "Error: prices in display order\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 25\u001b[39m\n\u001b[31m+ Received  + 25\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   492,\u001b[39m\n\u001b[32m-   917,\u001b[39m\n\u001b[32m-   1114,\u001b[39m\n\u001b[32m-   1148,\u001b[39m\n\u001b[32m-   1201,\u001b[39m\n\u001b[32m-   1218,\u001b[39m\n\u001b[32m-   1258,\u001b[39m\n\u001b[32m-   1341,\u001b[39m\n\u001b[32m-   1396,\u001b[39m\n\u001b[32m-   1414,\u001b[39m\n\u001b[32m-   1415,\u001b[39m\n\u001b[32m-   1424,\u001b[39m\n\u001b[32m-   1775,\u001b[39m\n\u001b[32m-   1863,\u001b[39m\n\u001b[32m-   2014,\u001b[39m\n\u001b[32m-   2033,\u001b[39m\n\u001b[32m-   3851,\u001b[39m\n\u001b[32m-   4650,\u001b[39m\n\u001b[32m-   4841,\u001b[39m\n\u001b[32m-   5848,\u001b[39m\n\u001b[32m-   6654,\u001b[39m\n\u001b[32m-   7359,\u001b[39m\n\u001b[32m-   8019,\u001b[39m\n\u001b[32m-   10079,\u001b[39m\n\u001b[32m-   11924,\u001b[39m\n\u001b[2m    12523,\u001b[22m\n\u001b[31m+   11924,\u001b[39m\n\u001b[31m+   10079,\u001b[39m\n\u001b[31m+   8019,\u001b[39m\n\u001b[31m+   7359,\u001b[39m\n\u001b[31m+   6654,\u001b[39m\n\u001b[31m+   5848,\u001b[39m\n\u001b[31m+   4841,\u001b[39m\n\u001b[31m+   4650,\u001b[39m\n\u001b[31m+   3851,\u001b[39m\n\u001b[31m+   2033,\u001b[39m\n\u001b[31m+   2014,\u001b[39m\n\u001b[31m+   1863,\u001b[39m\n\u001b[31m+   1775,\u001b[39m\n\u001b[31m+   1424,\u001b[39m\n\u001b[31m+   1415,\u001b[39m\n\u001b[31m+   1414,\u001b[39m\n\u001b[31m+   1396,\u001b[39m\n\u001b[31m+   1341,\u001b[39m\n\u001b[31m+   1258,\u001b[39m\n\u001b[31m+   1218,\u001b[39m\n\u001b[31m+   1201,\u001b[39m\n\u001b[31m+   1148,\u001b[39m\n\u001b[31m+   1114,\u001b[39m\n\u001b[31m+   917,\u001b[39m\n\u001b[31m+   492,\u001b[39m\n\u001b[2m  ]\u001b[22m",
                         "stack": "Error: prices in display order\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 25\u001b[39m\n\u001b[31m+ Received  + 25\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   492,\u001b[39m\n\u001b[32m-   917,\u001b[39m\n\u001b[32m-   1114,\u001b[39m\n\u001b[32m-   1148,\u001b[39m\n\u001b[32m-   1201,\u001b[39m\n\u001b[32m-   1218,\u001b[39m\n\u001b[32m-   1258,\u001b[39m\n\u001b[32m-   1341,\u001b[39m\n\u001b[32m-   1396,\u001b[39m\n\u001b[32m-   1414,\u001b[39m\n\u001b[32m-   1415,\u001b[39m\n\u001b[32m-   1424,\u001b[39m\n\u001b[32m-   1775,\u001b[39m\n\u001b[32m-   1863,\u001b[39m\n\u001b[32m-   2014,\u001b[39m\n\u001b[32m-   2033,\u001b[39m\n\u001b[32m-   3851,\u001b[39m\n\u001b[32m-   4650,\u001b[39m\n\u001b[32m-   4841,\u001b[39m\n\u001b[32m-   5848,\u001b[39m\n\u001b[32m-   6654,\u001b[39m\n\u001b[32m-   7359,\u001b[39m\n\u001b[32m-   8019,\u001b[39m\n\u001b[32m-   10079,\u001b[39m\n\u001b[32m-   11924,\u001b[39m\n\u001b[2m    12523,\u001b[22m\n\u001b[31m+   11924,\u001b[39m\n\u001b[31m+   10079,\u001b[39m\n\u001b[31m+   8019,\u001b[39m\n\u001b[31m+   7359,\u001b[39m\n\u001b[31m+   6654,\u001b[39m\n\u001b[31m+   5848,\u001b[39m\n\u001b[31m+   4841,\u001b[39m\n\u001b[31m+   4650,\u001b[39m\n\u001b[31m+   3851,\u001b[39m\n\u001b[31m+   2033,\u001b[39m\n\u001b[31m+   2014,\u001b[39m\n\u001b[31m+   1863,\u001b[39m\n\u001b[31m+   1775,\u001b[39m\n\u001b[31m+   1424,\u001b[39m\n\u001b[31m+   1415,\u001b[39m\n\u001b[31m+   1414,\u001b[39m\n\u001b[31m+   1396,\u001b[39m\n\u001b[31m+   1341,\u001b[39m\n\u001b[31m+   1258,\u001b[39m\n\u001b[31m+   1218,\u001b[39m\n\u001b[31m+   1201,\u001b[39m\n\u001b[31m+   1148,\u001b[39m\n\u001b[31m+   1114,\u001b[39m\n\u001b[31m+   917,\u001b[39m\n\u001b[31m+   492,\u001b[39m\n\u001b[2m  ]\u001b[22m\n    at /Users/mrkamposter/Documents/qa-task/tests/ui/catalog.spec.ts:27:90\n    at /Users/mrkamposter/Documents/qa-task/tests/ui/catalog.spec.ts:24:3",
@@ -1317,7 +1385,7 @@
                       }
                     }
                   ],
-                  "startTime": "2026-11-03T23:14:58.345Z",
+                  "startTime": "2026-11-03T23:20:35.470Z",
                   "annotations": [
                     {
                       "type": "fail",
@@ -1339,9 +1407,19 @@
                   ],
                   "attachments": [
                     {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/mrkamposter/Documents/qa-task/reports/test-results/catalog-TC-001-sorting-by--24fa6-le-catalog-across-all-pages-ui-chromium/test-finished-1.png"
+                    },
+                    {
                       "name": "error-context",
                       "contentType": "text/markdown",
                       "path": "/Users/mrkamposter/Documents/qa-task/reports/test-results/catalog-TC-001-sorting-by--24fa6-le-catalog-across-all-pages-ui-chromium/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/mrkamposter/Documents/qa-task/reports/test-results/catalog-TC-001-sorting-by--24fa6-le-catalog-across-all-pages-ui-chromium/trace.zip"
                     }
                   ],
                   "errorLocation": {
@@ -1390,10 +1468,10 @@
               "projectName": "ui-chromium",
               "results": [
                 {
-                  "workerIndex": 6,
+                  "workerIndex": 5,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1399,
+                  "duration": 1588,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
@@ -1401,33 +1479,44 @@
                   "steps": [
                     {
                       "title": "Search \"pliers\", open \"Pliers\" and add 2 to the cart",
-                      "duration": 669
+                      "duration": 685
                     },
                     {
                       "title": "Add 1 × \"Slip Joint Pliers\"",
-                      "duration": 113
+                      "duration": 64
                     },
                     {
                       "title": "Check out: sign in, billing address, Cash on Delivery, confirm",
-                      "duration": 360
+                      "duration": 502
                     },
                     {
                       "title": "The cart is cleared after the order",
-                      "duration": 2
+                      "duration": 1
                     },
                     {
                       "title": "Invoice INV-2026000010 belongs to the customer and matches the cart",
-                      "duration": 30
+                      "duration": 48
                     }
                   ],
-                  "startTime": "2026-11-03T23:15:00.169Z",
+                  "startTime": "2026-11-03T23:20:37.220Z",
                   "annotations": [
                     {
                       "type": "blocked-non-local-request",
                       "description": "stylesheet https://cdnjs.cloudflare.com"
                     }
                   ],
-                  "attachments": []
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/mrkamposter/Documents/qa-task/reports/test-results/checkout-TC-023-customer-f-8fffd-he-invoice-matches-the-cart-ui-chromium/test-finished-1.png"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/mrkamposter/Documents/qa-task/reports/test-results/checkout-TC-023-customer-f-8fffd-he-invoice-matches-the-cart-ui-chromium/trace.zip"
+                    }
+                  ]
                 }
               ],
               "status": "expected"
@@ -1443,8 +1532,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-11-03T23:14:56.109Z",
-    "duration": 11285.287999999999,
+    "startTime": "2026-11-03T23:20:32.763Z",
+    "duration": 11645.456,
     "expected": 12,
     "skipped": 0,
     "unexpected": 0,

@@ -6,6 +6,7 @@
   "scripts": {
     "test": "playwright test",
     "posttest": "node scripts/check-expected-failures.mjs",
+    "test:report": "FULL_EVIDENCE=true RESET_DB=true npm test",
     "test:api": "playwright test --project=api",
     "test:ui": "playwright test --project=ui-chromium",
     "test:stability": "playwright test --repeat-each=3 --workers=4",
