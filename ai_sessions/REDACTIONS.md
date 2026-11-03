@@ -4,14 +4,10 @@ Values replaced with `<REDACTED: label>` (value itself not listed). Messages and
 
 | Label | Occurrences replaced |
 |---|---|
-| third-party file name | 0 |
-| email | 0 |
-| personal file name | 0 |
-| email | 0 |
-| personal file name | 0 |
-| home path | 4 (пробная сессия) |
-| personal file name | 0 |
-| third-party name | 0 |
-| OS username | 0 |
-| name | 0 |
-| name | 0 |
+| OS username | 113 |
+| email | 9 |
+| home path | 912 |
+| name | 57 |
+| personal file name | 42 |
+| third-party file name | 13 |
+| third-party name | 62 |

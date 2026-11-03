@@ -40,14 +40,17 @@ echo "|---|---|" >> "$REPORT"
 
 while IFS='|' read -r value label; do
   [[ -z "$value" ]] && continue
-  count=$(grep -rFo -- "$value" ai_sessions --include='*.jsonl' --include='*.json' --include='*.txt' --include='*.md' --include='*.html' 2>/dev/null | grep -v "^$REPORT" | wc -l | tr -d ' ' || true)
+  count=$(grep -rFoi -- "$value" ai_sessions --include='*.jsonl' --include='*.json' --include='*.txt' --include='*.md' --include='*.html' 2>/dev/null | grep -v "^$REPORT" | wc -l | tr -d ' ' || true)
   if [[ "$count" -gt 0 ]]; then
     find ai_sessions -type f \( -name '*.jsonl' -o -name '*.json' -o -name '*.txt' -o -name '*.md' -o -name '*.html' \) ! -path "$REPORT" -print0 |
-      V="$value" L="$label" xargs -0 perl -pi -e 's/\Q$ENV{V}\E/<REDACTED: $ENV{L}>/g'
+      V="$value" L="$label" xargs -0 perl -pi -e 's/\Q$ENV{V}\E/<REDACTED: $ENV{L}>/gi'
   fi
   echo "| $label | $count |" >> "$REPORT"
 done < "$RULES"
 rm -f "$RULES"
+
+# Aggregate rows by label
+{ head -6 "$REPORT"; tail -n +7 "$REPORT" | perl -ne 'if (/^\| (.+?) \| (\d+) \|$/) { $s{$1} += $2 } END { printf "| %s | %d |\n", $_, $s{$_} for sort keys %s }'; } > "$REPORT.tmp" && mv "$REPORT.tmp" "$REPORT"
 
 # JSONL must stay valid after redaction
 bad=0
